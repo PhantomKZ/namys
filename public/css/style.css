@@ -1310,3 +1310,33 @@ body {
     grid-template-rows: 1fr auto;
     min-height: 75vh;
 }
+.popup-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+}
+.popup-message button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.popup-message button.close-btn {
+    font-size: 30px;
+    line-height: 0;
+    padding: 0;
+    margin-left: 10px;
+}

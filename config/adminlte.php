@@ -30,8 +30,10 @@ return [
     |
     */
 
-    'use_ico_only' => false,
-    'use_full_favicon' => false,
+    'favicon' => [
+        'use_ico_only' => true, // Включить использование только favicon.ico
+        'use_full_favicon' => true, // Включить использование полного favicon
+    ],
 
     /*
     |--------------------------------------------------------------------------

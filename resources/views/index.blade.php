@@ -129,11 +129,60 @@
             <h2>УЗНАВАЙТЕ О НОВИНКАХ ПЕРВЫМИ!</h2>
             <h3>При первой покупке выдается промокод на 20%!</h3>
             <p>Один раз в месяц мы будем присылать вам информацию о наших последних коллекциях, скидках и акциях. Обещаем быть полезными!</p>
-            <form class="feedback-form">
-                <input type="email" placeholder="Ваш E-mail" required>
+            <form class="feedback-form" action="{{ route('subscribe') }}" method="POST" id="subscribe-form">
+                @csrf
+                <input type="email" name="email" id="email" placeholder="Ваш E-mail" required>
                 <button type="submit">Подписаться</button>
             </form>
         </section>
+        @if(session('success'))
+            <div id="success-message" class="popup-message">
+                <span>{{ session('success') }}</span>
+                <button onclick="closePopup()" class="close-btn">&times;</button>
+            </div>
+        @endif
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $('#subscribe-form').submit(function (e) {
+            e.preventDefault(); // Останавливаем стандартную отправку формы
+
+            var email = $('#email').val(); // Получаем email из поля ввода
+
+            $.ajax({
+                url: '{{ route('subscribe') }}',
+                type: 'POST',
+                data: {
+                    email: email,
+                    _token: $('input[name="_token"]').val(), // CSRF токен
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Показать всплывающее сообщение
+                        $('#message-text').text(response.success);
+                        $('#success-message').show();
+
+                        // Очистить поле ввода после отправки
+                        $('#email').val('');
+                    }
+                },
+                error: function () {
+                    alert('Произошла ошибка при подписке. Попробуйте позже.');
+                }
+            });
+        });
+
+        function closePopup() {
+            $('#success-message').hide();
+        }
+
+        setTimeout(function() {
+            var message = document.getElementById('success-message');
+            if (message) {
+                message.style.display = 'none';
+            }
+        }, 5000);
+    </script>
 @endsection
 
