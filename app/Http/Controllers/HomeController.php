@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Subscription;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,19 +15,20 @@ class HomeController extends Controller
         return view('index', compact('categories'));
     }
 
-    public function subscribe(Request $request)
+    public function subscribe(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email|unique:subscriptions,email',
         ]);
 
-        Subscription::create([
+        $subscribe = Subscription::create([
             'email' => $request->email,
         ]);
 
-        if ($request->ajax()) {
+        if ($subscribe) {
             return response()->json(['success' => 'Вы успешно подписались на рассылку!']);
+        } else {
+            return response()->json(['error' => 'Произошла ошибка при подписке. Попробуйте позже.'], 500);
         }
-
-        return back()->with('success', 'Вы успешно подписались на рассылку!');
-    }}
+    }
+}

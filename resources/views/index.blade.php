@@ -129,60 +129,57 @@
             <h2>УЗНАВАЙТЕ О НОВИНКАХ ПЕРВЫМИ!</h2>
             <h3>При первой покупке выдается промокод на 20%!</h3>
             <p>Один раз в месяц мы будем присылать вам информацию о наших последних коллекциях, скидках и акциях. Обещаем быть полезными!</p>
-            <form class="feedback-form" action="{{ route('subscribe') }}" method="POST" id="subscribe-form">
+            <form class="feedback-form" id="subscribe-form">
                 @csrf
                 <input type="email" name="email" id="email" placeholder="Ваш E-mail" required>
                 <button type="submit">Подписаться</button>
             </form>
         </section>
-        @if(session('success'))
-            <div id="success-message" class="popup-message">
-                <span>{{ session('success') }}</span>
-                <button onclick="closePopup()" class="close-btn">&times;</button>
-            </div>
-        @endif
-    </div>
-@endsection
-@section('scripts')
-    <script>
-        $('#subscribe-form').submit(function (e) {
-            e.preventDefault(); // Останавливаем стандартную отправку формы
 
-            var email = $('#email').val(); // Получаем email из поля ввода
+        <div id="success-message" class="popup-message" style="display: none;">
+            <span></span>
+            <button onclick="closePopup()" class="close-btn">&times;</button>
+        </div>
+        @endsection
 
-            $.ajax({
-                url: '{{ route('subscribe') }}',
-                type: 'POST',
-                data: {
-                    email: email,
-                    _token: $('input[name="_token"]').val(), // CSRF токен
-                },
-                success: function (response) {
-                    if (response.success) {
-                        // Показать всплывающее сообщение
-                        $('#message-text').text(response.success);
-                        $('#success-message').show();
+        @section('scripts')
+            <script>
+                document.getElementById('subscribe-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
 
-                        // Очистить поле ввода после отправки
-                        $('#email').val('');
-                    }
-                },
-                error: function () {
-                    alert('Произошла ошибка при подписке. Попробуйте позже.');
+                    var email = document.getElementById('email').value;
+
+                    fetch("{{ route('subscribe') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ email: email })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Ошибка при подписке');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                var successMessage = document.getElementById('success-message');
+                                successMessage.querySelector('span').textContent = data.success;
+                                successMessage.style.display = 'block';
+                                setTimeout(function () {
+                                    successMessage.classList.add('hidden');
+                                }, 3000);
+                            }
+                        })
+                        .catch(error => {
+                        });
+                });
+
+                function closePopup() {
+                    document.getElementById('success-message').style.display = 'none';
                 }
-            });
-        });
-
-        function closePopup() {
-            $('#success-message').hide();
-        }
-
-        setTimeout(function() {
-            var message = document.getElementById('success-message');
-            if (message) {
-                message.style.display = 'none';
-            }
-        }, 5000);
-    </script>
+            </script>
 @endsection
 

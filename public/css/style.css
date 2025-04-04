@@ -1320,8 +1320,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 300px;
+    width: 340px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
+
+.popup-message.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Кнопка закрытия */
 .popup-message button {
     background: none;
     border: none;
@@ -1331,12 +1341,21 @@ body {
     font-weight: bold;
 }
 
+/* Увеличенный размер кнопки закрытия */
 .popup-message button.close-btn {
-    font-size: 30px;
+    font-size: 28px;
     line-height: 0;
     padding: 0;
     margin-left: 10px;
 }
+
+/* Размещение кнопки закрытия в правом верхнем углу */
+.popup-message .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+}
+
 
 /* Novelty Page Styles */
 .nov-banner {
