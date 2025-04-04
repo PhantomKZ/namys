@@ -15,14 +15,13 @@
                 </div>
 
                 <div class="forms-container">
-
                     <form class="auth-form active" id="login-form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">
                             <label>Email</label>
-                            <input id="email" type="email" name="email" value="{{ old('email') }}" autofocus
-                                   class="@error('password') is-invalid @enderror" placeholder="Введите ваш email" required>
-                            @error('email')
+                            <input id="email" type="email" name="email" value="{{ old('email') }}"
+                                   class="@error('email', 'login') is-invalid @enderror" placeholder="Введите ваш email" required>
+                            @error('email', 'login')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -31,40 +30,26 @@
                         <div class="form-group">
                             <label>Пароль</label>
                             <input id="password" type="password" name="password"
-                                   class="@error('password') is-invalid @enderror" placeholder="Введите ваш пароль" required autocomplete="current-password">
-                            @error('password')
+                                   class="@error('password', 'login') is-invalid @enderror" placeholder="Введите ваш пароль" required autocomplete="current-password">
+                            @error('password', 'login')
                             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
                         <button type="submit" class="auth-button"> Войти </button>
-
-                        <div class="social-auth">
-                            <p>Или войдите через</p>
-                            <div class="social-buttons">
-                                <a href="#" class="social-button">
-                                    <img src="{{ asset('images/auth/google.png') }}" alt="Google">
-                                </a>
-                                <a href="#" class="social-button">
-                                    <img src="{{ asset('images/auth/facebook.png') }}" alt="Facebook">
-                                </a>
-                                <a href="#" class="social-button">
-                                    <img src="{{ asset('images/auth/vk.png') }}" alt="VK">
-                                </a>
-                            </div>
-                        </div>
                     </form>
 
+                    <!-- Регистрация форма -->
                     <form class="auth-form" id="register-form" method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="form-group">
                             <label for="name">Имя</label>
-                            <input id="name" type="text" name="name" class="@error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Введите ваше имя" required autocomplete="name" autofocus>
+                            <input id="name" type="text" name="name" class="@error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Введите ваше имя" required autocomplete="name">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
                         <div class="form-group">
@@ -72,8 +57,8 @@
                             <input id="email" type="email" name="email" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Введите ваш email" required autocomplete="email">
                             @error('email')
                             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
                         <div class="form-group">
@@ -81,8 +66,8 @@
                             <input id="password" type="password" name="password" class="@error('password') is-invalid @enderror" placeholder="Придумайте пароль" required autocomplete="new-password">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
                         <div class="form-group">
@@ -95,4 +80,37 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        function switchForm(formType) {
+
+            const buttons = document.querySelectorAll('.auth-switch button');
+            buttons.forEach(button => button.classList.remove('active'));
+            event.target.classList.add('active');
+
+
+            const formsContainer = document.querySelector('.forms-container');
+            const forms = document.querySelectorAll('.auth-form');
+
+            if (formType === 'login') {
+                formsContainer.classList.remove('show-register');
+                forms[0].classList.add('active');
+                forms[1].classList.remove('active');
+            } else {
+                formsContainer.classList.add('show-register');
+                forms[0].classList.remove('active');
+                forms[1].classList.add('active');
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if ($errors->getBag('login')->any())
+            switchForm('login');
+            @elseif ($errors->any())
+            switchForm('register');
+            @endif
+        });
+    </script>
 @endsection

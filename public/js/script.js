@@ -36,28 +36,6 @@ document.querySelectorAll('.glow-button').forEach((button) => {
         light.style.opacity = '0';
     });
 });
-
-function switchForm(formType) {
-
-    const buttons = document.querySelectorAll('.auth-switch button');
-    buttons.forEach(button => button.classList.remove('active'));
-    event.target.classList.add('active');
-
-
-    const formsContainer = document.querySelector('.forms-container');
-    const forms = document.querySelectorAll('.auth-form');
-
-    if (formType === 'login') {
-        formsContainer.classList.remove('show-register');
-        forms[0].classList.add('active');
-        forms[1].classList.remove('active');
-    } else {
-        formsContainer.classList.add('show-register');
-        forms[0].classList.remove('active');
-        forms[1].classList.add('active');
-    }
-}
-
 // Функционал для карусели изображений товара
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.getElementById('productCarousel');

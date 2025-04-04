@@ -2175,3 +2175,7 @@ body {
 .edit-profile-btn:hover {
     background-color: #333;
 }
+
+.is-invalid {
+    border: 1px solid red !important;
+}
