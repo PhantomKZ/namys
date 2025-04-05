@@ -18,17 +18,18 @@ class HomeController extends Controller
     public function subscribe(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => 'required|email|unique:subscriptions,email',
+            'email' => 'required|email|email:rfc,dns',
         ]);
 
-        $subscribe = Subscription::create([
-            'email' => $request->email,
-        ]);
+        $existing = Subscription::where('email', $request->email)->first();
 
-        if ($subscribe) {
-            return response()->json(['success' => 'Вы успешно подписались на рассылку!']);
+        if ($existing) {
+            return response()->json(['success' => 'Вы уже подписаны на рассылку!']);
         } else {
-            return response()->json(['error' => 'Произошла ошибка при подписке. Попробуйте позже.'], 500);
+            Subscription::create([
+                'email' => $request->email,
+            ]);
+            return response()->json(['success' => 'Вы успешно подписались на рассылку!']);
         }
     }
 }

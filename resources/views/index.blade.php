@@ -166,6 +166,7 @@
                         .then(data => {
                             if (data.success) {
                                 var successMessage = document.getElementById('success-message');
+                                successMessage.classList.remove('hidden');
                                 successMessage.querySelector('span').textContent = data.success;
                                 successMessage.style.display = 'block';
                                 setTimeout(function () {
