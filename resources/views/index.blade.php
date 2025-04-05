@@ -16,7 +16,8 @@
                     <a>
                         <div class="category-card">
                             <div class="category-image">
-                                <img src="{{ asset('storage/' . $category->thumbnail) }}" alt="{{ $category->name }} | Namys">
+                                <img src="{{ asset('storage/' . $category->thumbnail) }}"
+                                     alt="{{ $category->name }} | Namys">
                                 <div class="category-overlay">
                                     <h3>{{ $category->name }}</h3>
                                 </div>
@@ -113,7 +114,8 @@
                 <div class="col-md-6">
                     <div class="about-text">
                         <h2>О нас</h2>
-                        <p>Мы любим городскую моду и обожаем создавать одежду. Находимся в Павлодаре. Наш бренд NAMYS сфокусирован на тренд, надежность и качество. Доступна доставка по городу.</p>
+                        <p>Мы любим городскую моду и обожаем создавать одежду. Находимся в Павлодаре. Наш бренд NAMYS
+                            сфокусирован на тренд, надежность и качество. Доступна доставка по городу.</p>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -128,7 +130,8 @@
         <section class="feedback">
             <h2>УЗНАВАЙТЕ О НОВИНКАХ ПЕРВЫМИ!</h2>
             <h3>При первой покупке выдается промокод на 20%!</h3>
-            <p>Один раз в месяц мы будем присылать вам информацию о наших последних коллекциях, скидках и акциях. Обещаем быть полезными!</p>
+            <p>Один раз в месяц мы будем присылать вам информацию о наших последних коллекциях, скидках и акциях.
+                Обещаем быть полезными!</p>
             <form class="feedback-form" id="subscribe-form">
                 @csrf
                 <input type="email" name="email" id="email" placeholder="Ваш E-mail" required>
@@ -136,51 +139,53 @@
             </form>
         </section>
 
-        <div id="success-message" class="popup-message" style="display: none;">
-            <span></span>
-            <button onclick="closePopup()" class="close-btn">&times;</button>
-        </div>
-        @endsection
-
-        @section('scripts')
-            <script>
-                document.getElementById('subscribe-form').addEventListener('submit', function (e) {
-                    e.preventDefault();
-
-                    var email = document.getElementById('email').value;
-
-                    fetch("{{ route('subscribe') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({ email: email })
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Ошибка при подписке');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                var successMessage = document.getElementById('success-message');
-                                successMessage.classList.remove('hidden');
-                                successMessage.querySelector('span').textContent = data.success;
-                                successMessage.style.display = 'block';
-                                setTimeout(function () {
-                                    successMessage.classList.add('hidden');
-                                }, 3000);
-                            }
-                        })
-                        .catch(error => {
-                        });
-                });
-
-                function closePopup() {
-                    document.getElementById('success-message').style.display = 'none';
-                }
-            </script>
+        <div id="notifications-container"></div>
+    </div>
 @endsection
+@section('scripts')
+    <script>
+        document.getElementById('subscribe-form').addEventListener('submit', function (e) {
+            e.preventDefault();
 
+            var email = document.getElementById('email').value;
+
+            fetch("{{ route('subscribe') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({email: email})
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка при подписке');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Создаем новый блок уведомления
+                        var notification = document.createElement('div');
+                        notification.classList.add('popup-message');
+                        notification.classList.add('success');
+                        notification.innerHTML = `
+                <span>${data.success}</span>
+                <button onclick="closePopup(this)" class="close-btn">&times;</button>
+            `;
+                        document.getElementById('notifications-container').appendChild(notification);
+                        setTimeout(function () {
+                            notification.style.display = 'none';
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        function closePopup(button) {
+            button.parentElement.style.display = 'none';
+        }
+    </script>
+@endsection

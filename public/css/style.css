@@ -1307,16 +1307,24 @@ body {
     grid-template-rows: 1fr auto;
     min-height: 75vh;
 }
-.popup-message {
+#notifications-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px 0;
     position: fixed;
     top: 20px;
     right: 20px;
+    z-index: 9999;
+}
+.popup-message {
     background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
     color: white;
     padding: 15px;
+    margin-bottom: 10px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 9999;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1325,13 +1333,10 @@ body {
     visibility: visible;
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-
 .popup-message.hidden {
     opacity: 0;
     visibility: hidden;
 }
-
-/* Кнопка закрытия */
 .popup-message button {
     background: none;
     border: none;
@@ -1340,23 +1345,17 @@ body {
     cursor: pointer;
     font-weight: bold;
 }
-
-/* Увеличенный размер кнопки закрытия */
 .popup-message button.close-btn {
     font-size: 28px;
     line-height: 0;
     padding: 0;
     margin-left: 10px;
 }
-
-/* Размещение кнопки закрытия в правом верхнем углу */
 .popup-message .close-btn {
     position: absolute;
     top: 12px;
     right: 10px;
 }
-
-
 /* Novelty Page Styles */
 .nov-banner {
     width: 100%;
