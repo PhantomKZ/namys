@@ -132,9 +132,7 @@ body {
 
 /* Поиск и сортировка */
 .search-sort-section {
-    background-color: #f8f9fa;
     padding: 20px 0;
-    margin-top: 90px;
     border-bottom: 1px solid #e9ecef;
 }
 
@@ -1173,7 +1171,7 @@ body {
     }
 }
 
-.limited-banner {
+.banner {
     width: 100%;
     max-width: 1200px;
     height: 500px;
@@ -1211,15 +1209,6 @@ body {
 }
 
 /* Limited Edition Page Styles */
-.le-banner {
-    width: 100%;
-    max-width: 1200px;
-    height: 500px;
-    margin: 0 auto;
-    display: block;
-    object-fit: cover;
-}
-
 .le-title {
     text-align: center;
     font-weight: bold;
@@ -1357,15 +1346,6 @@ body {
     right: 10px;
 }
 /* Novelty Page Styles */
-.nov-banner {
-    width: 100%;
-    max-width: 1200px;
-    height: 560px;
-    margin: 0 auto;
-    display: block;
-    object-fit: cover;
-}
-
 .nov-title {
     text-align: center;
     font-weight: bold;
@@ -1776,15 +1756,6 @@ body {
 }
 
 /* Look Collection Styles */
-.look-banner {
-    width: 100%;
-    max-width: 1200px;
-    height: 500px;
-    margin: 0 auto;
-    display: block;
-    object-fit: cover;
-}
-
 .look-title {
     text-align: center;
     font-weight: bold;

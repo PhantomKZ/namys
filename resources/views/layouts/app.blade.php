@@ -1,10 +1,18 @@
+@php
+$current = \Route::currentRouteName() ?? 'home';
+$title = isset($title)
+    ? (__($title) . ' | NAMYS')
+    : 'NAMYS | ' . __('Интернет-магазин одежды');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <title>@yield('title')</title>
+    <link rel="preload" as="image" href="{{ asset('images/main/namyslogowhite.png') }}">
+    <link rel="preload" as="image" href="{{ asset('images/main/namyslogoblack.png') }}">
+    <title> {{ $title }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">

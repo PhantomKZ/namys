@@ -14,16 +14,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="catalog.html">В НАЛИЧИИ</a>
+                        <a class="nav-link {{ $current == 'catalog' ? 'active' : '' }}" href="{{ route('catalog') }}">В НАЛИЧИИ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="novelty.html">НОВИНКИ</a>
+                        <a class="nav-link {{ $current == 'novelty' ? 'active' : '' }}" href="{{ route('novelty') }}">НОВИНКИ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="limited.html">LIMITED EDITION</a>
+                        <a class="nav-link {{ $current == 'limited' ? 'active' : '' }}" href="{{ route('limited') }}">LIMITED EDITION</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">LOOK COLLECTION</a>
+                        <a class="nav-link {{ $current == 'look' ? 'active' : '' }}" href="{{ route('look') }}">LOOK COLLECTION</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link auth-icon" href="{{ route('login') }}">

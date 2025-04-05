@@ -3,7 +3,8 @@
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::post('/subscribe', [HomeController::class, 'subscribe'])->name('subscribe');
+Route::get('/', [SiteController::class, 'index'])->name('home');
+Route::post('/subscribe', [SiteController::class, 'subscribe'])->name('subscribe');
+Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
+Route::get('/novelty', [SiteController::class, 'novelty'])->name('novelty');
+Route::get('/limited', [SiteController::class, 'limited'])->name('limited');
+Route::get('/look', [SiteController::class, 'look'])->name('look');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');

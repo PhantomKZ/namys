@@ -317,13 +317,6 @@ return [
             'text' => 'Категории',
             'url' => 'admin/categories',
         ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -372,22 +365,6 @@ return [
                     'url' => '#',
                 ],
             ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
         ],
     ],
 
