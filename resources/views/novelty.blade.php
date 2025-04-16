@@ -42,7 +42,7 @@
             <a href="./product/product1.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item1.jpeg" alt="Футболка AQ NAMYS">
+                    <img src="{{ asset('images/novelty/item1.jpeg') }}" alt="Футболка AQ NAMYS">
                 </div>
                 <h3 class="nov-product-title">Футболка AQ NAMYS</h3>
                 <p class="nov-product-price">7990₸</p>
@@ -51,7 +51,7 @@
             <a href="./product/product2.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item2.jpeg" alt="Свитшот QARA NAMYS">
+                    <img src="{{ asset('images/novelty/item2.jpeg') }}" alt="Свитшот QARA NAMYS">
                 </div>
                 <h3 class="nov-product-title">Свитшот QARA NAMYS</h3>
                 <p class="nov-product-price">10 990₸</p>
@@ -60,7 +60,7 @@
             <a href="./product/product3.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item3.jpeg" alt="Шопер AQ Namys">
+                    <img src="{{ asset('images/novelty/item3.jpeg') }}" alt="Шопер AQ Namys">
                 </div>
                 <h3 class="nov-product-title">Шопер AQ Namys</h3>
                 <p class="nov-product-price">3350₸</p>
@@ -69,7 +69,7 @@
             <a href="./product/product4.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item4.jpeg" alt="Кепка AQ Namys">
+                    <img src="{{ asset('images/novelty/item4.jpeg') }}" alt="Кепка AQ Namys">
                 </div>
                 <h3 class="nov-product-title">Кепка AQ Namys</h3>
                 <p class="nov-product-price">2350₸</p>
@@ -78,7 +78,7 @@
             <a href="./product/product5.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item5.jpg" alt="Футболка KIIKII с принтом">
+                    <img src="{{ asset('images/novelty/item5.jpg') }}" alt="Футболка KIIKII с принтом">
                 </div>
                 <h3 class="nov-product-title">Футболка KIIKII с принтом </h3>
                 <p class="nov-product-price">6980₸</p>
@@ -87,7 +87,7 @@
             <a href="./product/product6.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item6.jpg" alt="Худи Cyber Art">
+                    <img src="{{ asset('images/novelty/item6.jpg') }}" alt="Худи Cyber Art">
                 </div>
                 <h3 class="nov-product-title">Худи Cyber Art</h3>
                 <p class="nov-product-price">9990₸</p>
@@ -96,7 +96,7 @@
             <a href="./product/product7.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item7.jpg" alt="Футболка KIIKII Amigo Skull">
+                    <img src="{{ asset('images/novelty/item7.jpg') }}" alt="Футболка KIIKII Amigo Skull">
                 </div>
                 <h3 class="nov-product-title">Футболка KIIKII Amigo Skull</h3>
                 <p class="nov-product-price">2350₸</p>
@@ -105,7 +105,7 @@
             <a href="./product/product8.html" class="nov-product-card">
                 <div class="nov-product-image">
                     <span class="new-badge">NEW</span>
-                    <img src="./image/novelty/item8.jpg" alt="Свитшот Samurai 2 0 7 7">
+                    <img src="{{ asset('images/novelty/item8.jpg') }}" alt="Свитшот Samurai 2 0 7 7">
                 </div>
                 <h3 class="nov-product-title">Свитшот Samurai 2 0 7 7</h3>
                 <p class="nov-product-price">8950₸</p>

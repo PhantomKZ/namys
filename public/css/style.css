@@ -5,10 +5,6 @@
     box-sizing: border-box;
 }
 
-.loh{
-    margin: 0;
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -2171,4 +2167,27 @@ body {
 
 .is-invalid {
     border: 1px solid red !important;
+}
+
+/* Убираем подчеркивание для всех ссылок */
+a {
+    text-decoration: none;
+    color: inherit; /* Наследуем цвет от родительского элемента */
+}
+
+/* Убираем синий цвет и подчёркивание для заголовков и цен */
+.le-product-title, .le-product-price {
+    text-decoration: none;
+    color: inherit; /* Цвет будет наследоваться от родителя */
+}
+
+/* Чтобы избежать наследования лишних стилей от ссылок */
+.le-product-card {
+    color: inherit;
+}
+
+/* Чтобы подстраховаться, если на элементах всё же остаются анимации */
+.le-product-title:hover, .le-product-price:hover {
+    text-decoration: none;
+    color: inherit;
 }

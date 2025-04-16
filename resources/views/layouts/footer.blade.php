@@ -1,6 +1,6 @@
 <footer class="footer">
-    <p>+8 800 555 35 35 | namyskz@mail.ru</p>
-    <p>г. Павлодар, ул. Назарбаева, 81</p>
+    <p>+7 (7182) 68 31 69 | namyskz@mail.ru</p>
+    <p>г. Павлодар, ул. Нурмагамбетова, 20/1</p>
     <p>&copy; 2025 NAMYS. Все права защищены.</p>
     <div class="social-icons">
         <a href="https://vk.com/phantomkz11"><img src="/images/main/vk.png"></img></a>
