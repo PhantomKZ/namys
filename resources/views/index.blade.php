@@ -33,78 +33,19 @@
             <h2>NEW! NEW! NEW!</h2>
             <h3>DROP'S</h3>
             <div class="product-grid">
-                <a href="product/product1.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item1.jpeg" alt="Продукт 1" class="main-image">
-                        <img src="/images/main/item1-hover.jpeg" alt="Продукт 1" class="hover-image">
-                    </div>
-                    <p>Футболка AQ Namys</p>
-                    <p class="price">7990₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product2.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item2.jpeg" alt="Продукт 2" class="main-image">
-                        <img src="/images/main/item2-hover.jpeg" alt="Продукт 2" class="hover-image">
-                    </div>
-                    <p>Свитшот QARA Namys</p>
-                    <p class="price">10 990₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product3.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item3.jpeg" alt="Продукт 3" class="main-image">
-                        <img src="/images/main/item3-hover.jpeg" alt="Продукт 3" class="hover-image">
-                    </div>
-                    <p>Сумка шопер AQ Namys</p>
-                    <p class="price">3350₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product4.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item4.jpeg" alt="Продукт 4" class="main-image">
-                        <img src="/images/main/item4-hover.jpeg" alt="Продукт 4" class="hover-image">
-                    </div>
-                    <p>Кепка AQ Namys</p>
-                    <p class="price">2350₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product5.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item5.jpg" alt="Продукт 5" class="main-image">
-                        <img src="/images/main/item5-hover.jpg" alt="Продукт 5" class="hover-image">
-                    </div>
-                    <p>Футболка KIIKII с принтом</p>
-                    <p class="price">6890₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product6.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item6.jpg" alt="Продукт 6" class="main-image">
-                        <img src="/images/main/item6-hover.jpg" alt="Продукт 6" class="hover-image">
-                    </div>
-                    <p>Худи Cyber Art</p>
-                    <p class="price">9990₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product7.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item7.jpg" alt="Продукт 7" class="main-image">
-                        <img src="/images/main/item7-hover.jpg" alt="Продукт 7" class="hover-image">
-                    </div>
-                    <p>Футболка KIIKII Amigo SKULL</p>
-                    <p class="price">6290₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
-                <a href="product/product8.html" class="product-card">
-                    <div class="image-container">
-                        <img src="/images/main/item8.jpg" alt="Продукт 8" class="main-image">
-                        <img src="/images/main/item8-hover.jpg" alt="Продукт 8" class="hover-image">
-                    </div>
-                    <p>Свитшот SAMURAI 2 0 7 7</p>
-                    <p class="price">8950₸</p>
-                    <button>Добавить в корзину</button>
-                </a>
+                @foreach($products as $product)
+                    <a href="product/product1.html" class="product-card">
+                        <div class="image-container">
+                            <img src="{{ $product->mainImage ? asset('storage/' . $product->mainImage->path) : '/images/default_main_image.jpg' }}"
+                                 alt="{{ $product->name }}" class="main-image">
+                            <img src="{{ $product->hoverImage ? asset('storage/' . $product->hoverImage->path) : '/images/default_hover_image.jpg' }}"
+                                 alt="{{ $product->name }}" class="hover-image">
+                        </div>
+                        <p>{{ $product->type->name }} {{ $product->name }}</p>
+                        <p class="price">{{ $product->price }} ₸</p>
+                        <button>Добавить в корзину</button>
+                    </a>
+                @endforeach
             </div>
         </section>
 

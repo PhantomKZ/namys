@@ -1,11 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Категори')
+@section('title', 'Категории')
 
 @section('content_header')
     <div class="container-fluid">
-        <h1>Категории</h1>
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать категорию</a>
+        <div class="d-flex justify-content-between">
+            <h1>Категории</h1>
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Создать категорию</a>
+        </div>
 
         @if(session('success'))
             <div class="alert alert-success mt-4">

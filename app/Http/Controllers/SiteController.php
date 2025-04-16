@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Subscription;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -13,7 +14,8 @@ class SiteController extends Controller
     public function index(): View
     {
         $categories = Category::all();
-        return view('index', compact('categories'));
+        $products = Product::take(8)->get();
+        return view('index', compact('categories', 'products'));
     }
 
     public function subscribe(Request $request): JsonResponse

@@ -65,9 +65,9 @@ return [
     |
     */
 
-    'logo' => '<b>Namys</b>',
+    'logo' => '<b>Admin panel</b>',
     'logo_img' => 'images/main/namyslogowhite.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_img_class' => 'brand-image',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -316,6 +316,27 @@ return [
         [
             'text' => 'Категории',
             'url' => 'admin/categories',
+        ],
+        ['header' => 'PRODUCTS'],
+        [
+            'text' => 'Товары',
+            'url' => 'admin/products',
+        ],
+        [
+            'text' => 'Бренды',
+            'url' => 'admin/brands',
+        ],
+        [
+            'text' => 'Типы',
+            'url' => 'admin/types',
+        ],
+        [
+            'text' => 'Цвета',
+            'url' => 'admin/colors',
+        ],
+        [
+            'text' => 'Материалы',
+            'url' => 'admin/materials',
         ],
         ['header' => 'account_settings'],
         [
