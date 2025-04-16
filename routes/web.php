@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,7 @@ Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
 Route::get('/novelty', [SiteController::class, 'novelty'])->name('novelty');
 Route::get('/limited', [SiteController::class, 'limited'])->name('limited');
 Route::get('/look', [SiteController::class, 'look'])->name('look');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');

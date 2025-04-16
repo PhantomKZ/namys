@@ -34,7 +34,7 @@
             <h3>DROP'S</h3>
             <div class="product-grid">
                 @foreach($products as $product)
-                    <a href="product/product1.html" class="product-card">
+                    <a href="{{ route('products.show', $product->id) }}" class="product-card">
                         <div class="image-container">
                             <img src="{{ $product->mainImage ? asset('storage/' . $product->mainImage->path) : '/images/default_main_image.jpg' }}"
                                  alt="{{ $product->name }}" class="main-image">

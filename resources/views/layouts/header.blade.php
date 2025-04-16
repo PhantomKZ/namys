@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ $current == 'catalog' ? 'active' : '' }}" href="{{ route('catalog') }}">В НАЛИЧИИ</a>
+                        <a class="nav-link {{ $current == 'catalog' ? 'active' : '' }}" href="{{ route('catalog') }}">КАТАЛОГ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ $current == 'novelty' ? 'active' : '' }}" href="{{ route('novelty') }}">НОВИНКИ</a>
