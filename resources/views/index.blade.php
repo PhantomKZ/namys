@@ -16,7 +16,7 @@
                     <a>
                         <div class="category-card">
                             <div class="category-image">
-                                <img src="{{ asset('images/main/' . $category->thumbnail) }}"
+                                <img src="{{ asset('storage/' . $category->thumbnail) }}"
                                 alt="{{ $category->name }} | Namys">
                                 <div class="category-overlay">
                                     <h3>{{ $category->name }}</h3>
