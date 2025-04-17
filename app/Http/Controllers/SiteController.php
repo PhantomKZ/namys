@@ -54,9 +54,4 @@ class SiteController extends Controller
         return view('limited', ['title' => $title]);
     }
 
-    public function look(): View
-    {
-        $title = "Look Collection";
-        return view('look', ['title' => $title]);
-    }
 }

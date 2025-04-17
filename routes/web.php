@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CollectionController as AdminCollectionController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\ProductController;
@@ -31,7 +32,6 @@ Route::post('/subscribe', [SiteController::class, 'subscribe'])->name('subscribe
 Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
 Route::get('/novelty', [SiteController::class, 'novelty'])->name('novelty');
 Route::get('/limited', [SiteController::class, 'limited'])->name('limited');
-Route::get('/look', [SiteController::class, 'look'])->name('look');
 Route::prefix('product')->name('product.')->group(function () {
     Route::get('{id}', [ProductController::class, 'show'])->name('show');
     Route::post('{id}/add-to-favorites', [ProductController::class, 'addToFavorites'])->name('addToFavorites');
@@ -41,6 +41,10 @@ Route::prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('show');
     Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
     Route::put('/update', [ProfileController::class, 'update'])->name('update');
+});
+Route::prefix('collection')->name('collection.')->group(function () {
+    Route::get('/', [CollectionController::class, 'index'])->name('index');
+    Route::get('/{id}', [CollectionController::class, 'show'])->name('show');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('collection_id')->constrained()->onDelete('cascade');
             $table->string('path');
             $table->boolean('is_main')->default(false);
-            $table->boolean('is_hover')->default(false);
             $table->timestamps();
         });
     }

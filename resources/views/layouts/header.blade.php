@@ -25,7 +25,7 @@
                             EDITION</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ $current == 'look' ? 'active' : '' }}" href="{{ route('look') }}">LOOK
+                        <a class="nav-link {{ $current == 'collection.index' ? 'active' : '' }}" href="{{ route('collection.index') }}">LOOK
                             COLLECTION</a>
                     </li>
                     <li class="nav-item">

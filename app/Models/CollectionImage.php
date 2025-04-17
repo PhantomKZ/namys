@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CollectionImage extends Model
 {
-    protected $fillable = ['collection_id', 'path', 'is_main', 'is_hover'];
+    protected $fillable = ['collection_id', 'path', 'is_main'];
 
     public function collection()
     {

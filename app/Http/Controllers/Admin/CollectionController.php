@@ -35,21 +35,23 @@ class CollectionController extends Controller
             'products.*' => 'exists:products,id',
             'images.*' => 'nullable|image',
             'main_image_index' => 'nullable|integer',
-            'hover_image_index' => 'nullable|integer',
         ]);
 
         $collection = Collection::create($validated);
-        $collection->products()->sync($request->products ?? []);
 
-        $files = $request->file('images', []);
-        foreach ($files as $index => $file) {
-            $path = $file->store('products', 'public');
+        $images = $request->file('images');
+        $mainIndex = $request->input('main_image_index');
+
+        foreach ($images as $index => $image) {
+            $path = $image->store('uploads', 'public');
+
             $collection->images()->create([
                 'path' => $path,
-                'is_main' => $index == $request->main_image_index,
-                'is_hover' => $index == $request->hover_image_index,
+                'is_main' => ($mainIndex == $index) ? 1 : 0,
             ]);
         }
+
+        $collection->products()->sync($request->products ?? []);
 
         return redirect()->route('admin.collections.index')->with('success', 'Коллекция создана!');
     }
@@ -71,27 +73,35 @@ class CollectionController extends Controller
             'products' => 'nullable|array',
             'products.*' => 'exists:products,id',
             'images.*' => 'nullable|image',
-            'main_image_index' => 'required|integer',
-            'hover_image_index' => 'nullable|integer',
+            'main_image_index' => 'nullable|integer',
         ]);
+
         $collection = Collection::findOrFail($id);
         $collection->update($validated);
-        $collection->products()->sync($request->products ?? []);
+
+        $mainIndex = (int) $request->input('main_image_index');
+
+        $collection->images()->update(['is_main' => false]);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
                 $path = $file->store('products', 'public');
-                $image = $collection->images()->create(['path' => $path]);
 
-                if ($index == $request->main_image_index) {
-                    $image->update(['is_main' => true]);
-                }
-
-                if ($index == $request->hover_image_index) {
-                    $image->update(['is_hover' => true]);
-                }
+                $collection->images()->create([
+                    'path' => $path,
+                    'is_main' => ($index === $mainIndex),
+                ]);
             }
+        } else {
+            $images = $collection->images()->get()->values();
+
+            if (isset($images[$mainIndex])) {
+                $images[$mainIndex]->update(['is_main' => true]);
+            }
+
         }
+
+        $collection->products()->sync($request->products ?? []);
 
         return redirect()->route('admin.collections.index')->with('success', 'Коллекция обновлена!');
     }

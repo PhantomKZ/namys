@@ -29,6 +29,31 @@ class Collection extends Model
         return $this->hasOne(CollectionImage::class)->where('is_hover', true);
     }
 
+    public function availableSizes()
+    {
+        $sizes = collect();
+
+        foreach ($this->products as $product) {
+            foreach ($product->sizes as $size) {
+                $quantity = $size->pivot->quantity;
+                if (!$sizes->has($size->id)) {
+                    $sizes->put($size->id, $quantity);
+                } else {
+                    $sizes->put($size->id, min($sizes->get($size->id), $quantity));
+                }
+            }
+        }
+
+        return $sizes->map(function ($quantity, $sizeId) {
+            return (object) [
+                'id' => $sizeId,
+                'quantity' => $quantity,
+                'name' => Size::find($sizeId)->name,
+            ];
+        });
+    }
+
+
     public function getMainImageAttribute()
     {
         $image = $this->mainImage()->first();
@@ -39,6 +64,17 @@ class Collection extends Model
     {
         $image = $this->hoverImage()->first();
         return $image ? $image->path : null;
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->products->sum('price');
+    }
+
+    // Форматированная цена
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->price, 0, '.', ' ') ?? null;
     }
 
     public function getImagesWithFlagsAttribute()

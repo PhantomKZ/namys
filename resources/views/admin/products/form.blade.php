@@ -133,7 +133,6 @@
                     @endforeach
                 @endisset
 
-                <!-- Новый блок для добавления изображений -->
                 <div class="image-upload-group border rounded p-3 mb-2">
                     <div class="form-group">
                         <label>Новое изображение</label>

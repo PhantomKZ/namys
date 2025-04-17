@@ -57,16 +57,12 @@
                                 <label for="main_{{ $index }}" class="form-check-label">Главное изображение</label>
                             </div>
 
-                            <div class="form-check">
-                                <input type="checkbox" name="hover_image_index" value="{{ $index }}" class="form-check-input hover-checkbox"
-                                       {{ $image->is_hover ? 'checked' : '' }} id="hover_{{ $index }}">
-                                <label for="hover_{{ $index }}" class="form-check-label">Hover изображение</label>
-                            </div>
                         </div>
                     @endforeach
                 @endisset
 
                 <div class="image-upload-group border rounded p-3 mb-2">
+
                     <div class="form-group">
                         <label>Новое изображение</label>
                         <input type="file" name="images[]" class="form-control">
@@ -77,10 +73,6 @@
                         <label for="main_0" class="form-check-label">Главное изображение</label>
                     </div>
 
-                    <div class="form-check">
-                        <input type="checkbox" name="hover_image_index" value="0" class="form-check-input hover-checkbox" id="hover_0">
-                        <label for="hover_0" class="form-check-label">Hover изображение</label>
-                    </div>
                 </div>
             </div>
 
@@ -114,10 +106,6 @@
                     <label for="main_${imageIndex}" class="form-check-label">Главное изображение</label>
                 </div>
 
-                <div class="form-check">
-                    <input type="checkbox" name="hover_image_index" value="${imageIndex}" class="form-check-input hover-checkbox" id="hover_${imageIndex}">
-                    <label for="hover_${imageIndex}" class="form-check-label">Hover изображение</label>
-                </div>
             </div>
         `;
 
@@ -129,12 +117,6 @@
         document.addEventListener('change', function (e) {
             if (e.target.classList.contains('main-checkbox')) {
                 document.querySelectorAll('.main-checkbox').forEach(checkbox => {
-                    if (checkbox !== e.target) checkbox.checked = false;
-                });
-            }
-
-            if (e.target.classList.contains('hover-checkbox')) {
-                document.querySelectorAll('.hover-checkbox').forEach(checkbox => {
                     if (checkbox !== e.target) checkbox.checked = false;
                 });
             }
