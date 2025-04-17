@@ -7,6 +7,13 @@
                 <h1 class="profile-name">{{ $user->name }}</h1>
                 <p class="profile-email">{{ $user->email }}</p>
                 <a href="{{ route('profile.edit') }}" class="edit-profile-btn">Редактировать профиль</a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">
+                        Сосал?
+                    </button>
+                </form>
+
             </div>
 
             <div class="profile-stats">
