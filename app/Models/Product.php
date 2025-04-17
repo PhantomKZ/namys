@@ -68,7 +68,7 @@ class Product extends Model
         return $this->belongsToMany(User::class, 'favorites');
     }
 
-    public function getPriceAttribute()
+    public function getFormattedPriceAttribute()
     {
         return number_format($this->attributes['price'], 0, '.', ' ') ?? null;
     }
