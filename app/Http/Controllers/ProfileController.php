@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function show(): View
     {
-        $user = auth()->user()->with('favorites')->first();
+        $user = User::with('favorites')->findOrFail(auth()->id());
         return view('profile.show', compact('user'));
     }
 
