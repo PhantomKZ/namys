@@ -31,10 +31,10 @@
             @foreach ($products as $product)
                 <tr>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->type->name }}</td>
+                    <td>{{ $product->type }}</td>
                     <td>{{ $product->brand->name }}</td>
                     <td>{{ $product->material->name }}</td>
-                    <td>{{ $product->color->name }}</td>
+                    <td>{{ $product->color }}</td>
                     <td>{{ $product->price }} ₸</td>
                     <td>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning btn-sm">Редактировать</a>

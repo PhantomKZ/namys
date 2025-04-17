@@ -44,4 +44,10 @@ class Category extends Model
 
         return $slug;
     }
+
+    public function getThumbnailAttribute()
+    {
+        $thumbnail = $this->attributes['thumbnail'] ?? null;
+        return $thumbnail ? 'storage/' . $thumbnail : '';
+    }
 }

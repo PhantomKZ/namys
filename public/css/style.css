@@ -126,10 +126,6 @@ body {
     background-image: url("/images/main/namyslogowhite.png") !important;
 }
 
-.container {
-    max-width: 1800px !important;
-}
-
 /* Поиск и сортировка */
 .search-sort-section {
     padding: 20px 0;
@@ -950,6 +946,19 @@ body {
     background: #333;
 }
 
+.add-to-favorites-btn {
+    background-color: #df5763;
+    padding: 15px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+.add-to-favorites-btn:hover{
+    background-color: #f4838d;
+    color: white;
+}
 @media (max-width: 768px) {
     .product-details {
         grid-template-columns: 1fr;
@@ -1291,8 +1300,7 @@ body {
         grid-template-columns: 1fr;
     }
 }
-.grid-vh-75 {
-    display: grid;
+.min-vh-75 {
     grid-template-rows: 1fr auto;
     min-height: 75vh;
 }
@@ -2190,4 +2198,12 @@ a {
 .le-product-title:hover, .le-product-price:hover {
     text-decoration: none;
     color: inherit;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+.add-to-cart-btn {
+    flex-grow: 1;
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="product-page">
-        <div class="container">
+        <div class="container-fluid">
             <div class="breadcrumb-nav">
                 <a href="{{ route('catalog') }}">КАТАЛОГ</a> / <a href="#">Футболки</a>
             </div>
@@ -12,7 +12,7 @@
                         <div class="carousel-inner">
                             @foreach($product->images as $index => $image)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset('storage/' . $image->path) }}" alt="Изображение {{ $index + 1 }}" class="main-image">
+                                    <img src="{{ asset($image->path) }}" alt="Изображение {{ $index + 1 }}" class="main-image">
                                 </div>
                             @endforeach
                         </div>
@@ -31,7 +31,7 @@
                                     class="thumbnail-button {{ $index === 0 ? 'active' : '' }}"
                                     data-bs-target="#productCarousel"
                                     data-bs-slide-to="{{ $index }}">
-                                <img src="{{ asset('storage/' . $image->path) }}" alt="Миниатюра {{ $index + 1 }}">
+                                <img src="{{ asset($image->path) }}" alt="Миниатюра {{ $index + 1 }}">
                             </button>
                         @endforeach
                     </div>
@@ -39,7 +39,7 @@
 
                 <div class="product-info">
                     <h1 class="product-title">
-                        {{ $product->type->name }} "{{ $product->name}}"
+                        {{ $product->type }} "{{ $product->name}}"
                     </h1>
                     <div class="product-price">{{ $product->price }}₸</div>
 
@@ -48,7 +48,7 @@
                         <ul class="features-list">
                             <li><strong>Бренд:</strong> {{ $product->brand->name }}</li>
                             <li><strong>Материал:</strong> {{ $product->material->name }}</li>
-                            <li><strong>Цвет:</strong> {{ $product->color->name }}</li>
+                            <li><strong>Цвет:</strong> {{ $product->color }}</li>
                         </ul>
                     </div>
 
@@ -70,7 +70,30 @@
                         <a href="#" class="delivery-info">О ДОСТАВКЕ</a>
                     </div>
 
-                    <button class="add-to-cart-btn">Добавить в корзину</button>
+                    <div class="button-container">
+                        <button class="add-to-cart-btn">Добавить в корзину</button>
+                        @if(auth()->user()->favorites->contains($product->id))
+                            <form action="{{ route('product.removeFromFavorites', $product->id) }}" method="POST">
+                                @csrf
+                                <button class="d-flex btn add-to-favorites-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path fill="white" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                    <span class="text-nowrap"> Удалить из избранного </span>
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('product.addToFavorites', $product->id) }}" method="POST">
+                                @csrf
+                                <button class="d-flex btn add-to-favorites-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path fill="white" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                    <span class="text-nowrap"> Добавить в избранное </span>
+                                </button>
+                            </form>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,46 +104,16 @@
             <h2 class="section-title">Могут понравиться</h2>
             <div class="recommendations-container">
                 <div class="recommendations-grid">
-                    <a href="../product/product2.html" class="catalog-product-card">
-                        <div class="product-image-container">
-                            <img src="../image/catalog/namyssweatshirt.jpeg" alt="Свитшот QARA NAMYS" class="product-image">
-                        </div>
-                        <h3 class="product-title">Свитшот QARA NAMYS</h3>
-                        <p class="product-price">10 990₸</p>
-                        <button class="add-to-cart">Добавить в корзину</button>
-                    </a>
-                    <a href="../product/product3.html" class="catalog-product-card">
-                        <div class="product-image-container">
-                            <img src="../image/catalog/namysshopper.jpeg" alt="Сумка шопер AQ Namys" class="product-image">
-                        </div>
-                        <h3 class="product-title">Сумка шопер AQ Namys</h3>
-                        <p class="product-price">3350 тг</p>
-                        <button class="add-to-cart">Добавить в корзину</button>
-                    </a>
-                    <a href="../product/product4.html" class="catalog-product-card">
-                        <div class="product-image-container">
-                            <img src="../image/catalog/aqkepka.jpg" alt="Кепка AQ Namys" class="product-image">
-                        </div>
-                        <h3 class="product-title">Кепка AQ Namys</h3>
-                        <p class="product-price">2350 тг</p>
-                        <button class="add-to-cart">Добавить в корзину</button>
-                    </a>
-                    <a href="../product/product5.html" class="catalog-product-card">
-                        <div class="product-image-container">
-                            <img src="../image/catalog/item5.jpg" alt="Футболка KIIKII с принтом" class="product-image">
-                        </div>
-                        <h3 class="product-title">Футболка KIIKII с принтом</h3>
-                        <p class="product-price">6890 тг</p>
-                        <button class="add-to-cart">Добавить в корзину</button>
-                    </a>
-                    <a href="../product/product6.html" class="catalog-product-card">
-                        <div class="product-image-container">
-                            <img src="../image/catalog/item6.jpg" alt="Худи Cyber Art" class="product-image">
-                        </div>
-                        <h3 class="product-title">Худи Cyber Art</h3>
-                        <p class="product-price">9990 тг</p>
-                        <button class="add-to-cart">Добавить в корзину</button>
-                    </a>
+                    @foreach($recommendations as $item)
+                        <a href="{{ route('product.show', $item->id) }}" class="catalog-product-card">
+                            <div class="product-image-container">
+                                <img src="{{ $item->mainImage ? asset($item->mainImage) : '/images/default_main_image.jpg' }}" alt="{{ $item->name }}" class="product-image">
+                            </div>
+                            <h3 class="product-title">{{ $item->name }}</h3>
+                            <p class="product-price">{{ $item->price }}₸</p>
+                            <button class="add-to-cart">Добавить в корзину</button>
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>

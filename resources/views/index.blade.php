@@ -16,7 +16,7 @@
                     <a>
                         <div class="category-card">
                             <div class="category-image">
-                                <img src="{{ asset('storage/' . $category->thumbnail) }}"
+                                <img src="{{ asset($category->thumbnail) }}"
                                 alt="{{ $category->name }} | Namys">
                                 <div class="category-overlay">
                                     <h3>{{ $category->name }}</h3>
@@ -34,14 +34,14 @@
             <h3>DROP'S</h3>
             <div class="product-grid">
                 @foreach($products as $product)
-                    <a href="{{ route('products.show', $product->id) }}" class="product-card">
+                    <a href="{{ route('product.show', $product->id) }}" class="product-card">
                         <div class="image-container">
-                            <img src="{{ $product->mainImage ? asset('storage/' . $product->mainImage->path) : '/images/default_main_image.jpg' }}"
+                            <img src="{{ $product->mainImage ? asset($product->mainImage) : '/images/default_main_image.jpg' }}"
                                  alt="{{ $product->name }}" class="main-image">
-                            <img src="{{ $product->hoverImage ? asset('storage/' . $product->hoverImage->path) : '/images/default_hover_image.jpg' }}"
+                            <img src="{{ $product->hoverImage ? asset($product->hoverImage) : '/images/default_hover_image.jpg' }}"
                                  alt="{{ $product->name }}" class="hover-image">
                         </div>
-                        <p>{{ $product->type->name }} {{ $product->name }}</p>
+                        <p>{{ $product->type }} {{ $product->name }}</p>
                         <p class="price">{{ $product->price }} ₸</p>
                         <button>Добавить в корзину</button>
                     </a>
@@ -106,7 +106,6 @@
                 })
                 .then(data => {
                     if (data.success) {
-                        // Создаем новый блок уведомления
                         var notification = document.createElement('div');
                         notification.classList.add('popup-message');
                         notification.classList.add('success');

@@ -19,7 +19,30 @@ $title = isset($title)
 </head>
 <body>
 @include('layouts.header')
-<div class="grid-vh-75">
+<div class="min-vh-75">
+    @if (session('success') || session('error'))
+        <div id="alertMessage" class="alert position-fixed fade show" role="alert" style="bottom: 0; right: 0; z-index: 1050;">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
+        <script>
+            setTimeout(function() {
+                var alert = document.getElementById('alertMessage');
+                if (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                }
+            }, 3000);
+        </script>
+    @endif
     @yield('content')
 </div>
 @yield('scripts')

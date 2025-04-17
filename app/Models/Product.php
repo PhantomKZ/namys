@@ -57,4 +57,54 @@ class Product extends Model
             ->withPivot('quantity')
             ->withTimestamps();
     }
+
+    public function collections()
+    {
+        return $this->belongsToMany(Collection::class);
+    }
+
+    public function usersFavorited(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
+
+    public function getPriceAttribute()
+    {
+        return number_format($this->attributes['price'], 0, '.', ' ') ?? null;
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->getRelationValue('type')?->name;
+    }
+
+    public function getColorAttribute()
+    {
+        return $this->getRelationValue('color')?->name;
+    }
+
+    public function getMainImageAttribute()
+    {
+        $image = $this->mainImage()->first();
+        return $image ? $image->path : '';
+    }
+
+    public function getHoverImageAttribute()
+    {
+        $image = $this->hoverImage()->first();
+        return $image ? $image->path : '';
+    }
+
+    public function getImagesWithFlagsAttribute()
+    {
+        $images = $this->getRelationValue('images') ?? $this->images()->get();
+        return $images->map(function ($img) {
+            return [
+                'url' => $img->path,
+                'is_main' => (bool) $img->is_main,
+                'is_hover' => (bool) $img->is_hover,
+            ];
+        })->toArray();
+    }
+
 }

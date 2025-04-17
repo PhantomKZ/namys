@@ -6,8 +6,10 @@ use App\Http\Controllers\Admin\TypeController as AdminTypeController;
 use App\Http\Controllers\Admin\ColorController as AdminColorController;
 use App\Http\Controllers\Admin\MaterialController as AdminMaterialController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\CollectionController as AdminCollectionController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
@@ -30,10 +32,19 @@ Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
 Route::get('/novelty', [SiteController::class, 'novelty'])->name('novelty');
 Route::get('/limited', [SiteController::class, 'limited'])->name('limited');
 Route::get('/look', [SiteController::class, 'look'])->name('look');
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::prefix('product')->name('product.')->group(function () {
+    Route::get('{id}', [ProductController::class, 'show'])->name('show');
+    Route::post('{id}/add-to-favorites', [ProductController::class, 'addToFavorites'])->name('addToFavorites');
+    Route::post('{id}/remove-from-favorites', [ProductController::class, 'removeFromFavorites'])->name('removeFromFavorites');
+});
+Route::prefix('profile')->name('profile.')->group(function () {
+    Route::get('/', [ProfileController::class, 'show'])->name('show');
+    Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+    Route::put('/update', [ProfileController::class, 'update'])->name('update');
+});
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('profile');
 
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [AdminCategoryController::class, 'index'])->name('index');
@@ -88,6 +99,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
             Route::get('/{id}/edit', [AdminProductController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AdminProductController::class, 'update'])->name('update');
             Route::delete('/{id}', [AdminProductController::class, 'destroy'])->name('destroy');
+        });
+        Route::prefix('collections')->name('collections.')->group(function () {
+            Route::get('/', [AdminCollectionController::class, 'index'])->name('index');
+            Route::get('/create', [AdminCollectionController::class, 'create'])->name('create');
+            Route::post('/', [AdminCollectionController::class, 'store'])->name('store');
+            Route::get('/{id}', [AdminCollectionController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [AdminCollectionController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdminCollectionController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminCollectionController::class, 'destroy'])->name('destroy');
         });
     });
 
