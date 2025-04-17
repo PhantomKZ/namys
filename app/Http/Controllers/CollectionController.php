@@ -20,7 +20,8 @@ class CollectionController extends Controller
         $collection = Collection::with(['products'])
             ->findOrFail($id);
         $products = $collection->products;
+        $title = "Комплект $collection->name";
 
-        return view('collections.show', compact('collection', 'products'));
+        return view('collections.show', compact('collection', 'products', 'title'));
     }
 }

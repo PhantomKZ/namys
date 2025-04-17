@@ -36,7 +36,7 @@
                             <img src="{{ asset($item->mainImage) }}" alt="Футболка AQ Namys" class="product-image">
                         </div>
                         <h3 class="product-title">{{ $item->type}} {{ $item->name }}</h3>
-                        <p class="product-price">{{ $item->formattedPrice }} тг</p>
+                        <p class="product-price">{{ $item->formattedPrice }}</p>
                         <button class="add-to-cart">Добавить в корзину</button>
                     </a>
                     @endforeach

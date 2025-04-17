@@ -39,7 +39,7 @@
 
                 <div class="product-info">
                     <h1 class="product-title">
-                        {{ $product->type }} "{{ $product->name}}"
+                        {{ $product->title }}
                     </h1>
                     <div class="product-price">{{ $product->formattedPrice }}₸</div>
 
@@ -110,7 +110,7 @@
                                 <img src="{{ $item->mainImage ? asset($item->mainImage) : '/images/default_main_image.jpg' }}" alt="{{ $item->name }}" class="product-image">
                             </div>
                             <h3 class="product-title">{{ $item->name }}</h3>
-                            <p class="product-price">{{ $item->formattedPrice }}₸</p>
+                            <p class="product-price">{{ $item->formattedPrice }}</p>
                             <button class="add-to-cart">Добавить в корзину</button>
                         </a>
                     @endforeach

@@ -70,12 +70,17 @@ class Product extends Model
 
     public function getFormattedPriceAttribute()
     {
-        return number_format($this->attributes['price'], 0, '.', ' ') ?? null;
+        return number_format($this->attributes['price'], 0, '.', ' ') . " ₸" ?? null;
     }
 
     public function getTypeAttribute()
     {
         return $this->getRelationValue('type')?->name;
+    }
+
+    public function getTitleAttribute()
+    {
+        return $this->type . ' ' . $this->attributes['name'];
     }
 
     public function getColorAttribute()

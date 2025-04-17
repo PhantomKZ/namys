@@ -721,6 +721,11 @@ body {
     background: #ff4757;
     color: white;
 }
+.pagination a.disabled {
+    color: #ccc;
+    pointer-events: none;
+    cursor: default;
+}
 
 /* Footer */
 .footer {

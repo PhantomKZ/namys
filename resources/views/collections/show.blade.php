@@ -42,7 +42,7 @@
                         <p> {{$collection->description}} </p>
                         <ul class="features-list">
                             @foreach($products as $item)
-                                <li>- {{$item->type}} {{$item->name}} ({{ $item->color }}) - {{ $item->formattedPrice }}₸</li>
+                                <li>- {{$item->type}} {{$item->name}} ({{ $item->color }}) - {{ $item->formattedPrice }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -81,10 +81,10 @@
                     @foreach($products as $product)
                         <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card">
                             <div class="product-image-container">
-                                <img src="{{ asset($product->mainImage) }}" alt="{{$product->type}} {{ $product->name }}"
+                                <img src="{{ asset($product->mainImage) }}" alt="{{ $product->title }}"
                                      class="product-image">
                             </div>
-                            <h3 class="product-title">{{ $product->type }} {{ $product->name }}</h3>
+                            <h3 class="product-title">{{ $product->title }}</h3>
                             <p class="product-price">{{ $product->formattedPrice }}₸</p>
                             <button class="add-to-cart">Добавить в корзину</button>
                         </a>

@@ -41,8 +41,8 @@
                             <img src="{{ $product->hoverImage ? asset($product->hoverImage) : '/images/default_hover_image.jpg' }}"
                                  alt="{{ $product->name }}" class="hover-image">
                         </div>
-                        <p>{{ $product->type }} {{ $product->name }}</p>
-                        <p class="price">{{ $product->formattedPrice }} ₸</p>
+                        <p>{{ $product->title }}</p>
+                        <p class="price">{{ $product->formattedPrice }}</p>
                         <button>Добавить в корзину</button>
                     </a>
                 @endforeach
