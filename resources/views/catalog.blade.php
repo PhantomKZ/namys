@@ -37,7 +37,7 @@
     <div class="catalog">
         <div class="products-grid">
             @foreach($products as $product)
-                <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card">
+                <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card lazy-content">
                     <div class="product-image-container">
                         <span class="new-badge">NEW</span>
                         <img src="{{ asset($product->mainImage) }}" alt="{{ $product->title }}" class="product-image">

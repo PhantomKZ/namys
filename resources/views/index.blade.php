@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="container-fluid">
-        <section class="categories mt-4 lazy-section">
+        <section class="categories mt-4 lazy-content">
             <h2>Категории одежды</h2>
             <p>Минимализм, уникальность, качество и исключительно натуральные материалы</p>
             <div class="category-grid">
@@ -29,7 +29,7 @@
         </section>
 
         <!-- Новая коллекция Drop's -->
-        <section class="new-drop lazy-section">
+        <section class="new-drop lazy-content">
             <h2>NEW! NEW! NEW!</h2>
             <h3>DROP'S</h3>
             <div class="product-grid">
@@ -50,7 +50,7 @@
         </section>
 
         <!-- О нас -->
-        <section class="about-us lazy-section">
+        <section class="about-us lazy-content">
             <div class="about-content row">
                 <div class="col-md-6">
                     <div class="about-text">
@@ -68,7 +68,7 @@
         </section>
 
         <!-- Обратная связь -->
-        <section class="feedback lazy-section">
+        <section class="feedback lazy-content">
             <h2>УЗНАВАЙТЕ О НОВИНКАХ ПЕРВЫМИ!</h2>
             <h3>При первой покупке выдается промокод на 20%!</h3>
             <p>Один раз в месяц мы будем присылать вам информацию о наших последних коллекциях, скидках и акциях.
@@ -127,31 +127,5 @@
         function closePopup(button) {
             button.parentElement.style.display = 'none';
         }
-    </script>
-    <script>
-        const sections = document.querySelectorAll('.lazy-section');
-
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const section = entry.target;
-
-                    // Имитируем подгрузку контента (можно вставить fetch/ajax тут)
-                    setTimeout(() => {
-                        section.classList.add('loaded');
-                        section.dataset.loaded = 'true';
-                    }, 200);
-
-                    obs.unobserve(section); // больше не отслеживаем после загрузки
-                }
-            });
-        }, {
-            rootMargin: '0px 0px -100px 0px',
-            threshold: 0.1
-        });
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
     </script>
 @endsection

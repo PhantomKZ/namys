@@ -2212,10 +2212,10 @@ a {
 .add-to-cart-btn {
     flex-grow: 1;
 }
-.lazy-section {
+.lazy-content {
     opacity: 0;
     transition: opacity 1s ease;
 }
-.lazy-section.loaded {
+.lazy-content.loaded {
     opacity: 1;
 }

@@ -49,5 +49,30 @@ $title = isset($title)
 @include('layouts.footer')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/script.js') }}"></script>
+<script>
+    const sections = document.querySelectorAll('.lazy-content');
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const section = entry.target;
+
+                setTimeout(() => {
+                    section.classList.add('loaded');
+                    section.dataset.loaded = 'true';
+                }, 200);
+
+                obs.unobserve(section);
+            }
+        });
+    }, {
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.1
+    });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+</script>
 </body>
 </html>
