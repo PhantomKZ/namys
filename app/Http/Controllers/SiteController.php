@@ -39,7 +39,7 @@ class SiteController extends Controller
 
     public function catalog(Request $request): View|RedirectResponse
     {
-        $products = Product::paginate(1);
+        $products = Product::paginate(16);
         if ($products->isEmpty() && $request->page > 1) {
             $lastPage = $products->lastPage();
 

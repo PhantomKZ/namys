@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -19,7 +20,19 @@ class ProductController extends Controller
             ->get();
         $title = "{$product->type} {$product->name}";
 
-        return view('products.show', compact('product', 'recommendations', 'title'));
+        $cartItemsBySize = [];
+
+        if (auth()->check()) {
+            $cartItems = CartItem::where('user_id', auth()->id())
+                ->where('product_id', $product->id)
+                ->get();
+            $cartItemsBySize = $cartItems->keyBy('size_id');
+        } else {
+            $sessionCart = session('cart', []);
+            $cartItemsBySize = collect($sessionCart[$product->id] ?? []);
+        }
+
+        return view('products.show', compact('product', 'recommendations', 'title', 'cartItemsBySize'));
     }
 
     public function addToFavorites($id)

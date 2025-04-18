@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function show(): View
     {
-        $user = User::with('favorites')->findOrFail(auth()->id());
+        $user = User::with('favorites', 'orders')->findOrFail(auth()->id());
         return view('profile.show', compact('user'));
     }
 
@@ -38,6 +38,24 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->route('profile.show')->with('success', 'Профиль обновлён!');
+    }
+
+    public function orders(): View
+    {
+        $orders = auth()->user()->orders()
+            ->with('products', 'products.sizes')
+            ->latest()
+            ->get();
+
+        foreach ($orders as $order) {
+            foreach ($order->products as $product) {
+                $size = $product->sizes->firstWhere('id', $product->pivot->size_id);
+                $product->pivot->size_name = $size?->name;
+                $product->pivot->total_price = $product->pivot->price * $product->pivot->quantity;
+            }
+        }
+
+        return view('profile.orders', compact('orders'));
     }
 
 }

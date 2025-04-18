@@ -43,7 +43,7 @@
                         <img src="{{ asset($product->mainImage) }}" alt="{{ $product->title }}" class="product-image">
                     </div>
                     <h3 class="product-title">{{ $product->title }}</h3>
-                    <p class="product-price">{{ $product->formattedPrice }} ₸</p>
+                    <p class="product-price">{{ $product->formattedPrice }}</p>
                     <button class="add-to-cart">Добавить в корзину</button>
                 </a>
             @endforeach

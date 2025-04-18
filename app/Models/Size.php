@@ -14,4 +14,5 @@ class Size extends Model
             ->withPivot('quantity')
             ->withTimestamps();
     }
+
 }

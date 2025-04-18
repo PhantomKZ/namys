@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -87,6 +88,16 @@ class Product extends Model
     {
         return $this->getRelationValue('color')?->name;
     }
+
+    public function getAvailableQuantityAttribute()
+    {
+        $ordered = DB::table('order_products')
+            ->where('product_id', $this->id)
+            ->sum('quantity');
+
+        return $this->quantity - $ordered;
+    }
+
 
     public function getMainImageAttribute()
     {

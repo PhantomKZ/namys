@@ -35,8 +35,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link cart-icon" href="basket.html">
+                        <a class="nav-link cart-icon" href="{{ route('cart.index') }}">
                             <img src="/images/main/basket.png" alt="Корзина" width="48" height="48">
+                            @if($cartCount > 0)
+                                <span class="cart-count">{{ $cartCount }}</span>
+                            @endif
                         </a>
                     </li>
                 </ul>

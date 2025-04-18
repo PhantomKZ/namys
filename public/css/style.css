@@ -483,10 +483,9 @@ body {
     pointer-events: none;
 }
 
-/* Новая коллекция DROP'S */
 .new-drop {
     text-align: center;
-    padding: 200px 20px;
+    padding: 120px 20px;
 }
 
 .new-drop h2 {
@@ -946,9 +945,15 @@ body {
     text-transform: uppercase;
     transition: background-color 0.3s;
 }
-
 .add-to-cart-btn:hover {
     background: #333;
+    color: white;
+}
+.add-to-cart-btn:active,
+.add-to-cart-btn:focus {
+    outline: none;
+    background: #000;
+    color: white;
 }
 
 .add-to-favorites-btn {
@@ -2218,4 +2223,42 @@ a {
 }
 .lazy-content.loaded {
     opacity: 1;
+}
+.cart-icon {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.quantity-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.arrow-icon {
+    transition: transform 0.3s ease;
+    font-size: 24px;
+}
+
+button.collapsed .arrow-icon {
+    transform: rotate(0deg);
+}
+
+button:not(.collapsed) .arrow-icon {
+    transform: rotate(-180deg);
 }

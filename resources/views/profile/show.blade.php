@@ -18,8 +18,10 @@
 
             <div class="profile-stats">
                 <div class="stat-item">
-                    <div class="stat-number">12</div>
-                    <div class="stat-label">Заказов</div>
+                    <a href="{{ route('profile.orders') }}">
+                        <div class="stat-number">{{ $user->orders->count() }}</div>
+                        <div class="stat-label">Заказов</div>
+                    </a>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number"> {{ $user->favorites->count() }}</div>
@@ -31,7 +33,7 @@
                 <h2 class="section-title">Избранные товары</h2>
                 <div class="favorites-grid">
                     @foreach($user->favorites as $item)
-                    <a href="{{ route('product.show', $item->id) }}" class="catalog-product-card">
+                    <a href="{{ route('product.show', $item->id) }}" class="catalog-product-card lazy-content">
                         <div class="product-image-container">
                             <img src="{{ asset($item->mainImage) }}" alt="Футболка AQ Namys" class="product-image">
                         </div>
