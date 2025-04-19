@@ -69,6 +69,33 @@ class Product extends Model
         return $this->belongsToMany(User::class, 'favorites');
     }
 
+    public function sizeStocks()
+    {
+        return $this->belongsToMany(Size::class)
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+    public function getAvailableSizesAttribute()
+    {
+        $ordered = DB::table('order_product')
+            ->select('size_id', DB::raw('SUM(quantity) as ordered_quantity'))
+            ->where('product_id', $this->id)
+            ->groupBy('size_id')
+            ->pluck('ordered_quantity', 'size_id');
+
+        return $this->sizeStocks->map(function ($size) use ($ordered) {
+            $orderedQty = $ordered[$size->id] ?? 0;
+            $available = $size->pivot->quantity - $orderedQty;
+
+            return [
+                'id' => $size->id,
+                'name' => $size->name,
+                'available_quantity' => max($available, 0),
+            ];
+        });
+    }
+
     public function getFormattedPriceAttribute()
     {
         return number_format($this->attributes['price'], 0, '.', ' ') . " ₸" ?? null;

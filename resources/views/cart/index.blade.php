@@ -28,9 +28,9 @@
                                     name="products[{{ $item->product->id }}][quantity]"
                                     value="{{ $item->quantity }}"
                                     min="1"
-                                    max="{{ $item->availableQuantity }}"
+                                    max="{{ $item->size->available_quantity }}"
                                     class="quantity-input"
-                                    data-max="{{ $item->availableQuantity }}"
+                                    data-max="{{ $item->size->available_quantity }}"
                                     data-key="{{ $key }}"
                                     readonly
                                 >

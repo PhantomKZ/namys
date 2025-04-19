@@ -11,28 +11,43 @@ class CartController extends Controller
 {
     public function index()
     {
-        if (auth()->check()) {
-            $items = CartItem::with('product', 'size')->where('user_id', auth()->id())->get();
+        $formattedTotalPrice = 0;
+        $items = collect();
 
-            $totalPrice = $items->reduce(function ($carry, $item) {
+        if (auth()->check()) {
+            // Для авторизованных пользователей
+            $cartItems = CartItem::with('product', 'size')->where('user_id', auth()->id())->get();
+
+            $totalPrice = $cartItems->reduce(function ($carry, $item) {
                 return $carry + ($item->product->price * $item->quantity);
             }, 0);
+
             $formattedTotalPrice = number_format($totalPrice, 0, '.', ' ') . ' ₸';
+            $items = $cartItems->map(function ($cartItem) {
+                $cartItem->size->available_quantity = $cartItem->size->availableQuantity($cartItem->product);
+                return $cartItem;
+            });
         } else {
+            // Для неавторизованных пользователей
             $cart = session('cart', []);
             $products = Product::with('sizes')->whereIn('id', array_keys($cart))->get();
 
-            $items = $products->map(function ($product) use ($cart) {
-                $sizeId = $cart[$product->id]['size_id'] ?? null;
-                $quantity = $cart[$product->id]['quantity'] ?? 1;
-                $size = $product->sizes->firstWhere('id', $sizeId);
+            foreach ($products as $product) {
+                foreach ($cart[$product->id] as $sizeId => $cartData) {
+                    $quantity = $cartData['quantity'] ?? 1;
+                    $size = $product->sizes->firstWhere('id', $sizeId);
 
-                return (object)[
-                    'product' => $product,
-                    'quantity' => $quantity,
-                    'size' => $size,
-                ];
-            });
+                    // Вычисляем доступное количество для каждого размера
+                    $size->available_quantity = $size->availableQuantity($product);
+
+                    // Добавляем товар в корзину
+                    $items->push((object)[
+                        'product' => $product,
+                        'quantity' => $quantity,
+                        'size' => $size,
+                    ]);
+                }
+            }
 
             $cartCount = $items->sum(fn($item) => $item->quantity);
 
@@ -67,13 +82,15 @@ class CartController extends Controller
             ]);
             $item->quantity += $quantity;
             $item->save();
+
         } else {
             $cart = session()->get('cart', []);
-            if (isset($cart[$productId][$size])) {
-                $cart[$productId][$size]['quantity'] += $quantity;
+            if (isset($cart[$productId][$sizeId])) {
+                $cart[$productId][$sizeId]['quantity'] += $quantity;
             } else {
-                $cart[$productId][$size] = ['quantity' => $quantity];
+                $cart[$productId][$sizeId] = ['quantity' => $quantity];
             }
+
             session()->put('cart', $cart);
         }
 

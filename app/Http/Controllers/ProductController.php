@@ -13,15 +13,20 @@ class ProductController extends Controller
     {
         $product = Product::with(['type', 'brand', 'material', 'color', 'images', 'sizes'])
             ->findOrFail($id);
+
+        $product->sizes->each(function ($size) use ($product) {
+            $size->available_quantity = $size->availableQuantity($product);
+        });
+
         $recommendations = Product::with(['type', 'brand', 'material', 'color', 'images', 'sizes'])
             ->where('id', '!=', $id)
             ->inRandomOrder()
             ->take(5)
             ->get();
+
         $title = "{$product->type} {$product->name}";
 
         $cartItemsBySize = [];
-
         if (auth()->check()) {
             $cartItems = CartItem::where('user_id', auth()->id())
                 ->where('product_id', $product->id)

@@ -20,9 +20,15 @@ class OrderController extends Controller
             'products.*.size_id' => 'nullable|exists:sizes,id',
         ]);
 
+        // Проверка авторизации
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Пожалуйста, войдите в систему для оформления заказа.');
+        }
+
+        // Если пользователь авторизован, продолжаем
         $user = auth()->user();
         $order = Order::create([
-            'user_id' => $user->id ?? null,
+            'user_id' => $user->id,
             'total_price' => $request->input('total_price'),
             'status' => 'В обработке',
         ]);
@@ -43,6 +49,7 @@ class OrderController extends Controller
             ]);
         }
 
+        // Очищаем корзину после оформления заказа
         if ($user) {
             CartItem::where('user_id', $user->id)->delete();
         } else {
@@ -51,4 +58,5 @@ class OrderController extends Controller
 
         return redirect()->route('profile.orders')->with('success', 'Заказ оформлен!');
     }
+
 }
