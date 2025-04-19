@@ -18,6 +18,7 @@ class Product extends Model
         'color_id',
         'description',
         'price',
+        'is_limited'
     ];
 
     public function brand(): BelongsTo

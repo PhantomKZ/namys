@@ -24,6 +24,7 @@
             <div class="form-group">
                 <label for="brand_id">Бренд</label>
                 <select name="brand_id" id="brand_id" class="form-control" required>
+                    <option value="" selected> Выберите бренд </option>
                     @foreach($brands as $brand)
                         <option
                             value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id ?? '') == $brand->id ? 'selected' : '' }}>
@@ -36,6 +37,7 @@
             <div class="form-group">
                 <label for="type_id">Тип одежды</label>
                 <select name="type_id" id="type_id" class="form-control" required>
+                    <option value="" selected> Выберите тип </option>
                     @foreach($types as $type)
                         <option
                             value="{{ $type->id }}" {{ old('type_id', $product->type_id ?? '') == $type->id ? 'selected' : '' }}>
@@ -48,6 +50,7 @@
             <div class="form-group">
                 <label for="material_id">Материал</label>
                 <select name="material_id" id="material_id" class="form-control" required>
+                    <option value="" selected> Выберите материал </option>
                     @foreach($materials as $material)
                         <option
                             value="{{ $material->id }}" {{ old('material_id', $product->material_id ?? '') == $material->id ? 'selected' : '' }}>
@@ -60,6 +63,7 @@
             <div class="form-group">
                 <label for="color_id">Цвет</label>
                 <select name="color_id" id="color_id" class="form-control" required>
+                    <option value="" selected> Выберите цвет </option>
                     @foreach($colors as $color)
                         <option
                             value="{{ $color->id }}" {{ old('color_id', $product->color_id ?? '') == $color->id ? 'selected' : '' }}>
@@ -99,6 +103,12 @@
                     </div>
                 </div>
             @endforeach
+
+            <div class="form-check mt-3">
+                <input type="checkbox" name="is_limited" id="is_limited" class="form-check-input"
+                    {{ old('is_limited', $product->is_limited ?? false) ? 'checked' : '' }}>
+                <label for="is_limited" class="form-check-label">Limited edition</label>
+            </div>
 
             <hr class="my-4">
 

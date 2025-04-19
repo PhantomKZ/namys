@@ -32,8 +32,8 @@
                 <tr>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->type }}</td>
-                    <td>{{ $product->brand->name }}</td>
-                    <td>{{ $product->material->name }}</td>
+                    <td>{{ $product->brand }}</td>
+                    <td>{{ $product->material }}</td>
                     <td>{{ $product->color }}</td>
                     <td>{{ $product->price }} ₸</td>
                     <td>

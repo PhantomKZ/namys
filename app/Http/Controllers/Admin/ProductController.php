@@ -45,8 +45,9 @@ class ProductController extends Controller
             'main_image_index' => 'nullable|integer',
             'hover_image_index' => 'nullable|integer',
             'quantities' => 'nullable|array',
+            'is_limited' => 'nullable',
         ]);
-
+        $data['is_limited'] = $request->has('is_limited') && $request->input('is_limited') === 'on' ? 1 : 0;
         $product = Product::create($data);
 
         foreach ($request->input('quantities', []) as $sizeId => $quantity) {
@@ -96,12 +97,12 @@ class ProductController extends Controller
             'main_image_index' => 'nullable|integer',
             'hover_image_index' => 'nullable|integer',
             'quantities' => 'nullable|array',
+            'is_limited' => 'nullable',
         ]);
-
+        $data['is_limited'] = $request->has('is_limited') && $request->input('is_limited') === 'on' ? 1 : 0;
         $product = Product::findOrFail($id);
         $product->update($data);
 
-        // Обработка размеров и количества
         $product->sizes()->sync([]);
 
         foreach ($request->input('quantities', []) as $sizeId => $quantity) {
@@ -110,30 +111,25 @@ class ProductController extends Controller
             }
         }
 
-        // Сначала сбрасываем все флаги is_main и is_hover для существующих изображений
         if ($request->has('main_image_index') || $request->has('hover_image_index')) {
             $product->images()->update(['is_main' => false, 'is_hover' => false]);
         }
 
-        // Обработка изображений
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
                 $path = $file->store('products', 'public');
                 $image = $product->images()->create(['image_path' => $path]);
 
-                // Устанавливаем главное изображение
                 if ($index == $request->main_image_index) {
                     $image->update(['is_main' => true]);
                 }
 
-                // Устанавливаем hover-изображение
                 if ($index == $request->hover_image_index) {
                     $image->update(['is_hover' => true]);
                 }
             }
         } else {
-            // Если не было загружено новых изображений, то обновим флаги у существующих
-            $images = $product->images()->get()->values(); // переиндексация
+            $images = $product->images()->get()->values();
 
             if ($request->has('main_image_index') && isset($images[$request->main_image_index])) {
                 $images[$request->main_image_index]->update(['is_main' => true]);
