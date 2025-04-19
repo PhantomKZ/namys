@@ -4,7 +4,7 @@
         <div class="hero-text">
             <h1>NEW DROP</h1>
             <p>C O L L E C T I O N 2025</p>
-            <button class="glow-button">Перейти</button>
+            <a href="{{route('collection.index')}}" class="glow-button">Перейти</a>
         </div>
     </div>
     <div class="container-fluid">
