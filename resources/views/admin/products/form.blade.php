@@ -117,7 +117,9 @@
             <div id="image-upload-wrapper">
                 @isset($product)
                     @foreach($product->images as $index => $image)
-                        <div class="image-upload-group border rounded p-3 mb-2">
+                        <div class="image-upload-group border rounded p-3 mb-2 position-relative">
+                            <input type="hidden" name="existing_image_ids[]" value="{{ $image->id }}">
+
                             <div class="form-group">
                                 <label>Изображение {{ $index + 1 }}</label>
                                 <input type="file" name="images[]" class="form-control">
@@ -139,11 +141,13 @@
                                        {{ $image->is_hover ? 'checked' : '' }} id="hover_{{ $index }}">
                                 <label for="hover_{{ $index }}" class="form-check-label">Hover изображение</label>
                             </div>
+                            <button type="button" class="btn btn-danger m-2 remove-image" aria-label="Удалить"> Удалить </button>
                         </div>
                     @endforeach
                 @endisset
 
-                <div class="image-upload-group border rounded p-3 mb-2">
+                <div class="image-upload-group border rounded p-3 mb-2 position-relative">
+
                     <div class="form-group">
                         <label>Новое изображение</label>
                         <input type="file" name="images[]" class="form-control">
@@ -158,9 +162,9 @@
                         <input type="checkbox" name="hover_image_index" value="0" class="form-check-input hover-checkbox" id="hover_0">
                         <label for="hover_0" class="form-check-label">Hover изображение</label>
                     </div>
+                    <button type="button" class="btn btn-danger m-2 remove-image" aria-label="Удалить"> Удалить </button>
                 </div>
             </div>
-
 
             <button type="button" id="add-image" class="btn btn-outline-primary mb-3">
                 <i class="fas fa-plus"></i> Добавить изображение
@@ -183,22 +187,24 @@
             const wrapper = document.getElementById('image-upload-wrapper');
 
             const html = `
-            <div class="image-upload-group border rounded p-3 mb-2">
-                <div class="form-group">
-                    <label>Изображение</label>
-                    <input type="file" name="images[]" class="form-control" required>
-                </div>
+        <div class="image-upload-group border rounded p-3 mb-2 position-relative">
 
-                <div class="form-check">
-                    <input type="checkbox" name="main_image_index" value="${imageIndex}" class="form-check-input main-checkbox" id="main_${imageIndex}">
-                    <label for="main_${imageIndex}" class="form-check-label">Главное изображение</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" name="hover_image_index" value="${imageIndex}" class="form-check-input hover-checkbox" id="hover_${imageIndex}">
-                    <label for="hover_${imageIndex}" class="form-check-label">Hover изображение</label>
-                </div>
+            <div class="form-group">
+                <label>Изображение</label>
+                <input type="file" name="images[]" class="form-control" required>
             </div>
+
+            <div class="form-check">
+                <input type="checkbox" name="main_image_index" value="${imageIndex}" class="form-check-input main-checkbox" id="main_${imageIndex}">
+                <label for="main_${imageIndex}" class="form-check-label">Главное изображение</label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" name="hover_image_index" value="${imageIndex}" class="form-check-input hover-checkbox" id="hover_${imageIndex}">
+                <label for="hover_${imageIndex}" class="form-check-label">Hover изображение</label>
+            </div>
+            <button type="button" class="btn btn-danger m-2 remove-image" aria-label="Удалить"> Удалить </button>
+        </div>
         `;
 
             wrapper.insertAdjacentHTML('beforeend', html);
@@ -217,6 +223,13 @@
                 document.querySelectorAll('.hover-checkbox').forEach(checkbox => {
                     if (checkbox !== e.target) checkbox.checked = false;
                 });
+            }
+        });
+
+        // Делегирование для кнопки удаления
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-image')) {
+                e.target.closest('.image-upload-group').remove();
             }
         });
     </script>

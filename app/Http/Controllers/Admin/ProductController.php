@@ -115,6 +115,20 @@ class ProductController extends Controller
             $product->images()->update(['is_main' => false, 'is_hover' => false]);
         }
 
+        $existingIds = $request->input('existing_image_ids', []);
+        $currentIds = $product->images()->pluck('id')->toArray();
+
+        $removedIds = array_diff($currentIds, $existingIds);
+
+        foreach ($removedIds as $id) {
+            $image = $product->images()->find($id);
+            if ($image) {
+                Storage::disk('public')->delete($image->image_path);
+                $image->delete();
+            }
+        }
+
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
                 $path = $file->store('products', 'public');
