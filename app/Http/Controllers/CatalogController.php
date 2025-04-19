@@ -175,7 +175,11 @@ class CatalogController extends Controller
         }
 
         if (!empty($filters['brand_id'])) {
-            $query->where('brand_id', $filters['brand_id']);
+            if (is_array($filters['brand_id'])) {
+                $query->whereIn('brand_id', $filters['brand_id']);
+            } else {
+                $query->where('brand_id', $filters['brand_id']);
+            }
         }
 
         if (!empty($filters['color_id'])) {
@@ -187,7 +191,11 @@ class CatalogController extends Controller
         }
 
         if (!empty($filters['material_id'])) {
-            $query->where('material_id', $filters['material_id']);
+            if (is_array($filters['material_id'])) {
+                $query->whereIn('material_id', $filters['material_id']);
+            } else {
+                $query->where('material_id', $filters['material_id']);
+            }
         }
 
         return $query;

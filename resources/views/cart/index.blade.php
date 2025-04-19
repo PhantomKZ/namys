@@ -95,6 +95,11 @@
             <a href="{{ route('catalog.index') }}" class="continue-shopping">Перейти к покупкам</a>
         </div>
         @endif
+        <div class="empty-basket" style="display: none">
+            <h2>Ваша корзина пуста</h2>
+            <p>Добавьте товары в корзину, чтобы сделать заказ</p>
+            <a href="{{ route('catalog.index') }}" class="continue-shopping">Перейти к покупкам</a>
+        </div>
     </div>
 @endsection
 @section('scripts')
