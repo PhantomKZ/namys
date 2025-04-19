@@ -25,6 +25,19 @@
                 @endif
             </div>
 
+            <div class="form-group">
+                <label for="type_id">Тип</label>
+                <select id="type_id" name="type_id" class="form-control" required>
+                    <option value="">-- Выберите тип --</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}"
+                            {{ (isset($category) && $category->type_id == $type->id) || old('type_id') == $type->id ? 'selected' : '' }}>
+                            {{ $type->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <button type="submit" class="btn {{ isset($category) ? 'btn-warning' : 'btn-success' }} mt-3">
                 {{ isset($category) ? 'Обновить' : 'Создать' }}
             </button>

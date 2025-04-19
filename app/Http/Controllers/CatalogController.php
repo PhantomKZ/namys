@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
+    protected array $filters = [];
+
+    public function __construct(Request $request)
+    {
+        $this->filters = [
+            'type_id' => $request->input('type_id'),
+            'brand_id' => $request->input('brand_id'),
+            'color_id' => $request->input('color_id'),
+            'material_id' => $request->input('material_id'),
+        ];
+    }
     public function index(Request $request): View|RedirectResponse
     {
         $searchTerm = $request->input('search') ?? '';
@@ -19,6 +30,7 @@ class CatalogController extends Controller
 
         $this->applySearchFilter($query, $searchTerm);
         $this->applySort($query, $sortBy);
+        $this->applyFilter($query, $this->filters);
 
         $products = $query->paginate(16);
 
@@ -50,6 +62,8 @@ class CatalogController extends Controller
 
         $this->applySearchFilter($query, $searchTerm);
         $this->applySort($query, $sortBy);
+        $this->applyFilter($query, $this->filters);
+
         $products = $query->paginate(16);
 
         if ($products->isEmpty() && $request->page > 1) {
@@ -82,6 +96,8 @@ class CatalogController extends Controller
 
         $this->applySearchFilter($query, $searchTerm);
         $this->applySort($query, $sortBy);
+        $this->applyFilter($query, $this->filters);
+
         $products = $query->paginate(16);
 
         if ($products->isEmpty() && $request->page > 1) {
@@ -148,5 +164,29 @@ class CatalogController extends Controller
         return $query;
     }
 
+    protected function applyFilter($query, array $filters = [])
+    {
+        if (!empty($filters['type_id'])) {
+            $query->where('type_id', $filters['type_id']);
+        }
+
+        if (!empty($filters['brand_id'])) {
+            $query->where('brand_id', $filters['brand_id']);
+        }
+
+        if (!empty($filters['color_id'])) {
+            if (is_array($filters['color_id'])) {
+                $query->whereIn('color_id', $filters['color_id']);
+            } else {
+                $query->where('color_id', $filters['color_id']);
+            }
+        }
+
+        if (!empty($filters['material_id'])) {
+            $query->where('material_id', $filters['material_id']);
+        }
+
+        return $query;
+    }
 
 }

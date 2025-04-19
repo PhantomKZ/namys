@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'thumbnail'];
+    protected $fillable = ['name', 'slug', 'thumbnail', 'type_id'];
 
     public static function boot()
     {
@@ -29,6 +29,11 @@ class Category extends Model
                 $category->thumbnail = request()->file('thumbnail')->store('categories/thumbnails', 'public');
             }
         });
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 
     public static function generateSlug($name)

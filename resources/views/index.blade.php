@@ -13,11 +13,15 @@
             <p>Минимализм, уникальность, качество и исключительно натуральные материалы</p>
             <div class="category-grid">
                 @foreach($categories as $category)
-                    <a>
+                    @if($category->type)
+                        <a href="{{ route('catalog.index', ['type_id' => $category->type->id]) }}">
+                    @else
+                        <a href="#">
+                    @endif
                         <div class="category-card">
                             <div class="category-image">
                                 <img src="{{ asset($category->thumbnail) }}"
-                                alt="{{ $category->name }} | Namys">
+                                     alt="{{ $category->name }} | Namys">
                                 <div class="category-overlay">
                                     <h3>{{ $category->name }}</h3>
                                 </div>
