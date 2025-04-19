@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CollectionController extends Controller
 {
@@ -74,12 +75,27 @@ class CollectionController extends Controller
             'products.*' => 'exists:products,id',
             'images.*' => 'nullable|image',
             'main_image_index' => 'nullable|integer',
+            'existing_image_ids' => 'nullable|array',
+            'existing_image_ids.*' => 'integer|exists:collection_images,id',
         ]);
 
         $collection = Collection::findOrFail($id);
         $collection->update($validated);
 
         $mainIndex = (int) $request->input('main_image_index');
+
+        $collection->products()->sync($request->products ?? []);
+
+        $existingImageIds = $request->input('existing_image_ids', []);
+        $imagesToDelete = $collection->images()->whereNotIn('id', $existingImageIds)->get();
+
+        foreach ($imagesToDelete as $image) {
+            if ($image->path && Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+
+            $image->delete();
+        }
 
         $collection->images()->update(['is_main' => false]);
 
@@ -98,10 +114,7 @@ class CollectionController extends Controller
             if (isset($images[$mainIndex])) {
                 $images[$mainIndex]->update(['is_main' => true]);
             }
-
         }
-
-        $collection->products()->sync($request->products ?? []);
 
         return redirect()->route('admin.collections.index')->with('success', 'Коллекция обновлена!');
     }

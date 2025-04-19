@@ -41,6 +41,7 @@
                 @isset($collection)
                     @foreach($collection->images as $index => $image)
                         <div class="image-upload-group border rounded p-3 mb-2">
+                            <input type="hidden" name="existing_image_ids[]" value="{{ $image->id }}">
                             <div class="form-group">
                                 <label>Изображение {{ $index + 1 }}</label>
                                 <input type="file" name="images[]" class="form-control">
@@ -56,7 +57,7 @@
                                        {{ $image->is_main ? 'checked' : '' }} id="main_{{ $index }}">
                                 <label for="main_{{ $index }}" class="form-check-label">Главное изображение</label>
                             </div>
-
+                            <button type="button" class="btn btn-danger m-2 remove-image">Удалить</button>
                         </div>
                     @endforeach
                 @endisset
@@ -72,7 +73,7 @@
                         <input type="checkbox" name="main_image_index" value="0" class="form-check-input main-checkbox" id="main_0">
                         <label for="main_0" class="form-check-label">Главное изображение</label>
                     </div>
-
+                    <button type="button" class="btn btn-danger m-2 remove-image">Удалить</button>
                 </div>
             </div>
 
@@ -95,7 +96,8 @@
             const wrapper = document.getElementById('image-upload-wrapper');
 
             const html = `
-            <div class="image-upload-group border rounded p-3 mb-2">
+            <div class="image-upload-group border rounded p-3 mb-2 position-relative">
+
                 <div class="form-group">
                     <label>Изображение</label>
                     <input type="file" name="images[]" class="form-control" required>
@@ -105,20 +107,24 @@
                     <input type="checkbox" name="main_image_index" value="${imageIndex}" class="form-check-input main-checkbox" id="main_${imageIndex}">
                     <label for="main_${imageIndex}" class="form-check-label">Главное изображение</label>
                 </div>
-
+                <button type="button" class="btn btn-danger m-2 remove-image">Удалить</button>
             </div>
         `;
-
             wrapper.insertAdjacentHTML('beforeend', html);
             imageIndex++;
         });
 
-        // Делегирование для чекбоксов (только один может быть выбран из группы)
         document.addEventListener('change', function (e) {
             if (e.target.classList.contains('main-checkbox')) {
                 document.querySelectorAll('.main-checkbox').forEach(checkbox => {
                     if (checkbox !== e.target) checkbox.checked = false;
                 });
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-image')) {
+                e.target.closest('.image-upload-group').remove();
             }
         });
     </script>
