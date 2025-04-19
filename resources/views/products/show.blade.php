@@ -12,7 +12,7 @@
                         <div class="carousel-inner">
                             @foreach($product->images as $index => $image)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset($image->path) }}" alt="{{ $product->name }}" class="main-image">
+                                    <img src="{{ asset($image->path) }}" alt="{{ $product->name }}" class="main-image" style="height: 600px" >
                                 </div>
                             @endforeach
                         </div>

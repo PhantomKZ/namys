@@ -2262,3 +2262,8 @@ button.collapsed .arrow-icon {
 button:not(.collapsed) .arrow-icon {
     transform: rotate(-180deg);
 }
+
+.navbar-nav .nav-item {
+    display: flex;
+    align-items: center;
+}

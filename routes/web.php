@@ -117,6 +117,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
             Route::get('/{id}/edit', [AdminProductController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AdminProductController::class, 'update'])->name('update');
             Route::delete('/{id}', [AdminProductController::class, 'destroy'])->name('destroy');
+            Route::post('/update-order', [AdminProductController::class, 'updateOrder'])->name('updateOrder');
+
         });
         Route::prefix('collections')->name('collections.')->group(function () {
             Route::get('/', [AdminCollectionController::class, 'index'])->name('index');

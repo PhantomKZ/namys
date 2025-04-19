@@ -18,6 +18,7 @@
         <table class="table table-bordered mt-4">
             <thead>
             <tr>
+                <th>№</th> <!-- Добавляем заголовок для нумерации -->
                 <th>Название</th>
                 <th>Тип</th>
                 <th>Бренд</th>
@@ -27,9 +28,10 @@
                 <th>Действия</th>
             </tr>
             </thead>
-            <tbody>
-            @foreach ($products as $product)
-                <tr>
+            <tbody id="sortable">
+            @foreach ($products as $index => $product)
+                <tr id="product-{{ $product->id }}" data-id="{{ $product->id }}">
+                    <td>{{ $products->firstItem() + $index }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->type }}</td>
                     <td>{{ $product->brand }}</td>
@@ -48,6 +50,32 @@
             </tbody>
         </table>
 
-        {{ $products->links() }}
+        {{ $products->links('pagination::bootstrap-4') }}
     </div>
+@endsection
+
+@section('js')
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script>
+        $(document).ready(function() {
+            $("#sortable").sortable({
+                update: function(event, ui) {
+                    var order = $(this).sortable('toArray', { attribute: 'data-id' });
+
+                    $.ajax({
+                        url: "{{ route('admin.products.updateOrder') }}",
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            order: order
+                        },
+                    });
+                }
+            });
+        });
+    </script>
+
 @endsection
