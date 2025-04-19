@@ -303,11 +303,6 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
@@ -379,6 +374,16 @@ return [
     */
 
     'plugins' => [
+        'CustomStyles' => [
+            'active' => true,  // Убедитесь, что этот параметр присутствует
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,  // Использовать ассеты Laravel
+                    'location' => 'css/style-admin.css',  // Путь к вашему файлу
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => false,
             'files' => [
