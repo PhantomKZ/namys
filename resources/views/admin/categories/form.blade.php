@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Категори')
+@section('title', 'Категории')
 
 @section('content')
     <div class="container-fluid">
@@ -26,12 +26,11 @@
             </div>
 
             <div class="form-group">
-                <label for="type_id">Тип</label>
-                <select id="type_id" name="type_id" class="form-control" required>
-                    <option value="">-- Выберите тип --</option>
-                    @foreach($types as $type)
+                <label for="types">Типы</label>
+                <select name="type_ids[]" id="type-select" multiple class="form-control">
+                    @foreach ($types as $type)
                         <option value="{{ $type->id }}"
-                            {{ (isset($category) && $category->type_id == $type->id) || old('type_id') == $type->id ? 'selected' : '' }}>
+                            {{ isset($category) && $category->types->contains($type->id) ? 'selected' : '' }}>
                             {{ $type->name }}
                         </option>
                     @endforeach
@@ -43,4 +42,14 @@
             </button>
         </form>
     </div>
-@stop
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('#type-select').select2({
+                placeholder: "Выберите типы",
+                allowClear: true
+            });
+        });
+    </script>
+@endsection

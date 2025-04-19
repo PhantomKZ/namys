@@ -26,13 +26,15 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'type_id' => 'required|exists:types,id',
+            'type_ids' => 'required|array',
+            'type_ids.*' => 'exists:types,id',
         ]);
 
         $category = Category::create([
             'name' => $request->name,
-            'type_id' => $request->type_id,
         ]);
+
+        $category->types()->attach($request->type_ids);
 
         return redirect()->route('admin.categories.index')->with('success', "Категория {$category->name} успешно создана!");
     }
@@ -57,13 +59,15 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'type_id' => 'required|exists:types,id',
+            'type_ids' => 'required|array',
+            'type_ids.*' => 'exists:types,id',
         ]);
 
         $category->update([
             'name' => $request->name,
-            'type_id' => $request->type_id,
         ]);
+
+        $category->types()->sync($request->type_ids);
 
         return redirect()->route('admin.categories.index')->with('success', "Категория {$category->name} успешно обновлена!");
     }

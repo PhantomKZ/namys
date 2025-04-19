@@ -31,9 +31,9 @@ class Category extends Model
         });
     }
 
-    public function type()
+    public function types()
     {
-        return $this->belongsTo(Type::class);
+        return $this->belongsToMany(Type::class, 'category_type');
     }
 
     public static function generateSlug($name)
