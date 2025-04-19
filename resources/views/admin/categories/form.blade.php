@@ -21,7 +21,7 @@
                 <label for="thumbnail">Обложка категории</label>
                 <input type="file" id="thumbnail" name="thumbnail" class="form-control">
                 @if (isset($category) && $category->thumbnail)
-                    <img src="{{ asset('storage/' . $category->thumbnail) }}" alt="Thumbnail" class="mt-2" style="width: 100px;">
+                    <img src="{{ asset($category->thumbnail) }}" alt="Thumbnail" class="mt-2" style="width: 100px;">
                 @endif
             </div>
 

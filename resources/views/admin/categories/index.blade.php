@@ -29,7 +29,7 @@
                     <td>{{ $category->name }}</td>
                     <td>
                         @if ($category->thumbnail)
-                            <img src="{{ asset('storage/' . $category->thumbnail) }}" alt="Thumbnail" style="width: 100px; height: auto;">
+                            <img src="{{ asset($category->thumbnail) }}" alt="Thumbnail" style="width: 100px; height: auto;">
                         @else
                             <span>Без обложки</span>
                         @endif
