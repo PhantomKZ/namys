@@ -13,22 +13,25 @@
             <p>Минимализм, уникальность, качество и исключительно натуральные материалы</p>
             <div class="category-grid">
                 @foreach($categories as $category)
-                    @if($category->type)
-                        <a href="{{ route('catalog.index', ['type_id' => $category->type->id]) }}">
-                    @else
-                        <a href="#">
-                    @endif
-                        <div class="category-card">
-                            <div class="category-image">
-                                <img src="{{ asset($category->thumbnail) }}"
-                                     alt="{{ $category->name }} | Namys">
-                                <div class="category-overlay">
-                                    <h3>{{ $category->name }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                @endforeach
+                    @php
+                        $typeIds = $category->types->pluck('id')->toArray();
+                    @endphp
+                    @if(count($typeIds) > 0)
+                        <a href="{{ route('catalog.index', ['type_id' => $typeIds]) }}">
+                            @else
+                                <a href="#">
+                                    @endif
+                                    <div class="category-card">
+                                        <div class="category-image">
+                                            <img src="{{ asset($category->thumbnail) }}"
+                                                 alt="{{ $category->name }} | Namys">
+                                            <div class="category-overlay">
+                                                <h3>{{ $category->name }}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                        @endforeach
             </div>
         </section>
 

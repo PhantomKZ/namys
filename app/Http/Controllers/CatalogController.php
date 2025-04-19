@@ -167,7 +167,11 @@ class CatalogController extends Controller
     protected function applyFilter($query, array $filters = [])
     {
         if (!empty($filters['type_id'])) {
-            $query->where('type_id', $filters['type_id']);
+            if (is_array($filters['type_id'])) {
+                $query->whereIn('type_id', $filters['type_id']);
+            } else {
+                $query->where('type_id', $filters['type_id']);
+            }
         }
 
         if (!empty($filters['brand_id'])) {
