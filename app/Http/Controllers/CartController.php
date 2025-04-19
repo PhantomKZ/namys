@@ -96,6 +96,52 @@ class CartController extends Controller
         return redirect()->back()->withInput()->with('success', 'Товар добавлен в корзину');
     }
 
+    public function addAll(Request $request)
+    {
+        $messages = [
+            'size_id.required' => 'Пожалуйста, выберите размер.',
+            'size_id.exists' => 'Выбранный размер не существует.',
+            'product_ids.required' => 'Не найдены товары для добавления.',
+            'product_ids.array' => 'Неверный формат списка товаров.',
+            'product_ids.*.exists' => 'Один из товаров не существует.',
+        ];
+
+        $validated = $request->validate([
+            'size_id' => 'required|exists:sizes,id',
+            'product_ids' => 'required|array',
+            'product_ids.*' => 'exists:products,id',
+        ], $messages);
+
+        $sizeId = $validated['size_id'];
+        $productIds = $validated['product_ids'];
+        $quantity = $request->input('quantity', 1);
+
+        if (auth()->check()) {
+            foreach ($productIds as $productId) {
+                $item = CartItem::firstOrNew([
+                    'user_id' => auth()->id(),
+                    'product_id' => $productId,
+                    'size_id' => $sizeId,
+                ]);
+                $item->quantity += $quantity;
+                $item->save();
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            foreach ($productIds as $productId) {
+                if (isset($cart[$productId][$sizeId])) {
+                    $cart[$productId][$sizeId]['quantity'] += $quantity;
+                } else {
+                    $cart[$productId][$sizeId] = ['quantity' => $quantity];
+                }
+            }
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->back()->with('success', 'Комплект добавлен в корзину.');
+    }
+
+
     public function remove(Request $request)
     {
         $productId = $request->input('product_id');

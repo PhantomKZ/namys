@@ -55,6 +55,7 @@ Route::prefix('collection')->name('collection.')->group(function () {
 Route::prefix('cart')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');
     Route::post('/add', [CartController::class, 'add'])->name('add');
+    Route::post('/add-all', [CartController::class, 'addAll'])->name('addAll');
     Route::delete('/remove', [CartController::class, 'remove'])->name('remove');
     Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
 });

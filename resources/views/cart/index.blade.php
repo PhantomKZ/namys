@@ -5,8 +5,8 @@
             @if(!$items->isEmpty())
         <div class="basket-content">
             <div class="d-flex flex-column gap-2">
-            @foreach($items as $item)
                 <div class="basket-items">
+                    @foreach($items as $item)
                     <div class="basket-item">
                         <div class="item-image">
                             <a href="{{ route('product.show', $item->product->id) }}">
@@ -49,8 +49,8 @@
                             </form>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-            @endforeach
             </div>
                 <div class="basket-summary">
                     <h2>Итого</h2>
@@ -227,7 +227,7 @@
 
             // Обработчик для удаления товара из корзины
             removeButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const form = button.closest('form');
                     const item = button.closest('.basket-item');
@@ -242,7 +242,11 @@
                     })
                         .then(res => {
                             if (res.ok) {
-                                item.remove();
+                                if (item) {
+                                    item.remove();
+                                } else {
+                                    console.warn('Не найден .basket-item для удаления');
+                                }
                                 updateTotalPrice();
                                 checkEmptyBasket();
                             } else {

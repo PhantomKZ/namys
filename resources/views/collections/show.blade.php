@@ -39,29 +39,25 @@
                     <div class="product-price">{{ $collection->formattedPrice }}₸</div>
 
                     <div class="product-description">
-                        <p> {{$collection->description}} </p>
+                        <p>{{ $collection->description }}</p>
                         <ul class="features-list">
                             @foreach($products as $item)
-                                <li>- {{$item->type}} {{$item->name}} ({{ $item->color }}) - {{ $item->formattedPrice }}</li>
+                                <li>- {{ $item->type }} {{ $item->name }} ({{ $item->color }}) - {{ $item->formattedPrice }}</li>
                             @endforeach
                         </ul>
                     </div>
 
                     <div class="size-selector">
-                        <button class="size-dropdown" data-bs-toggle="dropdown">
-                            выберите размер <span class="arrow">▼</span>
-                        </button>
-                        <ul class="dropdown-menu">
+                        <select id="size_id_select" class="form-control" required>
+                            <option value="">Выберите размер</option>
                             @foreach($collection->availableSizes() as $size)
                                 @if($size->quantity > 0)
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            {{ $size->name }} ({{$size->quantity}} в наличии)
-                                        </a>
-                                    </li>
+                                    <option value="{{ $size->id }}">
+                                        {{ $size->name }} ({{ $size->quantity }} в наличии)
+                                    </option>
                                 @endif
                             @endforeach
-                        </ul>
+                        </select>
                     </div>
 
                     <div class="size-help">
@@ -69,8 +65,19 @@
                         <a href="#" class="delivery-info">О ДОСТАВКЕ</a>
                     </div>
 
-                    <button class="add-to-cart-btn">Купить весь лук</button>
+                    <form action="{{ route('cart.addAll') }}" method="POST" id="add-all-form">
+                        @csrf
+                        <input type="hidden" name="size_id" id="size_id_input">
+                        @error('size_id')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                        @foreach($products as $product)
+                            <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
+                        @endforeach
+                        <button type="submit" class="add-to-cart-btn">Купить весь лук</button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -95,4 +102,21 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const select = document.getElementById('size_id_select');
+            const input = document.getElementById('size_id_input');
+
+            select.addEventListener('change', function () {
+                input.value = this.value;
+            });
+
+            // Если select уже выбран (например, при возврате формы), то установить значение:
+            if (select.value) {
+                input.value = select.value;
+            }
+        });
+    </script>
 @endsection
