@@ -10,7 +10,7 @@
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-danger">
-                        Сосал?
+                        Выйти с учётной записи
                     </button>
                 </form>
 

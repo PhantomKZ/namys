@@ -12,6 +12,7 @@ class Product extends Model
 {
     protected $fillable = [
         'name',
+        'order',
         'brand_id',
         'type_id',
         'material_id',

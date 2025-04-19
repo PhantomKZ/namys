@@ -16,9 +16,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['brand', 'type', 'material', 'color'])->paginate(10);
+        $products = Product::with(['brand', 'type', 'material', 'color'])
+            ->orderBy('order', 'asc')  // Сортировка по полю order по возрастанию
+            ->paginate(16);
+
         return view('admin.products.index', compact('products'));
     }
+
 
     public function create()
     {
@@ -47,6 +51,10 @@ class ProductController extends Controller
             'quantities' => 'nullable|array',
             'is_limited' => 'nullable',
         ]);
+
+        $maxOrder = Product::max('order');  // Получаем максимальное значение поля order
+        $data['order'] = $maxOrder + 1;  // Устанавливаем новое значение для order
+
         $data['is_limited'] = $request->has('is_limited') && $request->input('is_limited') === 'on' ? 1 : 0;
         $product = Product::create($data);
 
@@ -163,4 +171,26 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('admin.products.index')->with('success', 'Товар удалён');
     }
+
+    public function updateOrder(Request $request)
+    {
+        $orderData = $request->get('order');  // Получаем данные с клиентской стороны (новый порядок товаров)
+
+        // Проверяем, что каждый элемент массива order является числом
+        foreach ($orderData as $productId) {
+            if (!is_numeric($productId)) {
+                return response()->json(['error' => 'Invalid product ID'], 400);
+            }
+        }
+
+        // Обновляем порядок товаров
+        foreach ($orderData as $index => $productId) {
+            Product::where('id', $productId)
+                ->update(['order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
 }
+
