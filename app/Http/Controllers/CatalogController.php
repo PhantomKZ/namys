@@ -17,40 +17,8 @@ class CatalogController extends Controller
 
         $query = Product::query();
 
-        if ($searchTerm) {
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%') // Поиск по названию
-                ->orWhereHas('type', function($query) use ($searchTerm) {
-                    $query->where('name', 'like', '%' . $searchTerm . '%'); // Поиск по типу
-                })
-                    ->orWhereHas('color', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%'); // Поиск по цвету
-                    })
-                    ->orWhereHas('brand', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%'); // Поиск по бренду
-                    });
-            });
-        }
-
-        if ($sortBy) {
-            switch ($sortBy) {
-                case 'price_asc':
-                    $query->orderBy('price', 'asc');
-                    break;
-                case 'price_desc':
-                    $query->orderBy('price', 'desc');
-                    break;
-                case 'name_asc':
-                    $query->orderBy('name', 'asc');
-                    break;
-                case 'name_desc':
-                    $query->orderBy('name', 'desc');
-                    break;
-                default:
-                    // Можно добавить другие сортировки, если необходимо
-                    break;
-            }
-        }
+        $this->applySearchFilter($query, $searchTerm);
+        $this->applySort($query, $sortBy);
 
         $products = $query->paginate(16);
 
@@ -80,41 +48,8 @@ class CatalogController extends Controller
         // Товары, созданные за последнюю неделю
         $query->where('created_at', '>=', now()->subWeek());
 
-        if ($searchTerm) {
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhereHas('type', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%');
-                    })
-                    ->orWhereHas('color', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%');
-                    })
-                    ->orWhereHas('brand', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%');
-                    });
-            });
-        }
-
-        if ($sortBy) {
-            switch ($sortBy) {
-                case 'price_asc':
-                    $query->orderBy('price', 'asc');
-                    break;
-                case 'price_desc':
-                    $query->orderBy('price', 'desc');
-                    break;
-                case 'name_asc':
-                    $query->orderBy('name', 'asc');
-                    break;
-                case 'name_desc':
-                    $query->orderBy('name', 'desc');
-                    break;
-            }
-        } else {
-            // По умолчанию — сначала самые новые
-            $query->orderBy('created_at', 'desc');
-        }
-
+        $this->applySearchFilter($query, $searchTerm);
+        $this->applySort($query, $sortBy);
         $products = $query->paginate(16);
 
         if ($products->isEmpty() && $request->page > 1) {
@@ -145,41 +80,8 @@ class CatalogController extends Controller
         // Товары, созданные за последнюю неделю
         $query->where('is_limited', '=', 1);
 
-        if ($searchTerm) {
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhereHas('type', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%');
-                    })
-                    ->orWhereHas('color', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%');
-                    })
-                    ->orWhereHas('brand', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', '%' . $searchTerm . '%');
-                    });
-            });
-        }
-
-        if ($sortBy) {
-            switch ($sortBy) {
-                case 'price_asc':
-                    $query->orderBy('price', 'asc');
-                    break;
-                case 'price_desc':
-                    $query->orderBy('price', 'desc');
-                    break;
-                case 'name_asc':
-                    $query->orderBy('name', 'asc');
-                    break;
-                case 'name_desc':
-                    $query->orderBy('name', 'desc');
-                    break;
-            }
-        } else {
-            // По умолчанию — сначала самые новые
-            $query->orderBy('created_at', 'desc');
-        }
-
+        $this->applySearchFilter($query, $searchTerm);
+        $this->applySort($query, $sortBy);
         $products = $query->paginate(16);
 
         if ($products->isEmpty() && $request->page > 1) {
@@ -197,5 +99,54 @@ class CatalogController extends Controller
             'sortBy' => $sortBy
         ]);
     }
+
+    protected function applySearchFilter($query, $searchTerm)
+    {
+        if ($searchTerm) {
+            $words = explode(' ', $searchTerm);
+
+            $query->where(function($q) use ($words) {
+                foreach ($words as $word) {
+                    $q->where(function($q2) use ($word) {
+                        $q2->where('name', 'like', '%' . $word . '%')
+                            ->orWhereHas('type', function($query) use ($word) {
+                                $query->where('name', 'like', '%' . $word . '%');
+                            })
+                            ->orWhereHas('color', function($query) use ($word) {
+                                $query->where('name', 'like', '%' . $word . '%');
+                            })
+                            ->orWhereHas('brand', function($query) use ($word) {
+                                $query->where('name', 'like', '%' . $word . '%');
+                            });
+                    });
+                }
+            });
+        }
+        return $query;
+    }
+
+    protected function applySort($query, $sortBy)
+    {
+        if ($sortBy) {
+            switch ($sortBy) {
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'name_asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+        return $query;
+    }
+
 
 }
