@@ -15,13 +15,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ $current == 'catalog' ? 'active' : '' }}" href="{{ route('catalog') }}">КАТАЛОГ</a>
+                        <a class="nav-link {{ $current == 'catalog.index' ? 'active' : '' }}" href="{{ route('catalog.index') }}">КАТАЛОГ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ $current == 'novelty' ? 'active' : '' }}" href="{{ route('novelty') }}">НОВИНКИ</a>
+                        <a class="nav-link {{ $current == 'catalog.novelty' ? 'active' : '' }}" href="{{ route('catalog.novelty') }}">НОВИНКИ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ $current == 'limited' ? 'active' : '' }}" href="{{ route('limited') }}">LIMITED
+                        <a class="nav-link {{ $current == 'catalog.limited' ? 'active' : '' }}" href="{{ route('catalog.limited') }}">LIMITED
                             EDITION</a>
                     </li>
                     <li class="nav-item">

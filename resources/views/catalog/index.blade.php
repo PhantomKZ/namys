@@ -4,32 +4,29 @@
     <div class="search-sort-section">
         <div class="container">
             <div class="search-container">
+                @if(request()->has('search') && request()->get('search') !== '')
+                    <a href="{{ route('catalog.index') }}" class="btn btn-outline-primary">Очистить</a>
+                @endif
                 <div class="search-box">
-                    <input type="text" placeholder="Поиск" class="search-input">
-                    <div class="dropdown">
-                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Каталог
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">По всему сайту</a></li>
-                            <li><a class="dropdown-item" href="#">По каталогу</a></li>
-                        </ul>
+                    <form action="{{ route('catalog.index') }}" method="GET" class="d-flex">
+                        <input type="text" name="search" placeholder="Поиск" class="search-input" value="{{ old('search', $searchTerm) }}">
+                        <button class="search-button" type="submit">НАЙТИ</button>
+                    </form>
+                </div>
+
+                    <div class="sort-container">
+                        <span class="sort-label">Сортировать:</span>
+                        <form action="{{ route('catalog.index') }}" method="GET">
+                            <input type="hidden" name="search" value="{{ old('search', $searchTerm) }}"> <!-- скрытый input для поиска -->
+                            <select class="sort-select" name="sort_by" onchange="this.form.submit()">
+                                <option value="">Сортировать</option>
+                                <option value="price_asc" {{ $sortBy == 'price_asc' ? 'selected' : '' }}>По цене (по возрастанию)</option>
+                                <option value="price_desc" {{ $sortBy == 'price_desc' ? 'selected' : '' }}>По цене (по убыванию)</option>
+                                <option value="name_asc" {{ $sortBy == 'name_asc' ? 'selected' : '' }}>По имени (А-Я)</option>
+                                <option value="name_desc" {{ $sortBy == 'name_desc' ? 'selected' : '' }}>По имени (Я-А)</option>
+                            </select>
+                        </form>
                     </div>
-                    <button class="search-button">НАЙТИ</button>
-                </div>
-                <div class="sort-container">
-                    <span class="sort-label">Сортировать:</span>
-                    <select class="sort-select">
-                        <option value="">Все товары</option>
-                        <option value="tshirts">Футболки</option>
-                        <option value="hoodies">Худи</option>
-                        <option value="sweatshirts">Свитшоты</option>
-                        <option value="pants">Брюки</option>
-                        <option value="caps">Кепки</option>
-                        <option value="shoes">Обувь</option>
-                        <option value="backpacks">Рюкзаки</option>
-                    </select>
-                </div>
             </div>
         </div>
     </div>
@@ -75,4 +72,7 @@
 
     </div>
     </div>
+@endsection
+@section('scripts')
+
 @endsection

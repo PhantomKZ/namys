@@ -92,7 +92,7 @@
         <div class="empty-basket">
             <h2>Ваша корзина пуста</h2>
             <p>Добавьте товары в корзину, чтобы сделать заказ</p>
-            <a href="{{ route('catalog') }}" class="continue-shopping">Перейти к покупкам</a>
+            <a href="{{ route('catalog.index') }}" class="continue-shopping">Перейти к покупкам</a>
         </div>
         @endif
     </div>

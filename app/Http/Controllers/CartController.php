@@ -22,7 +22,6 @@ class CartController extends Controller
                 return $carry + ($item->product->price * $item->quantity);
             }, 0);
 
-            $formattedTotalPrice = number_format($totalPrice, 0, '.', ' ') . ' ₸';
             $items = $cartItems->map(function ($cartItem) {
                 $cartItem->size->available_quantity = $cartItem->size->availableQuantity($cartItem->product);
                 return $cartItem;
@@ -55,7 +54,7 @@ class CartController extends Controller
                 return $carry + ($item->product->price * $item->quantity);
             }, 0);
         }
-
+        $formattedTotalPrice = number_format($totalPrice, 0, '.', ' ') . ' ₸';
         return view('cart.index', compact('items',  'formattedTotalPrice'));
     }
 

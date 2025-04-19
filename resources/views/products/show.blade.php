@@ -3,7 +3,7 @@
     <div class="product-page">
         <div class="container-fluid">
             <div class="breadcrumb-nav">
-                <a href="{{ route('catalog') }}">КАТАЛОГ</a> / <a href="#">Футболки</a>
+                <a href="{{ route('catalog.index') }}">КАТАЛОГ</a> / <a href="#">Футболки</a>
             </div>
 
             <div class="product-details">
@@ -47,8 +47,8 @@
                     <div class="product-description">
                         <p>{{ $product->description }}</p>
                         <ul class="features-list">
-                            <li><strong>Бренд:</strong> {{ $product->brand->name }}</li>
-                            <li><strong>Материал:</strong> {{ $product->material->name }}</li>
+                            <li><strong>Бренд:</strong> {{ $product->brand }}</li>
+                            <li><strong>Материал:</strong> {{ $product->material }}</li>
                             <li><strong>Цвет:</strong> {{ $product->color }}</li>
                         </ul>
                     </div>

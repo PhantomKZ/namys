@@ -37,28 +37,4 @@ class SiteController extends Controller
         }
     }
 
-    public function catalog(Request $request): View|RedirectResponse
-    {
-        $products = Product::paginate(16);
-        if ($products->isEmpty() && $request->page > 1) {
-            $lastPage = $products->lastPage();
-
-            return redirect()->route('catalog', ['page' => $lastPage]);
-        }
-        $title = "Каталог одежды";
-        return view('catalog', ['title' => $title, 'products' => $products]);
-    }
-
-    public function novelty(): View
-    {
-        $title = "Новинки";
-        return view('novelty', ['title' => $title]);
-    }
-
-    public function limited(): View
-    {
-        $title = "Limited Edition";
-        return view('limited', ['title' => $title]);
-    }
-
 }

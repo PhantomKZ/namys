@@ -116,6 +116,16 @@ class Product extends Model
         return $this->getRelationValue('color')?->name;
     }
 
+    public function getBrandAttribute()
+    {
+        return $this->getRelationValue('brand')?->name;
+    }
+
+    public function getMaterialAttribute()
+    {
+        return $this->getRelationValue('material')?->name;
+    }
+
     public function getAvailableQuantityAttribute()
     {
         $ordered = DB::table('order_products')

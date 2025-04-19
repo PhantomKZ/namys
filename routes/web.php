@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CollectionController as AdminCollectionController
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
@@ -31,9 +32,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
 Route::post('/subscribe', [SiteController::class, 'subscribe'])->name('subscribe');
-Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
-Route::get('/novelty', [SiteController::class, 'novelty'])->name('novelty');
-Route::get('/limited', [SiteController::class, 'limited'])->name('limited');
+Route::prefix('catalog')->name('catalog.')->group(function () {
+    Route::get('/', [CatalogController::class, 'index'])->name('index');
+    Route::get('/novelty', [CatalogController::class, 'novelty'])->name('novelty');
+    Route::get('/limited', [CatalogController::class, 'limited'])->name('limited');
+});
 Route::prefix('product')->name('product.')->group(function () {
     Route::get('{id}', [ProductController::class, 'show'])->name('show');
     Route::post('{id}/add-to-favorites', [ProductController::class, 'addToFavorites'])->name('addToFavorites');
