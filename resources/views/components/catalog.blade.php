@@ -51,23 +51,30 @@
 </div>
 
 <div class="catalog">
-    <div class="products-grid">
-        @foreach($products as $product)
-            <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card">
-                <div class="product-image-container">
-                    @if($product->created_at->isCurrentWeek())
-                        <span class="new-badge">NEW</span>
-                    @endif
-                    <img src="{{ asset($product->mainImage) }}" alt="{{ $product->title }}" class="product-image">
-                </div>
-                <h3 class="product-title">{{ $product->title }}</h3>
-                <p class="product-price">{{ $product->formattedPrice }}</p>
-                <button class="add-to-cart">Добавить в корзину</button>
-            </a>
-        @endforeach
-    </div>
+    @if(!empty($products) && $products->count())
+        <div class="products-grid">
+            @foreach($products as $product)
+                <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card">
+                    <div class="product-image-container">
+                        @if($product->created_at->isCurrentWeek())
+                            <span class="new-badge">NEW</span>
+                        @endif
+                        <img src="{{ asset($product->mainImage) }}" alt="{{ $product->title }}" class="product-image">
+                    </div>
+                    <h3 class="product-title">{{ $product->title }}</h3>
+                    <p class="product-price">{{ $product->formattedPrice }}</p>
+                    <button class="add-to-cart">Добавить в корзину</button>
+                </a>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center py-5">
+            <p class="mb-3">Товары не найдены.</p>
+            <a href="{{ route('catalog.index') }}" class="btn btn-primary">Перейти в каталог</a>
+        </div>
+    @endif
 
-    @if ($products->lastPage() > 1)
+@if ($products->lastPage() > 1)
         <div class="pagination">
             @if ($products->onFirstPage())
                 <a href="#" class="prev disabled" onclick="return false;">«</a>

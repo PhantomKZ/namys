@@ -57,17 +57,19 @@
                         <select name="size_id" id="size_id" class="form-control" required>
                             <option value="">Выберите размер</option>
                             @foreach($product->sizes as $size)
-                                @php
-                                    $isSelected = old('size_id') == $size->id;
-                                    $inCart = $cartItemsBySize instanceof \Illuminate\Support\Collection
-                                        ? $cartItemsBySize->has($size->id)
-                                        : array_key_exists($size->id, $cartItemsBySize);
-                                @endphp
-                                <option value="{{ $size->id }}"
-                                        data-in-cart="{{ $inCart ? '1' : '0' }}"
-                                    {{ $isSelected ? 'selected' : '' }}>
-                                    {{ $size->name }} ({{ $size->available_quantity ?? 'Нет данных' }} в наличии)
-                                </option>
+                                @if(($size->available_quantity ?? 0) > 0)
+                                    @php
+                                        $isSelected = old('size_id') == $size->id;
+                                        $inCart = $cartItemsBySize instanceof \Illuminate\Support\Collection
+                                            ? $cartItemsBySize->has($size->id)
+                                            : array_key_exists($size->id, $cartItemsBySize);
+                                    @endphp
+                                    <option value="{{ $size->id }}"
+                                            data-in-cart="{{ $inCart ? '1' : '0' }}"
+                                        {{ $isSelected ? 'selected' : '' }}>
+                                        {{ $size->name }} ({{ $size->available_quantity }} в наличии)
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>

@@ -36,10 +36,18 @@ class Collection extends Model
         foreach ($this->products as $product) {
             foreach ($product->sizes as $size) {
                 $quantity = $size->pivot->quantity;
+                $soldQuantity = $product->orders()
+                    ->join('order_product as op', 'orders.id', '=', 'op.order_id')
+                    ->where('op.product_id', $product->id)
+                    ->where('op.size_id', $size->id)
+                    ->sum('op.quantity');
+
+                $availableQuantity = max(0, $quantity - $soldQuantity);
+
                 if (!$sizes->has($size->id)) {
-                    $sizes->put($size->id, $quantity);
+                    $sizes->put($size->id, $availableQuantity);
                 } else {
-                    $sizes->put($size->id, min($sizes->get($size->id), $quantity));
+                    $sizes->put($size->id, min($sizes->get($size->id), $availableQuantity));
                 }
             }
         }

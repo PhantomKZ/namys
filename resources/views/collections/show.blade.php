@@ -53,11 +53,13 @@
                         </button>
                         <ul class="dropdown-menu">
                             @foreach($collection->availableSizes() as $size)
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        {{ $size->name }} ({{$size->quantity}} в наличии)
-                                    </a>
-                                </li>
+                                @if($size->quantity > 0)
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            {{ $size->name }} ({{$size->quantity}} в наличии)
+                                        </a>
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
