@@ -159,7 +159,7 @@ class CatalogController extends Controller
                     break;
             }
         } else {
-            $query->orderBy('order');
+            $query->orderBy('created_at', 'desc');
         }
         return $query;
     }

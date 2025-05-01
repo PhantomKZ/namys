@@ -68,19 +68,13 @@
                             <span>{{ $formattedTotalPrice }}</span>
                         </div>
                     </div>
-                    <form action="{{ route('order.store') }}" method="POST" id="checkout-form">
                         @csrf
                         <input type="hidden" name="total_price" id="total_price_input" value="{{ $formattedTotalPrice }}">
-                        @foreach($items as $item)
-                            @php
-                                $key = $item->product->id . '_' . $item->size->id;
-                            @endphp
-                            <input type="hidden" name="products[{{ $key }}][id]" value="{{ $item->product->id }}">
-                            <input type="hidden" name="products[{{ $key }}][size_id]" value="{{ $item->size->id ?? null }}">
-                            <input type="hidden" name="products[{{ $key }}][quantity]" value="{{ $item->quantity }}" class="hidden-quantity">
-                        @endforeach
-                        <button type="submit" class="checkout-btn">Оформить заказ</button>
-                    </form>
+                        @include('components.payment-modal')
+
+                        <button type="button" class="checkout-btn" onclick="showPaymentForm()">
+                            Оформить заказ
+                        </button>
                     <div class="promo-code">
                         <input type="text" placeholder="Введите промокод">
                         <button>Применить</button>
@@ -265,3 +259,90 @@
         });
     </script>
 @endsection
+@push('scripts')
+    <script>
+        function showPaymentForm() {
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentForm() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        function selectPaymentMethod(element) {
+            // Удаляем класс active у всех методов оплаты
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.classList.remove('active');
+            });
+
+            // Добавляем класс active выбранному методу
+            element.classList.add('active');
+
+            // Определяем выбранный метод оплаты
+            const isKaspi = element.querySelector('img').alt === 'Kaspi';
+
+            // Управляем видимостью форм оплаты
+            document.querySelector('.card-payment').classList.toggle('active', !isKaspi);
+            document.querySelector('.qr-code').classList.toggle('active', isKaspi);
+        }
+
+        // Маска для номера карты
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardNumberInput = document.querySelector('.card-payment input[placeholder="Номер карты"]');
+            const cardDateInput = document.querySelector('.card-payment input[placeholder="Срок действия"]');
+            const cardCVVInput = document.querySelector('.card-payment input[placeholder="CVV"]');
+
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = this.value.replace(/\D/g, '').slice(0, 16);
+                    value = value.replace(/(.{4})/g, '$1 ').trim();
+                    this.value = value;
+                });
+            }
+
+            if (cardDateInput) {
+                cardDateInput.addEventListener('input', function(e) {
+                    let value = this.value.replace(/\D/g, '').slice(0, 4);
+                    if (value.length > 2) {
+                        value = value.slice(0,2) + '/' + value.slice(2);
+                    }
+                    this.value = value;
+                });
+            }
+
+            if (cardCVVInput) {
+                cardCVVInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/\D/g, '').slice(0, 3);
+                });
+            }
+        });
+
+        // Закрытие формы при клике вне её
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('paymentModal')) {
+                closePaymentForm();
+            }
+        }
+
+        // Обработка отправки формы
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const inputs = this.querySelectorAll('input[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                // Здесь можно добавить логику обработки платежа
+                alert('Оплата прошла успешно!');
+                closePaymentForm();
+            } else {
+                document.querySelector('.payment-error').style.display = 'block';
+            }
+        });
+    </script>
+@endpush

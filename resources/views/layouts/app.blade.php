@@ -47,6 +47,7 @@ $title = isset($title)
     @yield('content')
 </div>
 @yield('scripts')
+@stack('scripts')
 @include('layouts.footer')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/script.js') }}"></script>
