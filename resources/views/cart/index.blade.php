@@ -149,13 +149,27 @@
 @section('scripts')
     <script>
         function selectPaymentMethod(method) {
+            // Скрыть все формы
             document.querySelectorAll('.payment-form').forEach(form => {
                 form.style.display = 'none';
             });
+
+            // Переключить видимость форм в зависимости от выбранного метода
             if (method === 'bankCard') {
                 document.getElementById('paymentFormBankCard').style.display = 'block';
             } else if (method === 'kaspi') {
                 document.getElementById('paymentFormKaspi').style.display = 'block';
+            }
+
+            // Убираем класс 'active' с всех кнопок
+            document.querySelectorAll('.payment-method').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Добавляем класс 'active' к выбранной кнопке
+            const selectedButton = document.querySelector(`button[onclick="selectPaymentMethod('${method}')"]`);
+            if (selectedButton) {
+                selectedButton.classList.add('active');
             }
         }
         document.addEventListener('DOMContentLoaded', function() {
