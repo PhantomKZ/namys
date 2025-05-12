@@ -12,7 +12,10 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
+        $totalPrice = preg_replace('/\D/', '', $request->input('total_price'));
+        $request->merge(['total_price' => $totalPrice]);
         $request->validate([
+            '_token' => 'nullable',
             'total_price' => 'required|numeric|min:1',
             'products' => 'required|array',
             'products.*.id' => 'required|exists:products,id',
