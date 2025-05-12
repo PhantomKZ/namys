@@ -745,7 +745,7 @@ body {
 
 .social-icons img {
     width: 48px;
-    height: 48x;
+    height: 48px;
     transition: transform 0.3s;
 }
 
@@ -2267,3 +2267,116 @@ button:not(.collapsed) .arrow-icon {
     display: flex;
     align-items: center;
 }
+
+.payment-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-payment {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.payment-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.payment-methods {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-method {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.payment-method:hover {
+    border-color: #000;
+}
+
+.payment-method.active {
+    border-color: #000;
+    background-color: #f5f5f5;
+}
+
+.payment-method img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.payment-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.payment-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.payment-row .payment-input {
+    flex: 1;
+}
+
+.pay-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pay-button:hover {
+    background-color: #333;
+}
+
+.payment-error {
+    color: #ff4757;
+    margin-top: 10px;
+    display: none;
+}
+
+.qr-code {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.qr-code img {
+    max-width: 200px;
+    margin-bottom: 15px;
+}
+
+.qr-code p {
+    color: #666;
+    font-size: 14px;
+}
+

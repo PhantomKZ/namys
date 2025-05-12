@@ -3,7 +3,7 @@
     <div class="product-page">
         <div class="container-fluid">
             <div class="breadcrumb-nav">
-                <a href="{{ route('catalog.index') }}">КАТАЛОГ</a> / <a href="#">Футболки</a>
+                <a href="{{ route('catalog.index') }}">КАТАЛОГ</a> / <a href="#">{{ $product->type }}</a>
             </div>
 
             <div class="product-details">
