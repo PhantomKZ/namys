@@ -6,6 +6,21 @@
                 <a href="{{ route('catalog.index') }}">КАТАЛОГ</a> / <a href="#">{{ $product->type }}</a>
             </div>
 
+            <div id="imageOverlay" class="image-overlay">
+                <button class="close-btn" aria-label="Закрыть">&times;</button>
+
+                <button class="nav-btn prev-btn" aria-label="Предыдущее">&lsaquo;</button>
+                <img id="overlayImg" class="overlay-img" src="" alt="">
+                <button class="nav-btn next-btn" aria-label="Следующее">&rsaquo;</button>
+
+                <div id="overlayThumbs" class="overlay-thumbs"></div>
+            </div>
+
+            <div id="infoOverlay" class="image-overlay">
+                <button class="close-btn" aria-label="Закрыть">&times;</button>
+                <img id="infoImg" class="overlay-img" src="" alt="">
+            </div>
+
             <div class="product-details">
                 <div class="product-gallery">
                     <div id="productCarousel" class="carousel slide" data-bs-interval="false">
@@ -75,8 +90,15 @@
                     </div>
 
                     <div class="size-help">
-                        <a href="#" class="size-guide">ПОМОЩЬ С РАЗМЕРОМ</a>
-                        <a href="#" class="delivery-info">О ДОСТАВКЕ</a>
+                        <a href="#" class="info-trigger"
+                        data-img="{{ asset('images/catalog/size_chart.png') }}">
+                            ПОМОЩЬ С РАЗМЕРОМ
+                        </a>
+
+                        <a href="#" class="info-trigger"
+                           data-img="{{ asset('images/catalog/delivery_info.png') }}">
+                            О ДОСТАВКЕ
+                        </a>
                     </div>
 
 
@@ -183,6 +205,145 @@
                 const event = new Event('change');
                 sizeSelect.dispatchEvent(event);
             }
+        });
+
+        /* Просмотр изображении в полном размере */
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const galleryImages = Array.from(
+                document.querySelectorAll('.product-gallery .main-image')
+            ).map(img => img.src);
+
+            const overlay       = document.getElementById('imageOverlay');
+            const overlayImg    = document.getElementById('overlayImg');
+            const thumbsWrapper = document.getElementById('overlayThumbs');
+            const btnPrev       = overlay.querySelector('.prev-btn');
+            const btnNext       = overlay.querySelector('.next-btn');
+            const btnClose      = overlay.querySelector('.close-btn');
+            let currentIndex    = 0;
+
+            let isZoomed = false;
+
+            overlayImg.addEventListener('click', () => {
+                if (isZoomed) resetZoom();
+                else applyZoom();
+            });
+
+            overlayImg.addEventListener('mousemove', e => {
+                if (!isZoomed) return;
+
+                const rect = overlayImg.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width)  * 100;
+                const y = ((e.clientY - rect.top)  / rect.height) * 100;
+                overlayImg.style.transformOrigin = `${x}% ${y}%`;
+            });
+
+            function applyZoom(){
+                isZoomed = true;
+                overlayImg.classList.add('zoomed');
+            }
+
+            function resetZoom(){
+                isZoomed = false;
+                overlayImg.classList.remove('zoomed');
+                overlayImg.style.transformOrigin = 'center center';
+            }
+
+            function showSlide(i){
+                resetZoom();
+            }
+            function closeOverlay(){
+                resetZoom();
+            }
+
+            galleryImages.forEach((src, idx) => {
+                const t = document.createElement('img');
+                t.src = src;
+                t.dataset.index = idx;
+                thumbsWrapper.appendChild(t);
+            });
+
+            function showSlide(i) {
+                currentIndex = (i + galleryImages.length) % galleryImages.length;
+                overlayImg.src = galleryImages[currentIndex];
+
+
+                thumbsWrapper.querySelectorAll('img').forEach(img =>
+                    img.classList.toggle('active', Number(img.dataset.index) === currentIndex)
+                );
+            }
+
+            function openOverlay(startIdx) {
+                overlay.classList.add('open');
+                showSlide(startIdx);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeOverlay() {
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) closeOverlay();
+            });
+
+            btnPrev.onclick  = () => showSlide(currentIndex - 1);
+            btnNext.onclick  = () => showSlide(currentIndex + 1);
+            btnClose.onclick = closeOverlay;
+
+            thumbsWrapper.addEventListener('click', e => {
+                if (e.target.tagName === 'IMG') showSlide(Number(e.target.dataset.index));
+            });
+
+            document.addEventListener('keydown', e => {
+                if (!overlay.classList.contains('open')) return;
+
+                if (e.key === 'Escape')       closeOverlay();
+                if (e.key === 'ArrowLeft')    showSlide(currentIndex - 1);
+                if (e.key === 'ArrowRight')   showSlide(currentIndex + 1);
+            });
+
+            document.querySelectorAll('.product-gallery img').forEach((img, idx) => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', () => openOverlay(idx));
+            });
+
+
+            /* справочная информация */
+            const infoOverlay = document.getElementById('infoOverlay');
+            const infoImg     = document.getElementById('infoImg');
+            const infoClose   = infoOverlay.querySelector('.close-btn');
+
+            /* открыть */
+            function openInfoOverlay(src){
+                infoImg.src = src;
+                infoOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            /* закрыть */
+            function closeInfoOverlay(){
+                infoOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            /* крестик */
+            infoClose.onclick = closeInfoOverlay;
+
+            /* клик по пустому фону */
+            infoOverlay.addEventListener('click', e => {
+                if (e.target === infoOverlay) closeInfoOverlay();
+            });
+
+            /* навешиваем на обе ссылки-триггеры */
+            document.querySelectorAll('.info-trigger').forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    openInfoOverlay(link.dataset.img);
+                });
+            });
+
         });
     </script>
 @endsection
