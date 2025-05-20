@@ -2430,3 +2430,24 @@ button:not(.collapsed) .arrow-icon {
 .overlay-thumbs img.active{border:2px solid #fff; opacity:1; transform:scale(1.05);}
 .overlay-thumbs img:hover{opacity:1;}
 
+.image-overlay .nav-btn{
+    position:absolute;           /* уже есть, но продублируем */
+    top:50%; transform:translateY(-50%);
+    width:48px; height:48px; border-radius:50%;
+    background:rgba(0,0,0,.5);           /* тёмный фон-кружок */
+    color:#fff; font-size:2rem; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    border:none; cursor:pointer;
+    z-index:2;                    /* поверх картинки */
+    transition:background .2s, opacity .2s;
+}
+
+image-overlay .nav-btn:hover{
+    background:rgba(0,0,0,.7);
+    opacity:1;
+}
+
+.image-overlay .nav-btn:focus{outline:none;}
+.image-overlay .prev-info{left:1rem;}
+.image-overlay .next-info{right:1rem;}
+

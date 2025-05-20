@@ -16,10 +16,14 @@
                 <div id="overlayThumbs" class="overlay-thumbs"></div>
             </div>
 
+
             <div id="infoOverlay" class="image-overlay">
                 <button class="close-btn" aria-label="Закрыть">&times;</button>
+                <button class="nav-btn prev-info" aria-label="Предыдущее">&lsaquo;</button>
                 <img id="infoImg" class="overlay-img" src="" alt="">
+                <button class="nav-btn next-info" aria-label="Следующее">&rsaquo;</button>
             </div>
+
 
             <div class="product-details">
                 <div class="product-gallery">
@@ -90,16 +94,20 @@
                     </div>
 
                     <div class="size-help">
-                        <a href="#" class="info-trigger"
-                        data-img="{{ asset('images/catalog/size_chart.png') }}">
+                        <a href="#"
+                           class="info-trigger"
+                           data-imgs='["{{ asset('images/catalog/size_chart1.png') }}",
+                                       "{{ asset('images/catalog/size_chart2.png') }}"]'>
                             ПОМОЩЬ С РАЗМЕРОМ
                         </a>
 
-                        <a href="#" class="info-trigger"
+                        <a href="#"
+                           class="info-trigger"
                            data-img="{{ asset('images/catalog/delivery_info.png') }}">
                             О ДОСТАВКЕ
                         </a>
                     </div>
+
 
 
                     <form action="{{ route('cart.add') }}" method="POST" class="w-100" id="add-form">
@@ -309,17 +317,34 @@
                 img.addEventListener('click', () => openOverlay(idx));
             });
 
-
             /* справочная информация */
+            /* === infoOverlay расширенная версия === */
             const infoOverlay = document.getElementById('infoOverlay');
             const infoImg     = document.getElementById('infoImg');
+            const btnInfoPrev = infoOverlay.querySelector('.prev-info');
+            const btnInfoNext = infoOverlay.querySelector('.next-info');
             const infoClose   = infoOverlay.querySelector('.close-btn');
 
-            /* открыть */
-            function openInfoOverlay(src){
-                infoImg.src = src;
+            let infoImages = [];   // массив src
+            let infoIdx    = 0;
+
+            /* показать текущий кадр */
+            function showInfo(i){
+                if(!infoImages.length) return;
+                infoIdx = (i + infoImages.length) % infoImages.length;
+                infoImg.src = infoImages[infoIdx];
+
+                const showArrows = infoImages.length > 1;
+                btnInfoPrev.style.display = btnInfoNext.style.display =
+                    showArrows ? 'flex' : 'none';   // ← всегда видно, если есть что листать
+            }
+
+            /* открыть overlay */
+            function openInfoOverlay(arr){
+                infoImages = arr;
                 infoOverlay.classList.add('open');
                 document.body.style.overflow = 'hidden';
+                showInfo(0);
             }
 
             /* закрыть */
@@ -328,19 +353,31 @@
                 document.body.style.overflow = '';
             }
 
-            /* крестик */
-            infoClose.onclick = closeInfoOverlay;
-
-            /* клик по пустому фону */
-            infoOverlay.addEventListener('click', e => {
-                if (e.target === infoOverlay) closeInfoOverlay();
+            /* стрелки + фон + esc */
+            btnInfoPrev.onclick = () => showInfo(infoIdx - 1);
+            btnInfoNext.onclick = () => showInfo(infoIdx + 1);
+            infoClose.onclick   = closeInfoOverlay;
+            infoOverlay.addEventListener('click',e=>{
+                if(e.target===infoOverlay) closeInfoOverlay();
+            });
+            document.addEventListener('keydown',e=>{
+                if(!infoOverlay.classList.contains('open')) return;
+                if(e.key==='Escape') closeInfoOverlay();
+                if(e.key==='ArrowLeft')  showInfo(infoIdx-1);
+                if(e.key==='ArrowRight') showInfo(infoIdx+1);
             });
 
-            /* навешиваем на обе ссылки-триггеры */
-            document.querySelectorAll('.info-trigger').forEach(link => {
-                link.addEventListener('click', e => {
+            /* навешиваем на все триггеры */
+            document.querySelectorAll('.info-trigger').forEach(link=>{
+                link.addEventListener('click',e=>{
                     e.preventDefault();
-                    openInfoOverlay(link.dataset.img);
+
+                    // приоритет: data-imgs > data-img
+                    if(link.dataset.imgs){
+                        openInfoOverlay(JSON.parse(link.dataset.imgs));
+                    }else if(link.dataset.img){
+                        openInfoOverlay([link.dataset.img]);
+                    }
                 });
             });
 
