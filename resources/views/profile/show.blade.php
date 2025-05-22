@@ -6,14 +6,21 @@
                 <img src="{{ $user->avatar ? asset($user->avatar) : asset('images/avatar.png') }}" alt="Фото профиля" class="profile-avatar">
                 <h1 class="profile-name">{{ $user->name }}</h1>
                 <p class="profile-email">{{ $user->email }}</p>
+                @if($user->phone)
+                    <p class="profile-phone">
+                        <strong>Номер&nbsp;тел:</strong> {{ $user->phone }}
+                    </p>
+                @else
+                    <p class="profile-phone text-muted">
+                        <strong>Номер&nbsp;тел:</strong> не&nbsp;указан
+                    </p>
+                @endif
+
                 <a href="{{ route('profile.edit') }}" class="edit-profile-btn">Редактировать профиль</a>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
-                    <button type="submit" class="btn btn-danger">
-                        Выйти с учётной записи
-                    </button>
+                    <button type="submit" class="btn btn-danger">Выйти с учётной записи</button>
                 </form>
-
             </div>
 
             <div class="profile-stats">

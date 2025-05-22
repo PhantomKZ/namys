@@ -318,17 +318,15 @@
             });
 
             /* справочная информация */
-            /* === infoOverlay расширенная версия === */
             const infoOverlay = document.getElementById('infoOverlay');
             const infoImg     = document.getElementById('infoImg');
             const btnInfoPrev = infoOverlay.querySelector('.prev-info');
             const btnInfoNext = infoOverlay.querySelector('.next-info');
             const infoClose   = infoOverlay.querySelector('.close-btn');
 
-            let infoImages = [];   // массив src
+            let infoImages = [];
             let infoIdx    = 0;
 
-            /* показать текущий кадр */
             function showInfo(i){
                 if(!infoImages.length) return;
                 infoIdx = (i + infoImages.length) % infoImages.length;
@@ -336,10 +334,9 @@
 
                 const showArrows = infoImages.length > 1;
                 btnInfoPrev.style.display = btnInfoNext.style.display =
-                    showArrows ? 'flex' : 'none';   // ← всегда видно, если есть что листать
+                    showArrows ? 'flex' : 'none';
             }
 
-            /* открыть overlay */
             function openInfoOverlay(arr){
                 infoImages = arr;
                 infoOverlay.classList.add('open');
@@ -347,13 +344,11 @@
                 showInfo(0);
             }
 
-            /* закрыть */
             function closeInfoOverlay(){
                 infoOverlay.classList.remove('open');
                 document.body.style.overflow = '';
             }
 
-            /* стрелки + фон + esc */
             btnInfoPrev.onclick = () => showInfo(infoIdx - 1);
             btnInfoNext.onclick = () => showInfo(infoIdx + 1);
             infoClose.onclick   = closeInfoOverlay;
@@ -367,12 +362,10 @@
                 if(e.key==='ArrowRight') showInfo(infoIdx+1);
             });
 
-            /* навешиваем на все триггеры */
             document.querySelectorAll('.info-trigger').forEach(link=>{
                 link.addEventListener('click',e=>{
                     e.preventDefault();
 
-                    // приоритет: data-imgs > data-img
                     if(link.dataset.imgs){
                         openInfoOverlay(JSON.parse(link.dataset.imgs));
                     }else if(link.dataset.img){

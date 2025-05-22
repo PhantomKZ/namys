@@ -21,6 +21,20 @@
                          class="mx-auto d-block"
                          style="height: 200px; width: 200px; border-radius: 50%; margin: 20px; object-fit: cover;">
                 </div>
+
+                <div class="mb-3 w-100">
+                    <label for="phone" class="form-label">Телефон</label>
+                    <input  type="tel"
+                            name="phone"
+                            id="phone"
+                            class="form-control"
+                            placeholder="+7(XXX)XXX-XX-XX"
+                            pattern="\+7\d{10}"
+                            maxlength="12"
+                            value="{{ old('phone', auth()->user()->phone ?? '') }}">
+                    <div class="form-text">Формат заполнение: +7 и ещё 10 цифр</div>
+                </div>
+
                 <div class="text-center ms-auto">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
@@ -53,6 +67,21 @@
                 };
                 reader.readAsDataURL(file);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const phoneInput = document.getElementById('phone');
+
+            phoneInput.addEventListener('input', () => {
+
+                phoneInput.value = phoneInput.value.replace(/[^+\d]/g, '');
+
+                if (!phoneInput.value.startsWith('+7')) {
+                    phoneInput.value = '+7' + phoneInput.value.replace(/^(\+)?7?/, '');
+                }
+
+                phoneInput.value = phoneInput.value.slice(0, 12);
+            });
         });
     </script>
 @endsection

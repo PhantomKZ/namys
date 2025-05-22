@@ -20,14 +20,18 @@ class ProfileController extends Controller
         return view('profile.edit', compact('user'));
     }
 
+
     public function update(Request $request)
     {
         $user = auth()->user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'   => 'required|string|max:255',
             'avatar' => 'nullable|image|max:2048',
+            'phone'  => 'nullable|regex:/^\+7\d{10}$/',
         ]);
+
+        $user->phone = $request->filled('phone') ? $request->phone : null;
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
@@ -37,8 +41,11 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->save();
 
-        return redirect()->route('profile.show')->with('success', 'Профиль обновлён!');
+        return redirect()
+            ->route('profile.show')
+            ->with('success', 'Профиль обновлён!');
     }
+
 
     public function orders(): View
     {
