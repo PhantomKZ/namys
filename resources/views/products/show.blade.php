@@ -3,7 +3,11 @@
     <div class="product-page">
         <div class="container-fluid">
             <div class="breadcrumb-nav">
-                <a href="{{ route('catalog.index') }}">КАТАЛОГ</a> / <a href="#">{{ $product->type }}</a>
+                <a href="{{ route('catalog.index') }}">КАТАЛОГ</a>
+                /
+                <a href="{{ route('catalog.index', ['type_id' => $product->type_id]) }}">
+                    {{ $product->type }}
+                </a>
             </div>
 
             <div id="imageOverlay" class="image-overlay">
@@ -321,6 +325,8 @@
                 img.addEventListener('click', () => openOverlay(idx));
             });
 
+
+
             /* справочная информация */
             const infoOverlay = document.getElementById('infoOverlay');
             const infoImg     = document.getElementById('infoImg');
@@ -377,7 +383,6 @@
                     }
                 });
             });
-
         });
     </script>
 @endsection
