@@ -67,7 +67,11 @@
                         <p>{{ $product->description }}</p>
                         <ul class="features-list">
                             <li><strong>Бренд:</strong> {{ $product->brand }}</li>
-                            <li><strong>Материал:</strong> {{ $product->material }}</li>
+                            <li>
+                                <strong>Материал:</strong>
+                                {{ $product->materials->pluck('name')->join(', ') }}
+                            </li>
+
                             <li><strong>Цвет:</strong> {{ $product->color }}</li>
                         </ul>
                     </div>

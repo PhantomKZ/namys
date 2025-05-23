@@ -16,7 +16,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['brand', 'type', 'material', 'color'])
+        $products = Product::with(['brand', 'type', 'materials', 'color'])
             ->orderBy('order', 'asc')  // Сортировка по полю order по возрастанию
             ->paginate(16);
 
@@ -41,7 +41,8 @@ class ProductController extends Controller
             'name' => 'required|string',
             'brand_id' => 'required|exists:brands,id',
             'type_id' => 'required|exists:types,id',
-            'material_id' => 'required|exists:materials,id',
+            'material_ids'   => 'required|array',
+            'material_ids.*' => 'exists:materials,id',
             'color_id' => 'required|exists:colors,id',
             'price' => 'required|numeric',
             'description' => 'nullable|string',
@@ -57,6 +58,7 @@ class ProductController extends Controller
 
         $data['is_limited'] = $request->has('is_limited') && $request->input('is_limited') === 'on' ? 1 : 0;
         $product = Product::create($data);
+        $product->materials()->attach($data['material_ids']);
 
         foreach ($request->input('quantities', []) as $sizeId => $quantity) {
             if ($quantity > 0) {
@@ -82,7 +84,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         return view('admin.products.form', [
-            'product'   => $product->load('sizes', 'images'),
+            'product'   => $product->load('sizes', 'images', 'materials'),
             'brands'    => Brand::all(),
             'types'     => Type::all(),
             'materials' => Material::all(),
@@ -97,7 +99,8 @@ class ProductController extends Controller
             'name' => 'required|string',
             'brand_id' => 'required|exists:brands,id',
             'type_id' => 'required|exists:types,id',
-            'material_id' => 'required|exists:materials,id',
+            'material_ids'   => 'required|array',
+            'material_ids.*' => 'exists:materials,id',
             'color_id' => 'required|exists:colors,id',
             'price' => 'required|numeric',
             'description' => 'nullable|string',
@@ -112,6 +115,7 @@ class ProductController extends Controller
         $product->update($data);
 
         $product->sizes()->sync([]);
+        $product->materials()->sync($data['material_ids']);
 
         foreach ($request->input('quantities', []) as $sizeId => $quantity) {
             if ($quantity > 0) {

@@ -3,20 +3,28 @@
 namespace Database\Seeders;
 
 use App\Models\Size;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SizeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $sizes = ['XS', 'S', 'M', 'L', 'XL'];
+        $clothes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
-        foreach ($sizes as $size) {
-            Size::firstOrCreate(['name' => $size]);
+        foreach ($clothes as $name) {
+            Size::updateOrCreate(
+                ['name' => $name],
+                ['category' => 'clothes']      // уберите, если поля category нет
+            );
+        }
+
+        /* -------- 2. размеры обуви (36-46) -------- */
+        foreach (range(36, 46) as $num) {
+            Size::updateOrCreate(
+                ['name' => (string) $num],
+                ['category' => 'shoes']        // уберите, если поля category нет
+            );
         }
     }
 }
+

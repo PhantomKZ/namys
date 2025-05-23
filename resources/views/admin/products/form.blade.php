@@ -48,12 +48,24 @@
             </div>
 
             <div class="form-group">
-                <label for="material_id">Материал</label>
-                <select name="material_id" id="material_id" class="form-control" required>
-                    <option value="" selected> Выберите материал </option>
+                <label for="materials">Материал(ы)</label>
+
+                <select name="material_ids[]"
+                        id="materials"
+                        class="form-control select2"
+                        multiple
+                        required>
                     @foreach($materials as $material)
-                        <option
-                            value="{{ $material->id }}" {{ old('material_id', $product->material_id ?? '') == $material->id ? 'selected' : '' }}>
+                        <option value="{{ $material->id }}"
+                            {{ in_array(
+                                    $material->id,
+                                    old(
+                                        'material_ids',
+                                        isset($product)
+                                            ? $product->materials->pluck('id')->toArray()
+                                            : []
+                                    )
+                                ) ? 'selected' : '' }}>
                             {{ $material->name }}
                         </option>
                     @endforeach
@@ -233,6 +245,17 @@
             }
         });
     </script>
+
+    <script>
+        $(function () {
+            $('#materials').select2({
+                placeholder: 'Выберите материал(ы)',
+                width: '100%',
+                language: 'ru'            // локализация (опционально)
+            });
+        });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.querySelector('form');

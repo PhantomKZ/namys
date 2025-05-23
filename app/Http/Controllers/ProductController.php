@@ -11,14 +11,14 @@ class ProductController extends Controller
 {
     public function show($id): View
     {
-        $product = Product::with(['type', 'brand', 'material', 'color', 'images', 'sizes'])
+        $product = Product::with(['type', 'brand', 'materials', 'color', 'images', 'sizes'])
             ->findOrFail($id);
 
         $product->sizes->each(function ($size) use ($product) {
             $size->available_quantity = $size->availableQuantity($product);
         });
 
-        $recommendations = Product::with(['type', 'brand', 'material', 'color', 'images', 'sizes'])
+        $recommendations = Product::with(['type', 'brand', 'materials', 'color', 'images', 'sizes'])
             ->where('id', '!=', $id)
             ->inRandomOrder()
             ->take(5)

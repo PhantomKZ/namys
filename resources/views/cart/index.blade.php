@@ -77,70 +77,77 @@
                     </div>
                 </div>
             </div>
-    </div>
-    @else
-        <div class="empty-basket">
+        @else
+            <div class="empty-basket">
+                <h2>Ваша корзина пуста</h2>
+                <p>Добавьте товары в корзину, чтобы сделать заказ</p>
+                <a href="{{ route('catalog.index') }}" class="continue-shopping">Перейти к покупкам</a>
+            </div>
+        @endif
+        <div class="empty-basket" style="display: none">
             <h2>Ваша корзина пуста</h2>
             <p>Добавьте товары в корзину, чтобы сделать заказ</p>
             <a href="{{ route('catalog.index') }}" class="continue-shopping">Перейти к покупкам</a>
         </div>
-    @endif
-    <div class="empty-basket" style="display: none">
-        <h2>Ваша корзина пуста</h2>
-        <p>Добавьте товары в корзину, чтобы сделать заказ</p>
-        <a href="{{ route('catalog.index') }}" class="continue-shopping">Перейти к покупкам</a>
-    </div>
-    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center" id="checkoutModalLabel">Оплата заказа</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Выбор метода оплаты -->
-                    <div class="payment-methods d-flex justify-content-evenly">
-                        <button class="payment-method btn btn-light" onclick="selectPaymentMethod('bankCard')">
-                            <img src="{{ asset('images/payment/visaandmastercard.png')}}" alt="Visa" class="payment-icon">
-                            <div>Банковская карта</div>
-                        </button>
-                        <button class="payment-method btn btn-light" onclick="selectPaymentMethod('kaspi')">
-                            <img src="{{ asset('images/payment/kaspi.png') }}" alt="Kaspi" class="payment-icon">
-                            <div>Kaspi</div>
-                        </button>
+        <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="checkoutModalLabel">Оплата заказа</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <!-- Выбор метода оплаты -->
+                        <div class="payment-methods d-flex justify-content-evenly">
+                            <button class="payment-method btn btn-light" onclick="selectPaymentMethod('bankCard')">
+                                <img src="{{ asset('images/payment/visaandmastercard.png')}}" alt="Visa"
+                                     class="payment-icon">
+                                <div>Банковская карта</div>
+                            </button>
+                            <button class="payment-method btn btn-light" onclick="selectPaymentMethod('kaspi')">
+                                <img src="{{ asset('images/payment/kaspi.png') }}" alt="Kaspi" class="payment-icon">
+                                <div>Kaspi</div>
+                            </button>
+                        </div>
 
-                    <!-- Форма оплаты банковской картой -->
-                    <form action="{{ route('order.store') }}" method="POST" id="paymentFormBankCard" class="payment-form" style="display: none;">
-                        @csrf
-                        <input type="hidden" name="total_price" id="total_price_input" value="{{ $formattedTotalPrice }}">
-                        <div class="card-payment">
-                            <input type="text" class="payment-input" placeholder="Номер карты" required>
-                            <div class="payment-row">
-                                <input type="text" class="payment-input" placeholder="Срок действия" required>
-                                <input type="text" class="payment-input" placeholder="CVV" required>
+                        <!-- Форма оплаты банковской картой -->
+                        <form action="{{ route('order.store') }}" method="POST" id="paymentFormBankCard"
+                              class="payment-form" style="display: none;">
+                            @csrf
+                            <input type="hidden" name="total_price" id="total_price_input"
+                                   value="{{ $formattedTotalPrice }}">
+                            <div class="card-payment">
+                                <input type="text" class="payment-input" placeholder="Номер карты" required>
+                                <div class="payment-row">
+                                    <input type="text" class="payment-input" placeholder="Срок действия" required>
+                                    <input type="text" class="payment-input" placeholder="CVV" required>
+                                </div>
+                                <input type="text" class="payment-input" placeholder="Имя держателя карты" required>
+                                @foreach($items as $item)
+                                    @php
+                                        $key = $item->product->id . '_' . $item->size->id;
+                                    @endphp
+                                    <input type="hidden" name="products[{{ $key }}][id]"
+                                           value="{{ $item->product->id }}">
+                                    <input type="hidden" name="products[{{ $key }}][size_id]"
+                                           value="{{ $item->size->id ?? null }}">
+                                    <input type="hidden" name="products[{{ $key }}][quantity]"
+                                           value="{{ $item->quantity }}" class="hidden-quantity">
+                                @endforeach
+                                <button type="submit" class="pay-button card-pay-button">Оплатить</button>
                             </div>
-                            <input type="text" class="payment-input" placeholder="Имя держателя карты" required>
-                            @foreach($items as $item)
-                                @php
-                                    $key = $item->product->id . '_' . $item->size->id;
-                                @endphp
-                                <input type="hidden" name="products[{{ $key }}][id]" value="{{ $item->product->id }}">
-                                <input type="hidden" name="products[{{ $key }}][size_id]" value="{{ $item->size->id ?? null }}">
-                                <input type="hidden" name="products[{{ $key }}][quantity]" value="{{ $item->quantity }}" class="hidden-quantity">
-                            @endforeach
-                            <button type="submit" class="pay-button card-pay-button">Оплатить</button>
-                        </div>
-                    </form>
+                        </form>
 
-                    <form id="paymentFormKaspi" class="payment-form" style="display: none;">
-                        <input type="hidden" name="payment_method" value="kaspi">
-                        <div class="qr-code">
-                            <img src="{{ asset('images/payment/kaspiqr.png') }}" alt="QR-код Kaspi">
-                            <p>Отсканируйте QR-код для оплаты через Kaspi</p>
-                        </div>
-                        <div class="payment-error">Пожалуйста, заполните все поля</div>
-                    </form>
+                        <form id="paymentFormKaspi" class="payment-form" style="display: none;">
+                            <input type="hidden" name="payment_method" value="kaspi">
+                            <div class="qr-code">
+                                <img src="{{ asset('images/payment/kaspiqr.png') }}" alt="QR-код Kaspi">
+                                <p>Отсканируйте QR-код для оплаты через Kaspi</p>
+                            </div>
+                            <div class="payment-error">Пожалуйста, заполните все поля</div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -172,13 +179,14 @@
                 selectedButton.classList.add('active');
             }
         }
-        document.addEventListener('DOMContentLoaded', function() {
+
+        document.addEventListener('DOMContentLoaded', function () {
             const cardNumberInput = document.querySelector('.card-payment input[placeholder="Номер карты"]');
             const cardDateInput = document.querySelector('.card-payment input[placeholder="Срок действия"]');
             const cardCVVInput = document.querySelector('.card-payment input[placeholder="CVV"]');
 
             if (cardNumberInput) {
-                cardNumberInput.addEventListener('input', function(e) {
+                cardNumberInput.addEventListener('input', function (e) {
                     let value = this.value.replace(/\D/g, '').slice(0, 16);
                     value = value.replace(/(.{4})/g, '$1 ').trim();
                     this.value = value;
@@ -186,17 +194,17 @@
             }
 
             if (cardDateInput) {
-                cardDateInput.addEventListener('input', function(e) {
+                cardDateInput.addEventListener('input', function (e) {
                     let value = this.value.replace(/\D/g, '').slice(0, 4);
                     if (value.length > 2) {
-                        value = value.slice(0,2) + '/' + value.slice(2);
+                        value = value.slice(0, 2) + '/' + value.slice(2);
                     }
                     this.value = value;
                 });
             }
 
             if (cardCVVInput) {
-                cardCVVInput.addEventListener('input', function(e) {
+                cardCVVInput.addEventListener('input', function (e) {
                     this.value = this.value.replace(/\D/g, '').slice(0, 3);
                 });
             }

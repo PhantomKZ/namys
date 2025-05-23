@@ -30,9 +30,10 @@ class Product extends Model
     {
         return $this->belongsTo(Type::class);
     }
-    public function material(): BelongsTo
+    public function materials(): BelongsToMany
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsToMany(Material::class);
+
     }
     public function color(): BelongsTo
     {
