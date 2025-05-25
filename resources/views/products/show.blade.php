@@ -67,6 +67,25 @@
                     </h1>
                     <div class="product-price">{{ $product->formattedPrice }}</div>
 
+                    @if(isset($variants) && $variants->count() > 1)
+                        <div class="color-picker mb-3 d-flex align-items-center">
+                            <span class="me-2 fw-bold">Цвет:</span>
+                            @foreach($variants as $item)
+                                @php
+                                    $thumb = optional($item->images->first())->path
+                                             ?? '/images/noimage.jpg';
+                                    $colorName = optional($item->color)->name ?? 'цвет';
+                                @endphp
+
+                                <a href="{{ route('product.show', $item->id) }}"
+                                   class="color-swatch {{ $item->id == $product->id ? 'active' : '' }}"
+                                   style="background-image:url('{{ asset($thumb) }}')"
+                                   title="{{ $colorName }}">
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+
                     <div class="product-description">
                         <p>{{ $product->description }}</p>
                         <ul class="features-list">
@@ -320,10 +339,11 @@
                 if (e.key === 'ArrowRight')   showSlide(currentIndex + 1);
             });
 
-            document.querySelectorAll('.product-gallery img').forEach((img, idx) => {
-                img.style.cursor = 'zoom-in';
-                img.addEventListener('click', () => openOverlay(idx));
-            });
+            document.querySelectorAll('.product-gallery .carousel-inner .main-image')
+                .forEach((img, idx) => {
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', () => openOverlay(idx));
+                });
 
 
 

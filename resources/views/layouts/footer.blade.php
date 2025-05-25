@@ -1,5 +1,5 @@
 <footer class="footer">
-    <p>+7 (800) 555 35 35 | namyskz@shop.kz</p>
+    <p>+8 (800) 555 35 35 | namyskz@shop.kz</p>
     <p>г. Павлодар, ул. Назарбаева 87</p>
     <p>&copy; 2025 NAMYS. Все права защищены.</p>
     <div class="social-icons">

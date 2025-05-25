@@ -2451,3 +2451,12 @@ image-overlay .nav-btn:hover{
 .image-overlay .prev-info{left:1rem;}
 .image-overlay .next-info{right:1rem;}
 
+.color-picker .color-swatch{
+    width:48px;height:48px;border-radius:4px;
+    background-size:cover;background-position:center;
+    margin-right:8px;border:2px solid transparent;
+    cursor:pointer;transition:transform .2s;
+}
+.color-picker .color-swatch:hover{ transform:scale(1.05); }
+.color-picker .color-swatch.active{ border-color:#000; }
+

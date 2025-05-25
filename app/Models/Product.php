@@ -16,11 +16,25 @@ class Product extends Model
         'brand_id',
         'type_id',
         'material_id',
+        'model_code',
         'color_id',
         'description',
         'price',
-        'is_limited'
+        'is_limited',
     ];
+
+    public function variants()
+    {
+        // нет кода ⇒ нет вариантов
+        if (!$this->model_code) {
+            return collect();
+        }
+
+        return self::where('model_code', $this->model_code)
+            ->orderBy('id')
+            ->with(['color', 'images'])
+            ->get();
+    }
 
     public function brand(): BelongsTo
     {

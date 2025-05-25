@@ -6,6 +6,21 @@
                 <a href="{{ route('collection.index') }}">Look Collection</a> / <span>Street Look</span>
             </div>
 
+            <div id="imageOverlay" class="image-overlay">
+                <button class="close-btn" aria-label="Закрыть">&times;</button>
+                <button class="nav-btn prev-btn" aria-label="Предыдущее">&lsaquo;</button>
+                <img id="overlayImg" class="overlay-img" src="" alt="">
+                <button class="nav-btn next-btn" aria-label="Следующее">&rsaquo;</button>
+                <div id="overlayThumbs" class="overlay-thumbs"></div>
+            </div>
+
+            <div id="infoOverlay" class="image-overlay">
+                <button class="close-btn" aria-label="Закрыть">&times;</button>
+                <button class="nav-btn prev-info" aria-label="Предыдущее">&lsaquo;</button>
+                <img id="infoImg" class="overlay-img" src="" alt="">
+                <button class="nav-btn next-info" aria-label="Следующее">&rsaquo;</button>
+            </div>
+
             <div class="product-details">
                 <div class="product-gallery">
                     <div id="productCarousel" class="carousel slide" data-bs-interval="false">
@@ -61,8 +76,18 @@
                     </div>
 
                     <div class="size-help">
-                        <a href="#" class="size-guide">ПОМОЩЬ С РАЗМЕРОМ</a>
-                        <a href="#" class="delivery-info">О ДОСТАВКЕ</a>
+                        <a href="#"
+                           class="info-trigger"
+                           data-imgs='["{{ asset('images/look/size_chart1.png') }}",
+                                       "{{ asset('images/look/size_chart2.png') }}"]'>
+                            ПОМОЩЬ С РАЗМЕРОМ
+                        </a>
+
+                        <a href="#"
+                           class="info-trigger"
+                           data-img="{{ asset('images/look/delivery_info.png') }}">
+                            О ДОСТАВКЕ
+                        </a>
                     </div>
 
                     <form action="{{ route('cart.addAll') }}" method="POST" id="add-all-form">
@@ -105,18 +130,140 @@
 @endsection
 @section('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const select = document.getElementById('size_id_select');
-            const input = document.getElementById('size_id_input');
+        document.addEventListener('DOMContentLoaded', () => {
 
-            select.addEventListener('change', function () {
-                input.value = this.value;
+            const galleryImages = Array.from(
+                document.querySelectorAll('.product-gallery .carousel-inner img')
+            ).map(img => img.src);
+
+            const overlay       = document.getElementById('imageOverlay');
+            const overlayImg    = document.getElementById('overlayImg');
+            const thumbsWrapper = document.getElementById('overlayThumbs');
+            const btnPrev       = overlay.querySelector('.prev-btn');
+            const btnNext       = overlay.querySelector('.next-btn');
+            const btnClose      = overlay.querySelector('.close-btn');
+            let currentIndex    = 0;
+            let isZoomed        = false;
+
+            galleryImages.forEach((src, idx) => {
+                const t = document.createElement('img');
+                t.src = src;
+                t.dataset.index = idx;
+                thumbsWrapper.appendChild(t);
             });
 
-            // Если select уже выбран (например, при возврате формы), то установить значение:
-            if (select.value) {
-                input.value = select.value;
+            function showSlide(i){
+                currentIndex = (i + galleryImages.length) % galleryImages.length;
+                overlayImg.src = galleryImages[currentIndex];
+                overlayImg.classList.remove('zoomed');
+                overlayImg.style.transformOrigin = 'center center';
+                isZoomed = false;
+                thumbsWrapper.querySelectorAll('img').forEach(img =>
+                    img.classList.toggle('active', Number(img.dataset.index) === currentIndex)
+                );
             }
+
+            function openOverlay(idx){
+                overlay.classList.add('open');
+                showSlide(idx);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeOverlay(){
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+                overlayImg.classList.remove('zoomed');
+                overlayImg.style.transformOrigin = 'center center';
+                isZoomed = false;
+            }
+
+            overlayImg.addEventListener('click', () => {
+                if(isZoomed){
+                    overlayImg.classList.remove('zoomed');
+                    overlayImg.style.transformOrigin = 'center center';
+                    isZoomed = false;
+                } else {
+                    overlayImg.classList.add('zoomed');
+                    isZoomed = true;
+                }
+            });
+            overlayImg.addEventListener('mousemove', e => {
+                if(!isZoomed) return;
+                const r = overlayImg.getBoundingClientRect();
+                const x = ((e.clientX - r.left)/r.width)*100;
+                const y = ((e.clientY - r.top)/r.height)*100;
+                overlayImg.style.transformOrigin = `${x}% ${y}%`;
+            });
+
+            btnPrev.onclick  = () => showSlide(currentIndex - 1);
+            btnNext.onclick  = () => showSlide(currentIndex + 1);
+            btnClose.onclick = closeOverlay;
+            overlay.addEventListener('click', e => { if(e.target===overlay) closeOverlay(); });
+            document.addEventListener('keydown', e => {
+                if(!overlay.classList.contains('open')) return;
+                if(e.key==='Escape') closeOverlay();
+                if(e.key==='ArrowLeft')  showSlide(currentIndex - 1);
+                if(e.key==='ArrowRight') showSlide(currentIndex + 1);
+            });
+            thumbsWrapper.addEventListener('click', e => {
+                if(e.target.tagName==='IMG') showSlide(Number(e.target.dataset.index));
+            });
+
+            document.querySelectorAll('.product-gallery .carousel-inner img')
+                .forEach((img, idx) => {
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', () => openOverlay(idx));
+                });
+
+            const infoOverlay = document.getElementById('infoOverlay');
+            const infoImg     = document.getElementById('infoImg');
+            const btnInfoPrev = infoOverlay.querySelector('.prev-info');
+            const btnInfoNext = infoOverlay.querySelector('.next-info');
+            const infoClose   = infoOverlay.querySelector('.close-btn');
+            let infoImages = [], infoIdx = 0;
+
+            function showInfo(i){
+                if(!infoImages.length) return;
+                infoIdx = (i + infoImages.length) % infoImages.length;
+                infoImg.src = infoImages[infoIdx];
+                // прячем стрелки, если одна картинка
+                const vis = infoImages.length>1 ? 'flex' : 'none';
+                btnInfoPrev.style.display = btnInfoNext.style.display = vis;
+            }
+
+            function openInfo(arr){
+                infoImages = arr;
+                infoOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                showInfo(0);
+            }
+            function closeInfo(){
+                infoOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            btnInfoPrev.onclick = () => showInfo(infoIdx - 1);
+            btnInfoNext.onclick = () => showInfo(infoIdx + 1);
+            infoClose.onclick   = closeInfo;
+            infoOverlay.addEventListener('click', e => { if(e.target===infoOverlay) closeInfo(); });
+            document.addEventListener('keydown', e => {
+                if(!infoOverlay.classList.contains('open')) return;
+                if(e.key==='Escape') closeInfo();
+                if(e.key==='ArrowLeft') showInfo(infoIdx - 1);
+                if(e.key==='ArrowRight') showInfo(infoIdx + 1);
+            });
+
+            document.querySelectorAll('.info-trigger').forEach(link =>{
+                link.addEventListener('click', e =>{
+                    e.preventDefault();
+                    if(link.dataset.imgs){
+                        openInfo(JSON.parse(link.dataset.imgs));
+                    } else if(link.dataset.img){
+                        openInfo([ link.dataset.img ]);
+                    }
+                });
+            });
+
         });
     </script>
 @endsection

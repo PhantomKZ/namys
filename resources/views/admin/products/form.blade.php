@@ -22,6 +22,19 @@
             </div>
 
             <div class="form-group">
+                <label for="model_code">Код-модели (группирует цвета)</label>
+                <input type="text"
+                       name="model_code"
+                       id="model_code"
+                       class="form-control"
+                       value="{{ old('model_code', $product->model_code ?? '') }}"
+                       placeholder="например: tshirt-basic">
+                <small class="form-text text-muted">
+                    Всем расцветкам одного товара задавайте одинаковый код.
+                </small>
+            </div>
+
+            <div class="form-group">
                 <label for="brand_id">Бренд</label>
                 <select name="brand_id" id="brand_id" class="form-control" required>
                     <option value="" selected> Выберите бренд </option>
