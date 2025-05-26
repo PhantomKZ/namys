@@ -56,7 +56,7 @@
             @foreach($products as $product)
                 <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card">
                     <div class="product-image-container">
-                        @if($product->created_at->isCurrentWeek())
+                        @if ($product->created_at->diffInDays(now()) < 7)
                             <span class="new-badge">NEW</span>
                         @endif
                         <img src="{{ asset($product->mainImage) }}" alt="{{ $product->title }}" class="product-image">
