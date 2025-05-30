@@ -26,9 +26,18 @@ class TypeController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $type = Type::create([
-            'name' => $request->name,
-        ]);
+        // Проверка на дубликат
+        if (Type::where('name', $request->name)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Тип одежды с таким названием уже существует!');
+        }
+
+        try {
+            $type = Type::create([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при создании типа: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.types.index')->with('success', "Тип одежды {$type->name} успешно создан!");
     }
@@ -47,9 +56,18 @@ class TypeController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $type->update([
-            'name' => $request->name,
-        ]);
+        // Проверка на дубликат (кроме текущего типа)
+        if (Type::where('name', $request->name)->where('id', '!=', $id)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Тип одежды с таким названием уже существует!');
+        }
+
+        try {
+            $type->update([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при обновлении типа: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.types.index')->with('success', "Тип одежды {$type->name} успешно обновлен!");
     }

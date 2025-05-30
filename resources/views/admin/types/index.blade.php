@@ -46,6 +46,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="alert alert-danger mt-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <table class="table mt-4">
             <thead>
             <tr>

@@ -25,9 +25,18 @@ class BrandController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $brand = Brand::create([
-            'name' => $request->name,
-        ]);
+        // Проверка на дубликат
+        if (Brand::where('name', $request->name)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Бренд с таким названием уже существует!');
+        }
+
+        try {
+            $brand = Brand::create([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при создании бренда: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.brands.index')->with('success', "Бренд {$brand->name} успешно создан!");
     }
@@ -46,9 +55,18 @@ class BrandController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $brand->update([
-            'name' => $request->name,
-        ]);
+        // Проверка на дубликат (кроме текущего бренда)
+        if (Brand::where('name', $request->name)->where('id', '!=', $id)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Бренд с таким названием уже существует!');
+        }
+
+        try {
+            $brand->update([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при обновлении бренда: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.brands.index')->with('success', "Бренд {$brand->name} успешно обновлен!");
     }

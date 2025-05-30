@@ -26,9 +26,17 @@ class ColorController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $color = Color::create([
-            'name' => $request->name,
-        ]);
+        if (\App\Models\Color::where('name', $request->name)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Цвет с таким названием уже существует!');
+        }
+
+        try {
+            $color = \App\Models\Color::create([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при создании цвета: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.colors.index')->with('success', "Цвет {$color->name} успешно создан!");
     }
@@ -41,15 +49,23 @@ class ColorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $color = Color::where('id', $id)->firstOrFail();
+        $color = \App\Models\Color::where('id', $id)->firstOrFail();
 
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        $color->update([
-            'name' => $request->name,
-        ]);
+        if (\App\Models\Color::where('name', $request->name)->where('id', '!=', $id)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Цвет с таким названием уже существует!');
+        }
+
+        try {
+            $color->update([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при обновлении цвета: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.colors.index')->with('success', "Цвет {$color->name} успешно обновлен!");
     }

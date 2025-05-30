@@ -45,6 +45,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="alert alert-danger mt-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <table class="table mt-4">
             <thead>
             <tr>
@@ -63,7 +69,7 @@
                                 data-name="{{ $brand->name }}">
                             Редактировать
                         </button>
-                        <form action="{{ route('admin.categories.destroy', $brand->id) }}" method="POST" style="display: inline;">
+                        <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Удалить</button>

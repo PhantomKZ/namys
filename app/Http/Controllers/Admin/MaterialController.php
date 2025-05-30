@@ -26,9 +26,17 @@ class MaterialController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $material = Material::create([
-            'name' => $request->name,
-        ]);
+        if (\App\Models\Material::where('name', $request->name)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Материал с таким названием уже существует!');
+        }
+
+        try {
+            $material = \App\Models\Material::create([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при создании материала: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.materials.index')->with('success', "Материал {$material->name} успешно создан!");
     }
@@ -41,15 +49,23 @@ class MaterialController extends Controller
 
     public function update(Request $request, $id)
     {
-        $material = Material::where('id', $id)->firstOrFail();
+        $material = \App\Models\Material::where('id', $id)->firstOrFail();
 
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        $material->update([
-            'name' => $request->name,
-        ]);
+        if (\App\Models\Material::where('name', $request->name)->where('id', '!=', $id)->exists()) {
+            return redirect()->back()->withInput()->with('error', 'Материал с таким названием уже существует!');
+        }
+
+        try {
+            $material->update([
+                'name' => $request->name,
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Ошибка при обновлении материала: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.materials.index')->with('success', "Материал {$material->name} успешно обновлен!");
     }

@@ -54,7 +54,10 @@
     @if(!empty($products) && $products->count())
         <div class="products-grid">
             @foreach($products as $product)
-                <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card">
+                @php
+                    $isInactive = $product->sizes->sum('pivot.quantity') <= 0;
+                @endphp
+                <a href="{{ route('product.show', $product->id) }}" class="catalog-product-card{{ $isInactive ? ' inactive' : '' }}">
                     <div class="product-image-container">
                         @if ($product->created_at->diffInDays(now()) < 7)
                             <span class="new-badge">NEW</span>
@@ -63,7 +66,7 @@
                     </div>
                     <h3 class="product-title">{{ $product->title }}</h3>
                     <p class="product-price">{{ $product->formattedPrice }}</p>
-                    <button class="add-to-cart">Добавить в корзину</button>
+                    <button class="add-to-cart" {{ $isInactive ? 'disabled style=\'opacity:0.5;cursor:not-allowed;\'' : '' }}>Добавить в корзину</button>
                 </a>
             @endforeach
         </div>
