@@ -38,6 +38,9 @@
                             @enderror
                         </div>
                         <button type="submit" class="auth-button"> Войти </button>
+                        <div class="forgot-password">
+                            <a href="{{ route('password.request') }}">Забыли пароль?</a>
+                        </div>
                     </form>
 
                     <!-- Регистрация форма -->

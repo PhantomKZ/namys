@@ -99,25 +99,33 @@ class CartController extends Controller
     public function addAll(Request $request)
     {
         $messages = [
-            'size_id.required' => 'Пожалуйста, выберите размер.',
-            'size_id.exists' => 'Выбранный размер не существует.',
+            'sizes.required' => 'Пожалуйста, выберите размер для каждого товара.',
+            'sizes.array' => 'Неверный формат размеров.',
+            'sizes.*.required' => 'Пожалуйста, выберите размер для каждого товара.',
+            'sizes.*.exists' => 'Выбранный размер не существует.',
             'product_ids.required' => 'Не найдены товары для добавления.',
             'product_ids.array' => 'Неверный формат списка товаров.',
             'product_ids.*.exists' => 'Один из товаров не существует.',
         ];
 
         $validated = $request->validate([
-            'size_id' => 'required|exists:sizes,id',
+            'sizes' => 'required|array',
             'product_ids' => 'required|array',
             'product_ids.*' => 'exists:products,id',
         ], $messages);
 
-        $sizeId = $validated['size_id'];
-        $productIds = $validated['product_ids'];
+        foreach ($validated['product_ids'] as $productId) {
+            if (empty($request->input('sizes.' . $productId))) {
+                return back()->withErrors(['sizes' => 'Пожалуйста, выберите размер для каждого товара.'])->withInput();
+            }
+        }
+
         $quantity = $request->input('quantity', 1);
+        $sizes = $request->input('sizes');
 
         if (auth()->check()) {
-            foreach ($productIds as $productId) {
+            foreach ($validated['product_ids'] as $productId) {
+                $sizeId = $sizes[$productId];
                 $item = CartItem::firstOrNew([
                     'user_id' => auth()->id(),
                     'product_id' => $productId,
@@ -128,7 +136,8 @@ class CartController extends Controller
             }
         } else {
             $cart = session()->get('cart', []);
-            foreach ($productIds as $productId) {
+            foreach ($validated['product_ids'] as $productId) {
+                $sizeId = $sizes[$productId];
                 if (isset($cart[$productId][$sizeId])) {
                     $cart[$productId][$sizeId]['quantity'] += $quantity;
                 } else {

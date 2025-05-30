@@ -35,6 +35,19 @@
                     <div class="form-text">Формат заполнение: +7 и ещё 10 цифр</div>
                 </div>
 
+                <div class="mb-3 w-100">
+                    <label for="current_password" class="form-label">Текущий пароль</label>
+                    <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Введите текущий пароль">
+                </div>
+                <div class="mb-3 w-100">
+                    <label for="new_password" class="form-label">Новый пароль</label>
+                    <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Введите новый пароль">
+                </div>
+                <div class="mb-3 w-100">
+                    <label for="new_password_confirmation" class="form-label">Подтверждение нового пароля</label>
+                    <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" placeholder="Повторите новый пароль">
+                </div>
+
                 <div class="text-center ms-auto">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>

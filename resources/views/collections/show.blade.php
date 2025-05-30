@@ -3,7 +3,7 @@
     <div class="product-page">
         <div class="container-fluid">
             <div class="breadcrumb-nav">
-                <a href="{{ route('collection.index') }}">Look Collection</a> / <span>Street Look</span>
+                <a href="{{ route('collection.index') }}">Look Collection</a> / <span>{{ $collection->name }}</span>
             </div>
 
             <div id="imageOverlay" class="image-overlay">
@@ -62,43 +62,39 @@
                         </ul>
                     </div>
 
-                    <div class="size-selector">
-                        <select id="size_id_select" class="form-control" required>
-                            <option value="">Выберите размер</option>
-                            @foreach($collection->availableSizes() as $size)
-                                @if($size->quantity > 0)
-                                    <option value="{{ $size->id }}">
-                                        {{ $size->name }} ({{ $size->quantity }} в наличии)
-                                    </option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="size-help">
-                        <a href="#"
-                           class="info-trigger"
-                           data-imgs='["{{ asset('images/look/size_chart1.png') }}",
-                                       "{{ asset('images/look/size_chart2.png') }}"]'>
-                            ПОМОЩЬ С РАЗМЕРОМ
-                        </a>
-
-                        <a href="#"
-                           class="info-trigger"
-                           data-img="{{ asset('images/look/delivery_info.png') }}">
-                            О ДОСТАВКЕ
-                        </a>
-                    </div>
-
                     <form action="{{ route('cart.addAll') }}" method="POST" id="add-all-form">
                         @csrf
-                        <input type="hidden" name="size_id" id="size_id_input">
-                        @error('size_id')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
                         @foreach($products as $product)
+                            <div class="mb-3">
+                                <label for="size_{{ $product->id }}">Размер для {{ $product->type }} {{ $product->name }}:</label>
+                                <select name="sizes[{{ $product->id }}]" id="size_{{ $product->id }}" class="form-control" required>
+                                    <option value="">Выберите размер</option>
+                                    @foreach($product->sizes as $size)
+                                        @if($size->pivot->quantity > 0)
+                                            <option value="{{ $size->id }}">{{ $size->name }} ({{ $size->pivot->quantity }} в наличии)</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
                             <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
                         @endforeach
+                        @if ($errors->has('sizes'))
+                            <div class="alert alert-danger">{{ $errors->first('sizes') }}</div>
+                        @endif
+                        <div class="size-help" style="margin-bottom: 20px;">
+                            <a href="#"
+                               class="info-trigger"
+                               data-imgs='["{{ asset('images/look/size_chart1.png') }}",
+                                           "{{ asset('images/look/size_chart2.png') }}"]'>
+                                ПОМОЩЬ С РАЗМЕРОМ
+                            </a>
+
+                            <a href="#"
+                               class="info-trigger"
+                               data-img="{{ asset('images/look/delivery_info.png') }}">
+                                О ДОСТАВКЕ
+                            </a>
+                        </div>
                         <button type="submit" class="add-to-cart-btn">Купить весь лук</button>
                     </form>
                 </div>

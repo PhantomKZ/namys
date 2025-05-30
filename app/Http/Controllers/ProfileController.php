@@ -39,6 +39,24 @@ class ProfileController extends Controller
         }
 
         $user->name = $request->name;
+
+        // Смена пароля
+        if ($request->filled('current_password') || $request->filled('new_password') || $request->filled('new_password_confirmation')) {
+            $request->validate([
+                'current_password' => 'required',
+                'new_password' => 'required|string|min:8|confirmed',
+            ], [
+                'current_password.required' => 'Введите текущий пароль для смены пароля',
+                'new_password.required' => 'Введите новый пароль',
+                'new_password.confirmed' => 'Подтверждение пароля не совпадает',
+                'new_password.min' => 'Пароль должен быть не менее 8 символов',
+            ]);
+            if (!\Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'Текущий пароль введён неверно'])->withInput();
+            }
+            $user->password = bcrypt($request->new_password);
+        }
+
         $user->save();
 
         return redirect()

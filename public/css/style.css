@@ -1682,6 +1682,23 @@ body {
     box-shadow: none;
 }
 
+.forgot-password {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.forgot-password a {
+    color: #48c78e;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+    color: #3aa876;
+    text-decoration: underline;
+}
+
 .social-auth {
     margin-top: 30px;
     text-align: center;
@@ -2459,4 +2476,64 @@ image-overlay .nav-btn:hover{
 }
 .color-picker .color-swatch:hover{ transform:scale(1.05); }
 .color-picker .color-swatch.active{ border-color:#000; }
+
+/* Стили для форм восстановления пароля */
+.reset-password-form .form-group input[type="email"],
+.reset-password-form .auth-button {
+    width: 200%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-size: 18px;
+}
+
+.reset-password-form .auth-button {
+    padding: 18px;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.back-to-auth {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-to-auth .back-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #e07a83;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+    margin-top: 10px;
+}
+
+.back-to-auth .back-button:hover {
+    background: #c95c6b;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.back-to-auth-text {
+    text-align: center;
+    margin-top: 20px;
+    width: 200%;
+    max-width: 400px;
+}
+
+.back-to-auth-text a {
+    color: #48c78e;
+    font-size: 16px;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.back-to-auth-text a:hover {
+    color: #3aa876;
+    text-decoration: underline;
+}
 
