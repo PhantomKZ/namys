@@ -184,18 +184,21 @@
             const cardNumberInput = document.querySelector('.card-payment input[placeholder="Номер карты"]');
             const cardDateInput = document.querySelector('.card-payment input[placeholder="Срок действия"]');
             const cardCVVInput = document.querySelector('.card-payment input[placeholder="CVV"]');
+            const cardHolderInput = document.querySelector('.card-payment input[placeholder="Имя держателя карты"]');
+            const payButton = document.querySelector('.card-pay-button');
+            const paymentForm = document.getElementById('paymentFormBankCard');
 
-            if (cardNumberInput) {
-                cardNumberInput.addEventListener('input', function (e) {
-                    let value = this.value.replace(/\D/g, '').slice(0, 16);
-                    value = value.replace(/(.{4})/g, '$1 ').trim();
-                    this.value = value;
+            // Имя держателя — только латинские буквы и пробелы
+            if (cardHolderInput) {
+                cardHolderInput.addEventListener('input', function () {
+                    this.value = this.value.replace(/[^A-Za-z\s]/g, '');
                 });
             }
 
+            // Срок действия — только валидные значения
             if (cardDateInput) {
                 cardDateInput.addEventListener('input', function (e) {
-                    let value = this.value.replace(/\D/g, '').slice(0, 4);
+                    let value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
                     if (value.length > 2) {
                         value = value.slice(0, 2) + '/' + value.slice(2);
                     }
@@ -206,6 +209,59 @@
             if (cardCVVInput) {
                 cardCVVInput.addEventListener('input', function (e) {
                     this.value = this.value.replace(/\D/g, '').slice(0, 3);
+                });
+            }
+
+            // Номер карты — только цифры, максимум 16, автопробел после каждых 4 цифр
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function () {
+                    let value = this.value.replace(/\D/g, '').slice(0, 16);
+                    value = value.replace(/(.{4})/g, '$1 ').trim();
+                    this.value = value;
+                });
+            }
+
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', function (e) {
+                    // Проверка имени держателя
+                    if (cardHolderInput && !/^([A-Za-z]+\s?)+$/.test(cardHolderInput.value.trim())) {
+                        alert('Имя держателя карты должно содержать только латинские буквы!');
+                        cardHolderInput.focus();
+                        e.preventDefault();
+                        return false;
+                    }
+                    // Проверка срока действия
+                    if (cardDateInput) {
+                        const now = new Date();
+                        const val = cardDateInput.value;
+                        if (!/^\d{2}\/\d{2}$/.test(val)) {
+                            alert('Введите срок действия в формате ММ/ГГ');
+                            cardDateInput.focus();
+                            e.preventDefault();
+                            return false;
+                        }
+                        const [mm, yy] = val.split('/').map(Number);
+                        if (mm < 1 || mm > 12) {
+                            alert('Месяц должен быть от 01 до 12');
+                            cardDateInput.focus();
+                            e.preventDefault();
+                            return false;
+                        }
+                        const currentYear = now.getFullYear() % 100;
+                        const currentMonth = now.getMonth() + 1;
+                        if (yy < currentYear || (yy === currentYear && mm < currentMonth)) {
+                            alert('Срок действия карты не может быть меньше текущего месяца и года');
+                            cardDateInput.focus();
+                            e.preventDefault();
+                            return false;
+                        }
+                        if (yy > 30) {
+                            alert('Год окончания действия карты не может превышать 2030 года');
+                            cardDateInput.focus();
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
                 });
             }
         });
