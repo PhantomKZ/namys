@@ -2559,3 +2559,189 @@ image-overlay .nav-btn:hover{
     text-decoration: underline;
 }
 
+/* --- Расширенная мобильная и планшетная оптимизация (от 320px до 1100px) --- */
+@media (max-width: 1100px) {
+    body, html {
+        font-size: 17px;
+    }
+    .container, .container-fluid {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .product-grid, .le-products-grid, .nov-products-grid, .limited-products {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 0 5px !important;
+    }
+    .basket-content, .basket-items, .basket-summary {
+        padding: 8px !important;
+    }
+    .catalog-product-card, .product-card, .limited-product-card, .le-product-card, .nov-product-card {
+        padding: 12px 4px !important;
+        min-width: 0;
+    }
+    .auth-form, .auth-main, .auth-sidebar {
+        padding: 10px !important;
+    }
+    .modal-content, .payment-form {
+        padding: 6px !important;
+    }
+    .auth-button, .pay-button, .checkout-btn, .add-to-cart-btn, .le-add-to-cart, .nov-add-to-cart, .edit-profile-btn, .continue-shopping {
+        font-size: 1.05rem !important;
+        padding: 14px 0 !important;
+    }
+    .payment-input, .form-control, input, select, textarea {
+        font-size: 1.05rem !important;
+        padding: 12px 8px !important;
+    }
+    .search-input, .sort-select, .dropdown-toggle {
+        font-size: 1.05rem !important;
+        padding: 10px 8px !important;
+    }
+    .promo-code input, .promo-code button {
+        font-size: 1.05rem !important;
+        padding: 10px 8px !important;
+    }
+    .basket-item h3, .product-title, .section-title, .look-title, .le-title, .nov-title {
+        font-size: 1.2rem !important;
+    }
+    .product-price, .product-card .price, .limited-product-price, .le-product-price, .nov-product-price {
+        font-size: 1.1rem !important;
+    }
+    .product-description, .features-list li, .item-size, .summary-row, .basket-summary h2, .basket-title {
+        font-size: 1rem !important;
+    }
+    .navbar-main .nav-link, .navbar-light .nav-link {
+        font-size: 1rem !important;
+        padding: 8px 8px !important;
+    }
+    .category-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+    .category-card {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    body, html {
+        font-size: 16px;
+    }
+    .product-grid, .le-products-grid, .nov-products-grid, .limited-products {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+    .category-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+    .basket-content, .basket-items, .basket-summary {
+        padding: 4px !important;
+    }
+    .modal-content, .payment-form {
+        padding: 2px !important;
+    }
+    .auth-form, .auth-main, .auth-sidebar {
+        padding: 5px !important;
+    }
+    .auth-button, .pay-button, .checkout-btn, .add-to-cart-btn, .le-add-to-cart, .nov-add-to-cart, .edit-profile-btn, .continue-shopping {
+        font-size: 1rem !important;
+        padding: 12px 0 !important;
+    }
+    .payment-input, .form-control, input, select, textarea {
+        font-size: 1rem !important;
+        padding: 10px 6px !important;
+    }
+    .search-input, .sort-select, .dropdown-toggle {
+        font-size: 1rem !important;
+        padding: 8px 6px !important;
+    }
+    .promo-code input, .promo-code button {
+        font-size: 1rem !important;
+        padding: 8px 6px !important;
+    }
+    .basket-item h3, .product-title, .section-title, .look-title, .le-title, .nov-title {
+        font-size: 1.1rem !important;
+    }
+    .product-price, .product-card .price, .limited-product-price, .le-product-price, .nov-product-price {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 400px) {
+    body, html {
+        font-size: 15px;
+    }
+    .auth-button, .pay-button, .checkout-btn, .add-to-cart-btn, .le-add-to-cart, .nov-add-to-cart, .edit-profile-btn, .continue-shopping {
+        font-size: 0.95rem !important;
+        padding: 10px 0 !important;
+    }
+    .payment-input, .form-control, input, select, textarea {
+        font-size: 0.95rem !important;
+        padding: 8px 4px !important;
+    }
+    .search-input, .sort-select, .dropdown-toggle {
+        font-size: 0.95rem !important;
+        padding: 6px 4px !important;
+    }
+    .promo-code input, .promo-code button {
+        font-size: 0.95rem !important;
+        padding: 6px 4px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    body, html {
+        font-size: 20px !important;
+    }
+    .navbar-main .nav-link, .navbar-light .nav-link {
+        font-size: 1.3rem !important;
+        padding: 18px 0 !important;
+        text-align: center !important;
+        display: block !important;
+    }
+    .navbar-nav {
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+    }
+    .navbar-brand img, .navbar-logo img {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    .auth-icon img, .cart-icon img {
+        width: 38px !important;
+        height: 38px !important;
+    }
+    .navbar-toggler {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 2.2rem !important;
+    }
+    .navbar-toggler-icon {
+        width: 2.5em !important;
+        height: 2.5em !important;
+        background-size: 2.5em 2.5em !important;
+    }
+    .navbar-collapse {
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    .navbar-nav .nav-item {
+        width: 100%;
+        justify-content: center !important;
+    }
+    .navbar {
+        min-height: 70px !important;
+    }
+    /* Кнопка меню (бургер) в правом верхнем углу */
+    .navbar-toggler {
+        position: absolute !important;
+        top: 18px !important;
+        right: 18px !important;
+        z-index: 1051;
+    }
+}
+

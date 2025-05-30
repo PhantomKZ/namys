@@ -39,7 +39,7 @@ class CartController extends Controller
                     // Вычисляем доступное количество для каждого размера
                     $size->available_quantity = $size->availableQuantity($product);
 
-                    // Добавляем товар в корзину
+                    // Добавление товара в корзину
                     $items->push((object)[
                         'product' => $product,
                         'quantity' => $quantity,
