@@ -2,15 +2,15 @@
 @section('content')
     <div class="hero-section">
         <div class="hero-text">
-            <h1>NEW DROP</h1>
-            <p>C O L L E C T I O N 2025</p>
-            <a href="{{route('collection.index')}}" class="glow-button">Перейти</a>
+            <h1>{{ __('messages.new_drop') }}</h1>
+            <p>{{ __('messages.collection_2025') }}</p>
+            <a href="{{route('collection.index')}}" class="glow-button">{{ __('messages.go') }}</a>
         </div>
     </div>
     <div class="container-fluid">
         <section class="categories mt-4 lazy-content">
-            <h2>Категории одежды</h2>
-            <p>Минимализм, уникальность, качество и исключительно натуральные материалы</p>
+            <h2>{{ __('messages.categories') }}</h2>
+            <p>{{ __('messages.categories_description') }}</p>
             <div class="category-grid">
                 @foreach($categories as $category)
                     @php
@@ -37,8 +37,8 @@
 
         <!-- Новая коллекция Drop's -->
         <section class="new-drop lazy-content">
-            <h2>NEW! NEW! NEW!</h2>
-            <h3>DROP'S</h3>
+            <h2>{{ __('messages.new_drops_title') }}</h2>
+            <h3>{{ __('messages.drops') }}</h3>
             <div class="product-grid">
                 @foreach($products as $product)
                     <a href="{{ route('product.show', $product->id) }}" class="product-card">
@@ -50,7 +50,7 @@
                         </div>
                         <p>{{ $product->title }}</p>
                         <p class="price">{{ $product->formattedPrice }}</p>
-                        <button>Добавить в корзину</button>
+                        <button>{{ __('messages.add_to_cart') }}</button>
                     </a>
                 @endforeach
             </div>
@@ -61,14 +61,13 @@
             <div class="about-content row">
                 <div class="col-md-6">
                     <div class="about-text">
-                        <h2>О нас</h2>
-                        <p>Мы любим городскую моду и обожаем создавать одежду. Находимся в Павлодаре. Наш бренд NAMYS
-                            сфокусирован на тренд, надежность и качество. Доступна доставка по городу.</p>
+                        <h2>{{ __('messages.about_us') }}</h2>
+                        <p>{{ __('messages.about_us_description') }}</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="about-image">
-                        <img src="/images/main/aboutme.gif" alt="О нас">
+                        <img src="/images/main/aboutme.gif" alt="{{ __('messages.about_us') }}">
                     </div>
                 </div>
             </div>
@@ -76,14 +75,13 @@
 
         <!-- Обратная связь -->
         <section class="feedback lazy-content">
-            <h2>УЗНАВАЙТЕ О НОВИНКАХ ПЕРВЫМИ!</h2>
-            <h3>При первой покупке выдается промокод на 20%!</h3>
-            <p>Один раз в месяц мы будем присылать вам информацию о наших последних коллекциях, скидках и акциях.
-                Обещаем быть полезными!</p>
+            <h2>{{ __('messages.subscribe_title') }}</h2>
+            <h3>{{ __('messages.subscribe_subtitle') }}</h3>
+            <p>{{ __('messages.subscribe_description') }}</p>
             <form class="feedback-form" id="subscribe-form">
                 @csrf
-                <input type="email" name="email" id="email" placeholder="Ваш E-mail" required>
-                <button type="submit">Подписаться</button>
+                <input type="email" name="email" id="email" placeholder="{{ __('messages.your_email') }}" required>
+                <button type="submit">{{ __('messages.subscribe') }}</button>
             </form>
         </section>
 
@@ -107,7 +105,7 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Ошибка при подписке');
+                        throw new Error('{{ __("messages.subscribe_error") }}');
                     }
                     return response.json();
                 })

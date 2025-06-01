@@ -3,7 +3,7 @@
     <div class="product-page">
         <div class="container-fluid">
             <div class="breadcrumb-nav">
-                <a href="{{ route('catalog.index') }}">КАТАЛОГ</a>
+                <a href="{{ route('catalog.index') }}">{{ __('messages.catalog') }}</a>
                 /
                 <a href="{{ route('catalog.index', ['type_id' => $product->type_id]) }}">
                     {{ $product->type }}
@@ -11,21 +11,21 @@
             </div>
 
             <div id="imageOverlay" class="image-overlay">
-                <button class="close-btn" aria-label="Закрыть">&times;</button>
+                <button class="close-btn" aria-label="{{ __('messages.close') }}">&times;</button>
 
-                <button class="nav-btn prev-btn" aria-label="Предыдущее">&lsaquo;</button>
+                <button class="nav-btn prev-btn" aria-label="{{ __('messages.previous') }}">&lsaquo;</button>
                 <img id="overlayImg" class="overlay-img" src="" alt="">
-                <button class="nav-btn next-btn" aria-label="Следующее">&rsaquo;</button>
+                <button class="nav-btn next-btn" aria-label="{{ __('messages.next') }}">&rsaquo;</button>
 
                 <div id="overlayThumbs" class="overlay-thumbs"></div>
             </div>
 
 
             <div id="infoOverlay" class="image-overlay">
-                <button class="close-btn" aria-label="Закрыть">&times;</button>
-                <button class="nav-btn prev-info" aria-label="Предыдущее">&lsaquo;</button>
+                <button class="close-btn" aria-label="{{ __('messages.close') }}">&times;</button>
+                <button class="nav-btn prev-info" aria-label="{{ __('messages.previous') }}">&lsaquo;</button>
                 <img id="infoImg" class="overlay-img" src="" alt="">
-                <button class="nav-btn next-info" aria-label="Следующее">&rsaquo;</button>
+                <button class="nav-btn next-info" aria-label="{{ __('messages.next') }}">&rsaquo;</button>
             </div>
 
 
@@ -42,12 +42,12 @@
                         <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Предыдущий</span>
+                            <span class="visually-hidden">{{ __('messages.previous') }}</span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Следующий</span>
+                            <span class="visually-hidden">{{ __('messages.next') }}</span>
                         </button>
                     </div>
                     <div class="product-thumbnails">
@@ -56,7 +56,7 @@
                                     class="thumbnail-button {{ $index === 0 ? 'active' : '' }}"
                                     data-bs-target="#productCarousel"
                                     data-bs-slide-to="{{ $index }}">
-                                <img src="{{ asset($image->path) }}" alt="Миниатюра {{ $index + 1 }}">
+                                <img src="{{ asset($image->path) }}" alt="{{ __('messages.thumbnail') }} {{ $index + 1 }}">
                             </button>
                         @endforeach
                     </div>
@@ -69,7 +69,7 @@
 
                     @if(isset($variants) && $variants->count() > 1)
                         <div class="color-picker mb-3 d-flex align-items-center">
-                            <span class="me-2 fw-bold">Цвет:</span>
+                            <span class="me-2 fw-bold">{{ __('messages.color') }}:</span>
                             @foreach($variants as $item)
                                 @php
                                     $thumb = optional($item->images->first())->path
@@ -89,13 +89,13 @@
                     <div class="product-description">
                         <p>{{ $product->description }}</p>
                         <ul class="features-list">
-                            <li><strong>Бренд:</strong> {{ $product->brand }}</li>
+                            <li><strong>{{ __('messages.brand') }}:</strong> {{ $product->brand }}</li>
                             <li>
-                                <strong>Материал:</strong>
+                                <strong>{{ __('messages.material') }}:</strong>
                                 {{ $product->materials->pluck('name')->join(', ') }}
                             </li>
 
-                            <li><strong>Цвет:</strong> {{ $product->color }}</li>
+                            <li><strong>{{ __('messages.color') }}:</strong> {{ $product->color }}</li>
                         </ul>
                     </div>
 
@@ -103,11 +103,11 @@
                         $isInactive = $product->sizes->sum('available_quantity') <= 0;
                     @endphp
                     @if($isInactive)
-                        <div class="alert alert-danger" style="font-size: 1.2rem; margin: 30px 0;">Товар распродан или отсутствует в наличии</div>
+                        <div class="alert alert-danger" style="font-size: 1.2rem; margin: 30px 0;">{{ __('messages.sold_out') }}</div>
                     @else
                         <div class="size-selector">
                             <select name="size_id" id="size_id" class="form-control" required>
-                                <option value="">Выберите размер</option>
+                                <option value="">{{ __('messages.choose_size') }}</option>
                                 @foreach($product->sizes as $size)
                                     @if(($size->available_quantity ?? 0) > 0)
                                         @php
@@ -119,7 +119,7 @@
                                         <option value="{{ $size->id }}"
                                                 data-in-cart="{{ $inCart ? '1' : '0' }}"
                                             {{ $isSelected ? 'selected' : '' }}>
-                                            {{ $size->name }} ({{ $size->available_quantity }} в наличии)
+                                            {{ $size->name }} ({{ $size->available_quantity }} {{ __('messages.in_stock') }})
                                         </option>
                                     @endif
                                 @endforeach
@@ -132,13 +132,13 @@
                            class="info-trigger"
                            data-imgs='["{{ asset('images/catalog/size_chart1.png') }}",
                                        "{{ asset('images/catalog/size_chart2.png') }}"]'>
-                            ПОМОЩЬ С РАЗМЕРОМ
+                            {{ __('messages.size_help') }}
                         </a>
 
                         <a href="#"
                            class="info-trigger"
                            data-img="{{ asset('images/catalog/delivery_info.png') }}">
-                            О ДОСТАВКЕ
+                            {{ __('messages.about_delivery') }}
                         </a>
                     </div>
 
@@ -151,7 +151,7 @@
                         @error('size_id')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
-                        <button type="submit" class="btn add-to-cart-btn btn-block">Добавить в корзину</button>
+                        <button type="submit" class="btn add-to-cart-btn btn-block">{{ __('messages.add_to_cart') }}</button>
                     </form>
 
                     <form action="{{ route('cart.remove') }}" method="POST" class="w-100 d-none" id="remove-form">
@@ -159,7 +159,7 @@
                         @method('DELETE')
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="size_id" id="remove-size-id">
-                        <button type="submit" class="btn add-to-cart-btn btn-block">Удалить из корзины</button>
+                        <button type="submit" class="btn add-to-cart-btn btn-block">{{ __('messages.remove_from_cart') }}</button>
                     </form>
                     @auth
                         @if(auth()->user()->favorites->contains($product->id))
@@ -170,7 +170,7 @@
                                         <path fill="white"
                                               d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                     </svg>
-                                    <span class="text-nowrap"> Удалить из избранного </span>
+                                    <span class="text-nowrap"> {{ __('messages.remove_from_favorites') }} </span>
                                 </button>
                             </form>
                         @else
@@ -181,7 +181,7 @@
                                         <path fill="white"
                                               d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                     </svg>
-                                    <span class="text-nowrap"> Добавить в избранное </span>
+                                    <span class="text-nowrap"> {{ __('messages.add_to_favorites') }} </span>
                                 </button>
                             </form>
                         @endif
@@ -193,7 +193,7 @@
 
     <div class="recommendations">
         <div class="container">
-            <h2 class="section-title">Могут понравиться</h2>
+            <h2 class="section-title">{{ __('messages.might_like') }}</h2>
             <div class="recommendations-container">
                 <div class="recommendations-grid">
                     @foreach($recommendations as $item)
@@ -203,7 +203,7 @@
                             </div>
                             <h3 class="product-title">{{ $item->title }}</h3>
                             <p class="product-price">{{ $item->formattedPrice }}</p>
-                            <button class="add-to-cart">Добавить в корзину</button>
+                            <button class="add-to-cart">{{ __('messages.add_to_cart') }}</button>
                         </a>
                     @endforeach
                 </div>

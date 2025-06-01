@@ -29,6 +29,13 @@
                             COLLECTION</a>
                     </li>
                     <li class="nav-item">
+                        <div class="language-switcher">
+                            <a href="{{ route('language.switch', 'ru') }}" class="{{ app()->getLocale() == 'ru' ? 'active' : '' }}">RU</a>
+                            <span class="separator">|</span>
+                            <a href="{{ route('language.switch', 'kz') }}" class="{{ app()->getLocale() == 'kz' ? 'active' : '' }}">KZ</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link auth-icon"
                            href="@auth{{route('profile.show')}}@else{{route('login')}}@endauth">
                             <img src="/images/main/auth.png" alt="Авторизация" width="48" height="48">

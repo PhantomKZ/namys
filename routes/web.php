@@ -134,3 +134,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Auth::routes(['register' => false]);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
+Route::get('language/{lang}', [App\Http\Controllers\LanguageController::class, 'switchLang'])->name('language.switch');
+

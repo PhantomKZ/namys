@@ -1584,7 +1584,7 @@ body {
 }
 
 .auth-main {
-    width: 60%;
+    width: 100%;
     padding: 40px;
     position: relative;
     overflow: hidden;
@@ -1662,7 +1662,8 @@ body {
 }
 
 .form-group input {
-    width: 100%;
+    width: 200%;
+    max-width: 600px;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -2191,14 +2192,74 @@ body {
 }
 
 .favorites-section {
-    margin-top: 50px;
+    margin-top: 2rem;
 }
 
-.favorites-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
+.favorites-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 1rem 0;
+}
+
+.favorites-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 0.5rem;
+}
+
+.favorites-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.favorites-track::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.favorites-track::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.favorites-track::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.favorite-slide {
+    flex: 0 0 auto;
+    width: 250px;
+    transition: transform 0.3s ease;
+}
+
+.favorite-slide:hover {
+    transform: translateY(-5px);
+}
+
+.favorite-slide .catalog-product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.favorite-slide .product-image-container {
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.favorite-slide .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.favorite-slide:hover .product-image {
+    transform: scale(1.05);
 }
 
 .section-title {
@@ -2557,6 +2618,44 @@ image-overlay .nav-btn:hover{
 .back-to-auth-text a:hover {
     color: #3aa876;
     text-decoration: underline;
+}
+
+/* Стили для переключателя языка */
+.language-switcher {
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+}
+
+.language-switcher a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.language-switcher a.active {
+    color: #e07a83;
+    font-weight: 600;
+}
+
+.language-switcher .separator {
+    color: #666;
+    margin: 0 5px;
+}
+
+.navbar-main .language-switcher a {
+    color: #fff;
+}
+
+.navbar-main .language-switcher a.active {
+    color: #eb969d;
+}
+
+.navbar-main .language-switcher .separator {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /* --- Расширенная мобильная и планшетная оптимизация (от 320px до 1100px) --- */

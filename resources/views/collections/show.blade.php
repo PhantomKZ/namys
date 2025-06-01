@@ -3,22 +3,22 @@
     <div class="product-page">
         <div class="container-fluid">
             <div class="breadcrumb-nav">
-                <a href="{{ route('collection.index') }}">Look Collection</a> / <span>{{ $collection->name }}</span>
+                <a href="{{ route('collection.index') }}">{{ __('messages.look_collection') }}</a> / <span>{{ $collection->name }}</span>
             </div>
 
             <div id="imageOverlay" class="image-overlay">
-                <button class="close-btn" aria-label="Закрыть">&times;</button>
-                <button class="nav-btn prev-btn" aria-label="Предыдущее">&lsaquo;</button>
+                <button class="close-btn" aria-label="{{ __('messages.close') }}">&times;</button>
+                <button class="nav-btn prev-btn" aria-label="{{ __('messages.previous') }}">&lsaquo;</button>
                 <img id="overlayImg" class="overlay-img" src="" alt="">
-                <button class="nav-btn next-btn" aria-label="Следующее">&rsaquo;</button>
+                <button class="nav-btn next-btn" aria-label="{{ __('messages.next') }}">&rsaquo;</button>
                 <div id="overlayThumbs" class="overlay-thumbs"></div>
             </div>
 
             <div id="infoOverlay" class="image-overlay">
-                <button class="close-btn" aria-label="Закрыть">&times;</button>
-                <button class="nav-btn prev-info" aria-label="Предыдущее">&lsaquo;</button>
+                <button class="close-btn" aria-label="{{ __('messages.close') }}">&times;</button>
+                <button class="nav-btn prev-info" aria-label="{{ __('messages.previous') }}">&lsaquo;</button>
                 <img id="infoImg" class="overlay-img" src="" alt="">
-                <button class="nav-btn next-info" aria-label="Следующее">&rsaquo;</button>
+                <button class="nav-btn next-info" aria-label="{{ __('messages.next') }}">&rsaquo;</button>
             </div>
 
             <div class="product-details">
@@ -33,24 +33,24 @@
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Предыдущий</span>
+                            <span class="visually-hidden">{{ __('messages.previous') }}</span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Следующий</span>
+                            <span class="visually-hidden">{{ __('messages.next') }}</span>
                         </button>
                     </div>
                     <div class="product-thumbnails">
                         @foreach($collection->images as $index => $image)
                             <button type="button" class="thumbnail-button active" data-bs-target="#productCarousel" data-bs-slide-to="{{ $index }}">
-                                <img src="{{ asset($image->path) }}" alt="Миниатюра {{ $index + 1 }}">
+                                <img src="{{ asset($image->path) }}" alt="{{ __('messages.thumbnail') }} {{ $index + 1 }}">
                             </button>
                         @endforeach
                     </div>
                 </div>
 
                 <div class="product-info">
-                    <h1 class="product-title">Комплект "{{ $collection->name }}"</h1>
+                    <h1 class="product-title">{{ __('messages.kit') }} "{{ $collection->name }}"</h1>
                     <div class="product-price">{{ $collection->formattedPrice }}₸</div>
 
                     <div class="product-description">
@@ -66,12 +66,12 @@
                         @csrf
                         @foreach($products as $product)
                             <div class="mb-3">
-                                <label for="size_{{ $product->id }}">Размер для {{ $product->type }} {{ $product->name }}:</label>
+                                <label for="size_{{ $product->id }}">{{ __('messages.size_for') }} {{ $product->type }} {{ $product->name }}:</label>
                                 <select name="sizes[{{ $product->id }}]" id="size_{{ $product->id }}" class="form-control" required>
-                                    <option value="">Выберите размер</option>
+                                    <option value="">{{ __('messages.choose_size') }}</option>
                                     @foreach($product->sizes as $size)
                                         @if($size->pivot->quantity > 0)
-                                            <option value="{{ $size->id }}">{{ $size->name }} ({{ $size->pivot->quantity }} в наличии)</option>
+                                            <option value="{{ $size->id }}">{{ $size->name }} ({{ $size->pivot->quantity }} {{ __('messages.in_stock') }})</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -79,23 +79,23 @@
                             <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
                         @endforeach
                         @if ($errors->has('sizes'))
-                            <div class="alert alert-danger">{{ $errors->first('sizes') }}</div>
+                            <div class="alert alert-danger">{{ $errors->first('messages.choose_size_for_all') }}</div>
                         @endif
                         <div class="size-help" style="margin-bottom: 20px;">
                             <a href="#"
                                class="info-trigger"
                                data-imgs='["{{ asset('images/look/size_chart1.png') }}",
                                            "{{ asset('images/look/size_chart2.png') }}"]'>
-                                ПОМОЩЬ С РАЗМЕРОМ
+                                {{ __('messages.size_help') }}
                             </a>
 
                             <a href="#"
                                class="info-trigger"
                                data-img="{{ asset('images/look/delivery_info.png') }}">
-                                О ДОСТАВКЕ
+                                {{ __('messages.about_delivery') }}
                             </a>
                         </div>
-                        <button type="submit" class="add-to-cart-btn">Купить весь лук</button>
+                        <button type="submit" class="add-to-cart-btn">{{ __('messages.buy_whole_look') }}</button>
                     </form>
                 </div>
 
@@ -105,7 +105,7 @@
 
     <div class="recommendations">
         <div class="container">
-            <h2 class="section-title">Отдельные товары из комплекта</h2>
+            <h2 class="section-title">{{ __('messages.separate_items_from_kit') }}</h2>
             <div class="recommendations-container">
                 <div class="recommendations-grid">
                     @foreach($products as $product)
@@ -116,7 +116,7 @@
                             </div>
                             <h3 class="product-title">{{ $product->title }}</h3>
                             <p class="product-price">{{ $product->formattedPrice }}₸</p>
-                            <button class="add-to-cart">Добавить в корзину</button>
+                            <button class="add-to-cart">{{ __('messages.add_to_cart') }}</button>
                         </a>
                     @endforeach
                 </div>

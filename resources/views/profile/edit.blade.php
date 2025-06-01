@@ -7,23 +7,23 @@
 
             <div class="d-flex justify-content-center flex-column align-items-center mb-3">
                 <div class="mb-3 w-100">
-                    <label for="name" class="form-label">Имя</label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Введите имя"
+                    <label for="name" class="form-label">{{ __('messages.name') }}</label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('messages.enter_name') }}"
                            value="{{ old('name', auth()->user()->name ?? '') }}">
                 </div>
                 <div class="mb-3 w-100">
-                    <label for="imageInput" class="form-label">Аватар</label>
+                    <label for="imageInput" class="form-label">{{ __('messages.avatar') }}</label>
                     <input type="file" name="avatar" id="imageInput" accept="image/*" class="form-control mb-2" style="max-width: 300px;">
 
                     <img id="preview"
                          src="{{ $user->avatar ? asset($user->avatar) : asset('images/avatar.png') }}"
-                         alt="Аватар"
+                         alt="{{ __('messages.avatar') }}"
                          class="mx-auto d-block"
                          style="height: 200px; width: 200px; border-radius: 50%; margin: 20px; object-fit: cover;">
                 </div>
 
                 <div class="mb-3 w-100">
-                    <label for="phone" class="form-label">Телефон</label>
+                    <label for="phone" class="form-label">{{ __('messages.phone_number') }}</label>
                     <input  type="tel"
                             name="phone"
                             id="phone"
@@ -32,24 +32,24 @@
                             pattern="\+7\d{10}"
                             maxlength="12"
                             value="{{ old('phone', auth()->user()->phone ?? '') }}">
-                    <div class="form-text">Формат заполнение: +7 и ещё 10 цифр</div>
+                    <div class="form-text">{{ __('messages.phone_format') }}</div>
                 </div>
 
                 <div class="mb-3 w-100">
-                    <label for="current_password" class="form-label">Текущий пароль</label>
-                    <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Введите текущий пароль">
+                    <label for="current_password" class="form-label">{{ __('messages.current_password') }}</label>
+                    <input type="password" name="current_password" id="current_password" class="form-control" placeholder="{{ __('messages.enter_current_password') }}">
                 </div>
                 <div class="mb-3 w-100">
-                    <label for="new_password" class="form-label">Новый пароль</label>
-                    <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Введите новый пароль">
+                    <label for="new_password" class="form-label">{{ __('messages.new_password') }}</label>
+                    <input type="password" name="new_password" id="new_password" class="form-control" placeholder="{{ __('messages.enter_new_password') }}">
                 </div>
                 <div class="mb-3 w-100">
-                    <label for="new_password_confirmation" class="form-label">Подтверждение нового пароля</label>
-                    <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" placeholder="Повторите новый пароль">
+                    <label for="new_password_confirmation" class="form-label">{{ __('messages.confirm_new_password') }}</label>
+                    <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" placeholder="{{ __('messages.repeat_new_password') }}">
                 </div>
 
                 <div class="text-center ms-auto">
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary">{{ __('messages.save') }}</button>
                 </div>
             </div>
 
