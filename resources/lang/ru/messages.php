@@ -168,6 +168,7 @@ return [
     'repeat_password' => 'Повторите пароль',
     'forgot_password' => 'Забыли пароль?',
     'email' => 'Email',
+    'messages.password' => 'Пароль',
     'reset_password' => 'Восстановление пароля',
     'reset_password_description' => 'Введите ваш email, и мы отправим вам ссылку для сброса пароля.',
     'send_reset_link' => 'Отправить ссылку для сброса пароля',
