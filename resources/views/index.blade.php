@@ -26,7 +26,7 @@
                                             <img src="{{ asset($category->thumbnail) }}"
                                                  alt="{{ $category->name }} | Namys">
                                             <div class="category-overlay">
-                                                <h3>{{ $category->name }}</h3>
+                                                <h3>{{ __($category->name) }}</h3>
                                             </div>
                                         </div>
                                     </div>

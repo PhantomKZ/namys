@@ -63,13 +63,10 @@ return [
     'no_messages' => 'Хабарламалар жоқ',
     'no_notifications' => 'Хабарландырулар жоқ',
     'no_alerts' => 'Ескертулер жоқ',
-    'no_updates' => 'Жаңартулар жоқ',
-    'no_changes' => 'Өзгерістер жоқ',
     'no_saved' => 'Сақталған жоқ',
     'no_drafts' => 'Жобалар жоқ',
     'no_archived' => 'Мұрағатталған жоқ',
     'no_trash' => 'Қоқыс жоқ',
-    'no_favorites' => 'Таңдаулылар жоқ',
     'no_history' => 'Тарих жоқ',
     'no_recent' => 'Соңғы жоқ',
     'no_popular' => 'Танымал жоқ',
@@ -127,6 +124,7 @@ return [
     'avatar' => 'Аватар',
     'phone_format' => '+7 және тағы 10 сан форматында толтырыңыз',
     'current_password' => 'Ағымдағы құпия сөз',
+    'password' => 'Кұпия сөз',
     'enter_current_password' => 'Ағымдағы құпия сөзді енгізіңіз',
     'new_password' => 'Жаңа құпия сөз',
     'enter_new_password' => 'Тіркелгіңіз үшін жаңа құпия сөзді енгізіңіз.',
@@ -197,4 +195,4 @@ return [
     'buy_whole_look' => 'Бүкіл look-ты сатып алу',
     'separate_items_from_kit' => 'Жинақтағы жеке тауарлар',
     'choose_size_for_all' => 'Барлық тауарлар үшін өлшемді таңдаңыз.',
-]; 
+];

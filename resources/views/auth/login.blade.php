@@ -28,7 +28,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Пароль</label>
+                            <label>{{ __('messages.password') }}</label>
                             <input id="password" type="password" name="password"
                                    class="@error('password', 'login') is-invalid @enderror" placeholder="{{ __('messages.enter_password') }}" required autocomplete="current-password">
                             @error('password', 'login')
@@ -64,7 +64,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="password">{{ __('Пароль') }}</label>
+                            <label for="password">{{ __('messages.password') }}</label>
                             <input id="password" type="password" name="password" class="@error('password') is-invalid @enderror" placeholder="{{ __('messages.create_password') }}" required autocomplete="new-password">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
