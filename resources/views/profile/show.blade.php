@@ -17,6 +17,9 @@
                 @endif
 
                 <a href="{{ route('profile.edit') }}" class="edit-profile-btn">{{ __('messages.edit_profile') }}</a>
+                @role('manager|admin')
+                    <a href="{{ route('manager.orders.index') }}" class="btn btn-info">{{ __('Обработка заказов') }}</a>
+                @endrole
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-danger">{{ __('messages.logout') }}</button>

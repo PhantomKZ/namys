@@ -342,6 +342,10 @@ return [
             'text' => 'Материалы',
             'url' => 'admin/materials',
         ],
+        [
+            'text' => 'Управление менеджерами',
+            'url' => 'admin/managers',
+        ],
     ],
 
     /*

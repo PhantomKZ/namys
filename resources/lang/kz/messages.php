@@ -124,6 +124,7 @@ return [
     'avatar' => 'Аватар',
     'phone_format' => '+7 және тағы 10 сан форматында толтырыңыз',
     'current_password' => 'Ағымдағы құпия сөз',
+    'messages.password' => 'Кұпия сөз',
     'password' => 'Кұпия сөз',
     'enter_current_password' => 'Ағымдағы құпия сөзді енгізіңіз',
     'new_password' => 'Жаңа құпия сөз',

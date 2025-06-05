@@ -18,6 +18,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,10 +130,34 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
             Route::put('/{id}', [AdminCollectionController::class, 'update'])->name('update');
             Route::delete('/{id}', [AdminCollectionController::class, 'destroy'])->name('destroy');
         });
+        Route::prefix('managers')->name('managers.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ManagerController::class, 'index'])->name('index');
+            Route::put('/{user}', [App\Http\Controllers\Admin\ManagerController::class, 'updateRole'])->name('updateRole');
+        });
     });
 
 Auth::routes(['register' => false]);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
 Route::get('language/{lang}', [App\Http\Controllers\LanguageController::class, 'switchLang'])->name('language.switch');
+
+Route::middleware(['auth', 'role:manager|admin'])->prefix('manager')->name('manager.')->group(function () {
+    Route::get('/orders', [App\Http\Controllers\Manager\ManagerOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}/process', [App\Http\Controllers\Manager\ManagerOrderController::class, 'process'])->name('orders.process');
+    Route::put('/orders/{order}/save', [App\Http\Controllers\Manager\ManagerOrderController::class, 'save'])->name('orders.save');
+    Route::put('/orders/{order}/complete', [App\Http\Controllers\Manager\ManagerOrderController::class, 'complete'])->name('orders.complete');
+    Route::get('/orders/all', [App\Http\Controllers\Manager\ManagerOrderController::class, 'allOrders'])->name('orders.all');
+});
+
+Route::get('/test-roles', function() {
+    try {
+        $clientRole = Role::findByName('client', 'web');
+        $managerRole = Role::findByName('manager', 'web');
+        $adminRole = Role::findByName('admin', 'web');
+
+        return "Роли найдены: Client ID: " . $clientRole->id . ", Manager ID: " . $managerRole->id . ", Admin ID: " . $adminRole->id;
+    } catch (Spatie\Permission\Exceptions\RoleDoesNotExist $e) {
+        return "Ошибка: " . $e->getMessage();
+    }
+});
 
