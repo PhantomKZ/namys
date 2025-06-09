@@ -33,7 +33,7 @@ class OrderController extends Controller
         $order = Order::create([
             'user_id' => $user->id,
             'total_price' => $request->input('total_price'),
-            'status' => 'В обработке',
+            'status' => 'pending',
         ]);
 
         $items = collect($request->input('products'))->map(function ($item) {

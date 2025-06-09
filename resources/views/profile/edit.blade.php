@@ -13,13 +13,14 @@
                 </div>
                 <div class="mb-3 w-100">
                     <label for="imageInput" class="form-label">{{ __('messages.avatar') }}</label>
-                    <input type="file" name="avatar" id="imageInput" accept="image/*" class="form-control mb-2" style="max-width: 300px;">
+                    <input type="file" name="avatar" id="imageInput" accept="image/jpeg,image/png,image/jpg,image/gif,image/tiff" class="form-control mb-2" style="max-width: 300px;">
 
-                    <img id="preview"
-                         src="{{ $user->avatar ? asset($user->avatar) : asset('images/avatar.png') }}"
-                         alt="{{ __('messages.avatar') }}"
-                         class="mx-auto d-block"
-                         style="height: 200px; width: 200px; border-radius: 50%; margin: 20px; object-fit: cover;">
+                    <div class="image-preview-container" style="position: relative; width: 200px; height: 200px; margin: 0 auto; overflow: hidden; border-radius: 50%;">
+                        <img id="preview"
+                             src="{{ $user->avatar ? asset($user->avatar) : asset('images/avatar.png') }}"
+                             alt="{{ __('messages.avatar') }}"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                 </div>
 
                 <div class="mb-3 w-100">
@@ -44,7 +45,7 @@
                     <input type="password" name="new_password" id="new_password" class="form-control" placeholder="{{ __('messages.enter_new_password') }}">
                 </div>
                 <div class="mb-3 w-100">
-                    <label for="new_password_confirmation" class="form-label">{{ __('messages.confirm_new_password') }}</label>
+                    <label for="new_password_confirmation" class="form-label">{{ __('messages.confirm_password') }}</label>
                     <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" placeholder="{{ __('messages.repeat_new_password') }}">
                 </div>
 
@@ -52,7 +53,6 @@
                     <button type="submit" class="btn btn-primary">{{ __('messages.save') }}</button>
                 </div>
             </div>
-
         </form>
     </div>
 @endsection
@@ -60,18 +60,13 @@
     <script>
         window.addEventListener('load', function () {
             const imageInput = document.getElementById('imageInput');
-
             if (imageInput) {
                 imageInput.value = '';
             }
-
         });
-    </script>
-    <script>
+
         document.getElementById('imageInput').addEventListener('change', function (event) {
             const file = event.target.files[0];
-            const preview = document.getElementById('preview');
-
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -84,15 +79,11 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const phoneInput = document.getElementById('phone');
-
             phoneInput.addEventListener('input', () => {
-
                 phoneInput.value = phoneInput.value.replace(/[^+\d]/g, '');
-
                 if (!phoneInput.value.startsWith('+7')) {
                     phoneInput.value = '+7' + phoneInput.value.replace(/^(\+)?7?/, '');
                 }
-
                 phoneInput.value = phoneInput.value.slice(0, 12);
             });
         });

@@ -2572,9 +2572,12 @@ image-overlay .nav-btn:hover{
 }
 
 .reset-password-form .auth-button {
-    padding: 18px;
+    width: 200%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
     font-size: 18px;
-    margin-top: 20px;
 }
 
 .back-to-auth {

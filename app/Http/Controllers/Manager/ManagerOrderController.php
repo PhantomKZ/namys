@@ -16,7 +16,7 @@ class ManagerOrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::whereIn('status', ['в обработке', 'в процессе обработки'])->get();
+        $orders = Order::whereIn('status', ['pending', 'processing'])->get();
         return view('manager.orders.index', compact('orders'));
     }
 
@@ -30,9 +30,9 @@ class ManagerOrderController extends Controller
     {
         $order->refresh(); // Перезагружаем модель, чтобы получить актуальные данные
         
-        // Устанавливаем статус 'в процессе обработки' при открытии, если он еще 'в обработке'
-        if ($order->status === 'в обработке') {
-            $order->status = 'в процессе обработки';
+        // Устанавливаем статус 'processing' при открытии, если он еще 'pending'
+        if ($order->status === 'pending') {
+            $order->status = 'processing';
             $order->save();
         }
         return view('manager.orders.process', compact('order'));
@@ -61,9 +61,9 @@ class ManagerOrderController extends Controller
         $order->shipping_address = $request->shipping_address;
         $order->manager_comment = $request->manager_comment;
 
-        // Статус уже должен быть 'в процессе обработки' благодаря методу process, но можно перестраховаться
-        if ($order->status === 'в обработке') {
-             $order->status = 'в процессе обработки';
+        // Статус уже должен быть 'processing' благодаря методу process, но можно перестраховаться
+        if ($order->status === 'pending') {
+             $order->status = 'processing';
              $order->save();
         }
 
@@ -98,7 +98,7 @@ class ManagerOrderController extends Controller
         $order->shipping_address = $request->shipping_address;
         $order->manager_comment = $request->manager_comment;
 
-        $order->status = 'обработан';
+        $order->status = 'completed';
         $order->save();
 
         return redirect()->route('manager.orders.all')->with('success', 'Заказ обработан и завершен.');
@@ -138,7 +138,7 @@ class ManagerOrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => ['required', 'in:в обработке,в процессе обработки,обработан'],
+            'status' => ['required', 'in:pending,processing,completed'],
         ]);
 
         $order->status = $request->status;

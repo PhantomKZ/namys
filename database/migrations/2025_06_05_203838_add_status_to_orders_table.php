@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (!Schema::hasColumn('orders', 'status')) {
-                $table->string('status')->default('в обработке');
-            }
+            $table->string('status')->default('pending')->change();
         });
     }
 

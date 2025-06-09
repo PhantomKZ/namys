@@ -129,7 +129,7 @@ return [
     'current_password' => 'Текущий пароль',
     'enter_current_password' => 'Введите текущий пароль',
     'new_password' => 'Новый пароль',
-    'enter_new_password' => 'Введите новый пароль для вашего аккаунта.',
+    'enter_new_password' => 'Введите новый пароль для вашего аккаунта',
     'enter_new_password_placeholder' => 'Введите новый пароль',
     'repeat_new_password' => 'Повторите новый пароль',
     'confirm_new_password' => 'Подтверждение нового пароля',

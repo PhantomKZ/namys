@@ -1,34 +1,34 @@
 @extends('layouts.app')
 
-@section('title', 'Все заказы')
+@section('title', __('Все заказы'))
 
 @section('content')
 <div class="container">
-    <h1>Все заказы</h1>
+    <h1>{{ __('Все заказы') }}</h1>
 
     @if ($orders->isEmpty())
-        <p>Нет заказов.</p>
+        <p>{{ __('Нет заказов.') }}</p>
     @else
         <table class="table">
             <thead>
                 <tr>
-                    <th>Номер заказа</th>
-                    <th>Клиент</th>
-                    <th>Дата заказа</th>
-                    <th>Статус</th>
-                    <th>Действия</th>
+                    <th>{{ __('Номер заказа') }}</th>
+                    <th>{{ __('Клиент') }}</th>
+                    <th>{{ __('Дата заказа') }}</th>
+                    <th>{{ __('Статус') }}</th>
+                    <th>{{ __('Действия') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($orders as $order)
                     <tr>
                         <td>{{ $order->id }}</td>
-                        <td>{{ $order->user->name ?? 'Удален' }}</td> {{-- Предполагается связь с пользователем --}}
+                        <td>{{ $order->user->name ?? __('Удален') }}</td> {{-- Предполагается связь с пользователем --}}
                         <td>{{ $order->created_at->format('d.m.Y H:i') }}</td>
                         <td>{{ $order->status }}</td>
                         <td>
                             {{-- Возможно, добавить ссылку на просмотр деталей заказа, даже если он обработан --}}
-                            <a href="{{ route('manager.orders.process', $order) }}" class="btn btn-info btn-sm">Посмотреть</a>
+                            <a href="{{ route('manager.orders.process', $order) }}" class="btn btn-info btn-sm">{{ __('Посмотреть') }}</a>
                         </td>
                     </tr>
                 @endforeach

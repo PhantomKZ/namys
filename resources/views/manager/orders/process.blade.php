@@ -1,24 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Обработка заказа №{{ $order->id }}')
+@section('title', __('Обработка заказа №:order_id', ['order_id' => $order->id]))
 
 @section('content')
 <div class="container">
-    <h1>Обработка заказа №{{ $order->id }}</h1>
+    <h1>{{ __('Обработка заказа №:order_id', ['order_id' => $order->id]) }}</h1>
 
     <div class="card mb-3">
         <div class="card-header">
-            Информация о заказе
+            {{ __('Информация о заказе') }}
         </div>
         <div class="card-body">
-            <p><strong>Статус:</strong> {{ $order->status }}</p>
-            <p><strong>Дата заказа:</strong> {{ $order->created_at->format('d.m.Y H:i') }}</p>
-            <p><strong>Общая сумма:</strong> {{ $order->formattedPrice }}</p>
+            <p><strong>{{ __('Статус') }}:</strong> {{ __($order->status) }}</p>
+            <p><strong>{{ __('Дата заказа') }}:</strong> {{ $order->created_at->format('d.m.Y H:i') }}</p>
+            <p><strong>{{ __('Общая сумма:') }}</strong> {{ $order->formattedPrice }}</p>
 
-            <h5>Товары в заказе:</h5>
+            <h5>{{ __('Товары в заказе:') }}</h5>
             <ul>
                 @foreach($order->products as $product)
-                    <li>{{ $product->title }} - {{ $product->pivot->quantity }} шт.</li>
+                    <li>{{ $product->title }} - {{ $product->pivot->quantity }} {{ __('шт.') }}</li>
                 @endforeach
             </ul>
         </div>
@@ -26,27 +26,27 @@
 
     <div class="card mb-3">
         <div class="card-header">
-            Информация о клиенте
+            {{ __('Информация о клиенте') }}
         </div>
         <div class="card-body">
             {{-- Информация о клиенте --}}
-            <p><strong>Клиент:</strong> {{ $order->user->name ?? 'Удален' }}</p>
-            <p><strong>Email:</strong> {{ $order->user->email ?? 'Не указан' }}</p>
+            <p><strong>{{ __('Клиент') }}:</strong> {{ $order->user->name ?? __('Удален') }}</p>
+            <p><strong>Email:</strong> {{ $order->user->email ?? __('Не указан') }}</p>
 
             {{-- Поля ввода для данных клиента и комментария менеджера --}}
             <div class="form-group">
-                <label for="client_phone">Номер телефона клиента:</label>
+                <label for="client_phone">{{ __('Номер телефона клиента:') }}</label>
                 <input type="text" name="client_phone" id="client_phone" class="form-control" value="{{ $order->client_phone ?? ($order->user->phone ?? '') }}"> {{-- Предполагается, что у пользователя есть поле phone --}}
             </div>
 
             <div class="form-group">
-                <label for="shipping_address">Адрес доставки:</label>
+                <label for="shipping_address">{{ __('Адрес доставки:') }}</label>
                 <textarea name="shipping_address" id="shipping_address" class="form-control">{{ $order->shipping_address ?? '' }}</textarea> {{-- Предполагается, что у заказа есть поле shipping_address --}}
             </div>
 
             {{-- Поле для комментария менеджера --}}
             <div class="form-group">
-                <label for="manager_comment">Комментарий менеджера:</label>
+                <label for="manager_comment">{{ __('Комментарий менеджера:') }}</label>
                 <textarea name="manager_comment" id="manager_comment" class="form-control">{{ $order->manager_comment ?? '' }}</textarea>
             </div>
 
@@ -58,12 +58,12 @@
         <form action="{{ route('manager.orders.save', $order) }}" method="POST" id="saveOrderForm">
             @csrf
             @method('PUT')
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="submit" class="btn btn-primary">{{ __('Сохранить') }}</button>
         </form>
         <form action="{{ route('manager.orders.complete', $order) }}" method="POST" id="completeOrderForm">
             @csrf
             @method('PUT')
-            <button type="submit" class="btn btn-success">Завершить обработку</button>
+            <button type="submit" class="btn btn-success">{{ __('Завершить обработку') }}</button>
         </form>
     </div>
 
