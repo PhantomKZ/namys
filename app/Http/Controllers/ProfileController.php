@@ -27,7 +27,7 @@ class ProfileController extends Controller
 
         $validator = \Validator::make($request->all(), [
             'name'   => 'required|string|max:255',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,tiff|max:10240',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,tiff|max:20480',
             'phone'  => 'nullable|regex:/^\\+7\\d{10}$/',
         ]);
 
