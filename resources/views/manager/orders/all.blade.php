@@ -25,7 +25,7 @@
                         <td>{{ $order->id }}</td>
                         <td>{{ $order->user->name ?? __('Удален') }}</td> {{-- Предполагается связь с пользователем --}}
                         <td>{{ $order->created_at->format('d.m.Y H:i') }}</td>
-                        <td>{{ $order->status }}</td>
+                        <td>{{ __($order->status) }}</td>
                         <td>
                             {{-- Возможно, добавить ссылку на просмотр деталей заказа, даже если он обработан --}}
                             <a href="{{ route('manager.orders.process', $order) }}" class="btn btn-info btn-sm">{{ __('Посмотреть') }}</a>
