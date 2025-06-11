@@ -18,7 +18,7 @@
                                     aria-controls="collapse{{ $order->id }}">
                                 <div class="text-start p-3">
                                     <strong>Заказ №{{ $order->id }}</strong><br>
-                                    <small>{{ $order->status }} — {{ $order->created_at->format('d.m.Y H:i') }}</small>
+                                    <small>{{ __($order->status) }} — {{ $order->created_at->format('d.m.Y H:i') }}</small>
                                 </div>
                                 <div class="d-flex align-items-center pe-3">
                                     <span class="me-2">{{ $order->formattedPrice }}</span>
