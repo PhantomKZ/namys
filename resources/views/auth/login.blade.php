@@ -88,8 +88,13 @@
         function switchForm(formType) {
             const buttons = document.querySelectorAll('.auth-switch button');
             buttons.forEach(button => button.classList.remove('active'));
-            event.target.classList.add('active');
 
+            if (formType === 'login') {
+                document.querySelector('.auth-switch button:nth-child(1)').classList.add('active');
+            } else {
+                document.querySelector('.auth-switch button:nth-child(2)').classList.add('active');
+            }
+            
             const formsContainer = document.querySelector('.forms-container');
             const forms = document.querySelectorAll('.auth-form');
 
