@@ -184,7 +184,7 @@
 
             if (cardHolderInput) {
                 cardHolderInput.addEventListener('input', function () {
-                    this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+                    this.value = this.value.replace(/[^A-Za-z\s]/g, '').toUpperCase();
                 });
             }
 
@@ -214,6 +214,11 @@
 
             if (paymentForm) {
                 paymentForm.addEventListener('submit', function (e) {
+                    if (cardCVVInput && cardCVVInput.value.length !== 3) {
+                        alert('CVV должен состоять из 3 цифр.');
+                        e.preventDefault();
+                        return;
+                    }
                     if (cardHolderInput && !/^([A-Za-z]+\s?)+$/.test(cardHolderInput.value.trim())) {
                         alert('{{ __("messages.cardholder_name_error") }}');
                         cardHolderInput.focus();
